@@ -65,7 +65,7 @@
 
     <div class="mt-16 max-w-4xl mx-auto">
       <div class="grid md:grid-cols-2 gap-8">
-        <div class="bg-brand-black border border-white/10 rounded-xl p-8">
+        <div class="bg-gray-100 border border-gray-200 rounded-xl p-8">
           <h3 class="text-gray-400 font-semibold mb-6">Traditional Advertising</h3>
           <div class="space-y-4 text-gray-400">
             <p>$125K buys fleeting impressions</p>
@@ -75,9 +75,9 @@
             <p>Easily forgotten</p>
           </div>
         </div>
-        <div class="bg-brand-yellow/10 border border-brand-yellow/30 rounded-xl p-8">
+        <div class="bg-brand-black rounded-xl p-8">
           <h3 class="text-brand-yellow font-semibold mb-6">Art Park Sponsorship</h3>
-          <div class="space-y-4 text-brand-black">
+          <div class="space-y-4 text-white">
             <p>$125K creates permanent infrastructure</p>
             <p>Authentic community engagement</p>
             <p>48 branded events over 4 years</p>
