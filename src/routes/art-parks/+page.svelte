@@ -32,7 +32,7 @@
 </section>
 
 <!-- What's Included Section -->
-<section class="py-20 md:py-32 bg-white/5">
+<section class="py-20 md:py-32 bg-gray-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <SectionHeader
       eyebrow="Park Features"
@@ -42,14 +42,14 @@
 
     <div class="mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
       {#each artParkFeatures as feature}
-        <div class="bg-brand-black border border-white/10 rounded-xl p-8 hover:border-brand-yellow/50 transition-colors">
-          <div class="w-12 h-12 bg-brand-yellow/10 rounded-lg flex items-center justify-center mb-6">
+        <div class="bg-white border border-gray-200 rounded-xl p-8 hover:border-brand-black/30 hover:shadow-lg transition-all">
+          <div class="w-12 h-12 bg-brand-black rounded-lg flex items-center justify-center mb-6">
             <svg class="w-6 h-6 text-brand-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={featureIcons[feature.icon] || featureIcons.wall} />
             </svg>
           </div>
-          <h3 class="text-white font-semibold text-xl mb-3">{feature.title}</h3>
-          <p class="text-gray-400">{feature.description}</p>
+          <h3 class="text-brand-black font-semibold text-xl mb-3">{feature.title}</h3>
+          <p class="text-gray-600">{feature.description}</p>
         </div>
       {/each}
     </div>
@@ -67,45 +67,45 @@
 
     <div class="mt-16 max-w-4xl mx-auto">
       <div class="grid md:grid-cols-3 gap-6 mb-12">
-        <div class="bg-white/5 border border-white/10 rounded-xl p-8 text-center">
-          <p class="text-brand-yellow font-display text-4xl font-bold mb-2">${(financialModel.setup / 1000).toFixed(0)}K</p>
-          <p class="text-white font-semibold mb-1">Setup Cost</p>
-          <p class="text-gray-400 text-sm">One-time installation</p>
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-8 text-center">
+          <p class="text-brand-black font-display text-4xl font-bold mb-2">${(financialModel.setup / 1000).toFixed(0)}K</p>
+          <p class="text-brand-black font-semibold mb-1">Setup Cost</p>
+          <p class="text-gray-500 text-sm">One-time installation</p>
         </div>
-        <div class="bg-white/5 border border-white/10 rounded-xl p-8 text-center">
-          <p class="text-brand-yellow font-display text-4xl font-bold mb-2">${(financialModel.annualOps / 1000).toFixed(0)}K</p>
-          <p class="text-white font-semibold mb-1">Annual Operations</p>
-          <p class="text-gray-400 text-sm">Per year</p>
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-8 text-center">
+          <p class="text-brand-black font-display text-4xl font-bold mb-2">${(financialModel.annualOps / 1000).toFixed(0)}K</p>
+          <p class="text-brand-black font-semibold mb-1">Annual Operations</p>
+          <p class="text-gray-500 text-sm">Per year</p>
         </div>
-        <div class="bg-brand-yellow/10 border border-brand-yellow/30 rounded-xl p-8 text-center">
+        <div class="bg-brand-black rounded-xl p-8 text-center">
           <p class="text-brand-yellow font-display text-4xl font-bold mb-2">${(financialModel.totalInvestment / 1000).toFixed(0)}K</p>
           <p class="text-white font-semibold mb-1">Total Investment</p>
           <p class="text-gray-400 text-sm">4-year commitment</p>
         </div>
       </div>
 
-      <div class="bg-white/5 border border-white/10 rounded-xl p-8">
-        <h3 class="text-white font-semibold text-xl mb-6 text-center">4-Year Breakdown</h3>
+      <div class="bg-gray-50 border border-gray-200 rounded-xl p-8">
+        <h3 class="text-brand-black font-semibold text-xl mb-6 text-center">4-Year Breakdown</h3>
         <div class="space-y-4">
-          <div class="flex justify-between items-center py-3 border-b border-white/10">
-            <span class="text-gray-300">Year 1 (Setup + Operations)</span>
-            <span class="text-brand-yellow font-semibold">${(financialModel.yearOne).toLocaleString()}</span>
+          <div class="flex justify-between items-center py-3 border-b border-gray-200">
+            <span class="text-gray-600">Year 1 (Setup + Operations)</span>
+            <span class="text-brand-black font-semibold">${(financialModel.yearOne).toLocaleString()}</span>
           </div>
-          <div class="flex justify-between items-center py-3 border-b border-white/10">
-            <span class="text-gray-300">Year 2</span>
-            <span class="text-brand-yellow font-semibold">${(financialModel.yearsTwo4).toLocaleString()}</span>
+          <div class="flex justify-between items-center py-3 border-b border-gray-200">
+            <span class="text-gray-600">Year 2</span>
+            <span class="text-brand-black font-semibold">${(financialModel.yearsTwo4).toLocaleString()}</span>
           </div>
-          <div class="flex justify-between items-center py-3 border-b border-white/10">
-            <span class="text-gray-300">Year 3</span>
-            <span class="text-brand-yellow font-semibold">${(financialModel.yearsTwo4).toLocaleString()}</span>
+          <div class="flex justify-between items-center py-3 border-b border-gray-200">
+            <span class="text-gray-600">Year 3</span>
+            <span class="text-brand-black font-semibold">${(financialModel.yearsTwo4).toLocaleString()}</span>
           </div>
-          <div class="flex justify-between items-center py-3 border-b border-white/10">
-            <span class="text-gray-300">Year 4</span>
-            <span class="text-brand-yellow font-semibold">${(financialModel.yearsTwo4).toLocaleString()}</span>
+          <div class="flex justify-between items-center py-3 border-b border-gray-200">
+            <span class="text-gray-600">Year 4</span>
+            <span class="text-brand-black font-semibold">${(financialModel.yearsTwo4).toLocaleString()}</span>
           </div>
           <div class="flex justify-between items-center py-3 font-bold">
-            <span class="text-white">Total Investment</span>
-            <span class="text-brand-yellow">${(financialModel.totalInvestment).toLocaleString()}</span>
+            <span class="text-brand-black">Total Investment</span>
+            <span class="text-brand-black">${(financialModel.totalInvestment).toLocaleString()}</span>
           </div>
         </div>
       </div>
@@ -114,22 +114,26 @@
 </section>
 
 <!-- CTA Section -->
-<section class="py-20 md:py-32 bg-white/5">
+<section class="py-20 md:py-32 bg-brand-black">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="grid md:grid-cols-2 gap-8">
-      <div class="bg-brand-black border border-white/10 rounded-2xl p-10 text-center">
+      <div class="bg-white/10 border border-white/20 rounded-2xl p-10 text-center">
         <h3 class="text-white font-display text-3xl font-bold mb-4">For Corporate Sponsors</h3>
-        <p class="text-gray-400 mb-8">
+        <p class="text-gray-300 mb-8">
           Invest in permanent community infrastructure. Naming rights, branded events, and authentic community engagement.
         </p>
-        <Button href="/art-parks/sponsors">Learn About Sponsorship</Button>
+        <a href="/art-parks/sponsors" class="inline-flex items-center justify-center px-6 py-3 text-base font-semibold rounded-lg bg-brand-yellow text-brand-black hover:bg-yellow-300 transition-colors">
+          Learn About Sponsorship
+        </a>
       </div>
-      <div class="bg-brand-black border border-white/10 rounded-2xl p-10 text-center">
+      <div class="bg-white/10 border border-white/20 rounded-2xl p-10 text-center">
         <h3 class="text-white font-display text-3xl font-bold mb-4">For City Partners</h3>
-        <p class="text-gray-400 mb-8">
+        <p class="text-gray-300 mb-8">
           Zero budget impact. Transform underutilized spaces into vibrant community assets.
         </p>
-        <Button href="/art-parks/cities">Explore City Partnership</Button>
+        <a href="/art-parks/cities" class="inline-flex items-center justify-center px-6 py-3 text-base font-semibold rounded-lg bg-brand-yellow text-brand-black hover:bg-yellow-300 transition-colors">
+          Explore City Partnership
+        </a>
       </div>
     </div>
   </div>
