@@ -70,20 +70,20 @@
 
           <div class="space-y-6">
             <div>
-              <p class="text-brand-yellow font-semibold text-sm uppercase tracking-widest mb-2">Email</p>
-              <a href="mailto:{siteConfig.email.general}" class="text-brand-black hover:text-brand-yellow transition-colors">
+              <p class="text-gray-500 font-semibold text-sm uppercase tracking-widest mb-2">Email</p>
+              <a href="mailto:{siteConfig.email.general}" class="text-brand-black hover:text-gray-600 transition-colors">
                 {siteConfig.email.general}
               </a>
             </div>
 
             <div>
-              <p class="text-brand-yellow font-semibold text-sm uppercase tracking-widest mb-2">Follow Us</p>
+              <p class="text-gray-500 font-semibold text-sm uppercase tracking-widest mb-2">Follow Us</p>
               <div class="flex gap-4">
                 <a
                   href={siteConfig.socials.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-gray-600 hover:text-brand-yellow transition-colors"
+                  class="text-gray-600 hover:text-brand-black transition-colors"
                   aria-label="Instagram"
                 >
                   <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -94,7 +94,7 @@
                   href={siteConfig.socials.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-gray-600 hover:text-brand-yellow transition-colors"
+                  class="text-gray-600 hover:text-brand-black transition-colors"
                   aria-label="LinkedIn"
                 >
                   <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -108,19 +108,19 @@
           <hr class="my-8 border-gray-200" />
 
           <div class="space-y-4">
-            <a href="/partners/apply" class="flex items-center gap-3 text-gray-600 hover:text-brand-yellow transition-colors">
+            <a href="/partners/apply" class="flex items-center gap-3 text-gray-600 hover:text-brand-black transition-colors">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
               Partnership Inquiries
             </a>
-            <a href="/artists/apply" class="flex items-center gap-3 text-gray-600 hover:text-brand-yellow transition-colors">
+            <a href="/artists/apply" class="flex items-center gap-3 text-gray-600 hover:text-brand-black transition-colors">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
               </svg>
               Artist Applications
             </a>
-            <a href="/donate" class="flex items-center gap-3 text-gray-600 hover:text-brand-yellow transition-colors">
+            <a href="/donate" class="flex items-center gap-3 text-gray-600 hover:text-brand-black transition-colors">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
@@ -133,9 +133,9 @@
       <!-- Contact Form -->
       <div class="lg:col-span-2">
         {#if success}
-          <div class="bg-brand-yellow/10 border border-brand-yellow/30 rounded-xl p-10 text-center">
-            <div class="w-16 h-16 mx-auto mb-6 bg-brand-yellow rounded-full flex items-center justify-center">
-              <svg class="w-8 h-8 text-brand-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="bg-gray-50 border border-gray-200 rounded-xl p-10 text-center">
+            <div class="w-16 h-16 mx-auto mb-6 bg-brand-black rounded-full flex items-center justify-center">
+              <svg class="w-8 h-8 text-brand-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
               </svg>
             </div>
@@ -143,7 +143,7 @@
             <p class="text-gray-600 mb-6">
               Thank you for reaching out. We'll get back to you as soon as possible.
             </p>
-            <a href="/" class="text-brand-yellow hover:underline">Return to homepage</a>
+            <a href="/" class="text-brand-black font-semibold hover:underline">Return to homepage</a>
           </div>
         {:else}
           <form on:submit|preventDefault={handleSubmit} class="space-y-6">
@@ -156,7 +156,7 @@
             <!-- Name -->
             <div>
               <label for="name" class="block text-brand-black font-medium mb-2">
-                Name <span class="text-brand-yellow">*</span>
+                Name <span class="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -171,7 +171,7 @@
             <!-- Email -->
             <div>
               <label for="email" class="block text-brand-black font-medium mb-2">
-                Email <span class="text-brand-yellow">*</span>
+                Email <span class="text-red-500">*</span>
               </label>
               <input
                 type="email"
@@ -186,7 +186,7 @@
             <!-- Subject -->
             <div>
               <label for="subject" class="block text-brand-black font-medium mb-2">
-                Subject <span class="text-brand-yellow">*</span>
+                Subject <span class="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -201,7 +201,7 @@
             <!-- Message -->
             <div>
               <label for="message" class="block text-brand-black font-medium mb-2">
-                Message <span class="text-brand-yellow">*</span>
+                Message <span class="text-red-500">*</span>
               </label>
               <textarea
                 id="message"

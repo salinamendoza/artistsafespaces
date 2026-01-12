@@ -74,9 +74,9 @@
 <section class="pb-20 md:pb-32">
   <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
     {#if success}
-      <div class="bg-brand-yellow/10 border border-brand-yellow/30 rounded-xl p-10 text-center">
-        <div class="w-16 h-16 mx-auto mb-6 bg-brand-yellow rounded-full flex items-center justify-center">
-          <svg class="w-8 h-8 text-brand-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="bg-gray-50 border border-gray-200 rounded-xl p-10 text-center">
+        <div class="w-16 h-16 mx-auto mb-6 bg-brand-black rounded-full flex items-center justify-center">
+          <svg class="w-8 h-8 text-brand-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
           </svg>
         </div>
@@ -84,7 +84,7 @@
         <p class="text-gray-600 mb-6">
           Thank you for your interest in partnering with Artist Safespaces. Our team will review your inquiry and reach out within 3-5 business days to discuss next steps.
         </p>
-        <a href="/" class="text-brand-yellow hover:underline">Return to homepage</a>
+        <a href="/" class="text-brand-black font-semibold hover:underline">Return to homepage</a>
       </div>
     {:else}
       <form on:submit|preventDefault={handleSubmit} class="space-y-8">
@@ -97,7 +97,7 @@
         <!-- Organization Name -->
         <div>
           <label for="organizationName" class="block text-brand-black font-medium mb-2">
-            Organization Name <span class="text-brand-yellow">*</span>
+            Organization Name <span class="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -112,7 +112,7 @@
         <!-- Contact Name -->
         <div>
           <label for="contactName" class="block text-brand-black font-medium mb-2">
-            Contact Name <span class="text-brand-yellow">*</span>
+            Contact Name <span class="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -127,7 +127,7 @@
         <!-- Email -->
         <div>
           <label for="email" class="block text-brand-black font-medium mb-2">
-            Email <span class="text-brand-yellow">*</span>
+            Email <span class="text-red-500">*</span>
           </label>
           <input
             type="email"
@@ -156,7 +156,7 @@
         <!-- Organization Type -->
         <div>
           <label for="orgType" class="block text-brand-black font-medium mb-2">
-            Organization Type <span class="text-brand-yellow">*</span>
+            Organization Type <span class="text-red-500">*</span>
           </label>
           <select
             id="orgType"

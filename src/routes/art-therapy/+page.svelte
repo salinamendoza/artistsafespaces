@@ -44,12 +44,12 @@
         </div>
       </div>
       <div class="relative">
-        <div class="aspect-square bg-gradient-to-br from-brand-yellow/20 to-brand-yellow/5 rounded-2xl flex items-center justify-center p-8">
+        <div class="aspect-square bg-brand-black rounded-2xl flex items-center justify-center p-8">
           <div class="text-center">
             <p class="text-brand-yellow font-semibold text-sm uppercase tracking-widest mb-4">We Pay Artists</p>
-            <p class="text-brand-black font-display text-5xl font-bold mb-4">100%</p>
-            <p class="text-gray-600 text-lg">Market-rate compensation</p>
-            <p class="text-gray-600 text-sm mt-2">Always. No exceptions.</p>
+            <p class="text-white font-display text-5xl font-bold mb-4">100%</p>
+            <p class="text-gray-300 text-lg">Market-rate compensation</p>
+            <p class="text-gray-400 text-sm mt-2">Always. No exceptions.</p>
           </div>
         </div>
       </div>
@@ -79,8 +79,8 @@
 
               <!-- Content card -->
               <div class="w-5/12 {i % 2 === 0 ? 'pr-8 text-right' : 'pl-8'}">
-                <div class="bg-gray-50 border {theme.current ? 'border-brand-yellow/50' : 'border-gray-200'} rounded-xl p-6 {theme.current ? 'ring-2 ring-brand-yellow/20' : ''}">
-                  <p class="text-brand-yellow font-semibold text-sm mb-2">{theme.year}</p>
+                <div class="bg-white border {theme.current ? 'border-brand-black' : 'border-gray-200'} rounded-xl p-6 {theme.current ? 'shadow-lg' : ''}">
+                  <p class="text-gray-500 font-semibold text-sm mb-2">{theme.year}</p>
                   <h3 class="text-brand-black font-display text-3xl font-bold mb-2">{theme.theme}</h3>
                   <p class="text-gray-600">{theme.description}</p>
                   {#if theme.current}

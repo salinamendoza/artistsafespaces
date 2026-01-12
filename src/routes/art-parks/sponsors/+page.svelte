@@ -42,7 +42,7 @@
     <div class="mt-16 max-w-3xl mx-auto">
       <div class="space-y-6">
         {#each sponsorBenefits as benefit, i}
-          <div class="flex items-start gap-4 bg-gray-50 border border-gray-200 rounded-xl p-6 hover:border-brand-yellow/50 transition-colors">
+          <div class="flex items-start gap-4 bg-gray-50 border border-gray-200 rounded-xl p-6 hover:border-gray-400 transition-colors">
             <div class="w-10 h-10 bg-brand-yellow rounded-full flex items-center justify-center flex-shrink-0">
               <span class="text-brand-black font-bold">{i + 1}</span>
             </div>
