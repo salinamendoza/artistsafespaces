@@ -1,7 +1,8 @@
 <script lang="ts">
   import Button from '$lib/components/Button.svelte';
   import SectionHeader from '$lib/components/SectionHeader.svelte';
-  import { financialModel, sponsorBenefits } from '$lib/data/site';
+  import ImpactCalculator from '$lib/components/ImpactCalculator.svelte';
+  import { sponsorBenefits } from '$lib/data/site';
 </script>
 
 <svelte:head>
@@ -22,35 +23,10 @@
   </div>
 </section>
 
-<!-- Investment Breakdown -->
+<!-- Impact Calculator -->
 <section class="py-20 md:py-32 bg-white/5">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <SectionHeader
-      eyebrow="The Investment"
-      title="Investment Breakdown"
-      centered={true}
-    />
-
-    <div class="mt-16 max-w-4xl mx-auto">
-      <div class="grid md:grid-cols-2 gap-8 mb-12">
-        <div class="bg-brand-black border border-white/10 rounded-xl p-8">
-          <h3 class="text-brand-yellow font-semibold text-sm uppercase tracking-widest mb-4">Year One</h3>
-          <p class="text-white font-display text-5xl font-bold mb-2">$50,000</p>
-          <p class="text-gray-400">Setup ($25K) + First year operations ($25K)</p>
-        </div>
-        <div class="bg-brand-black border border-white/10 rounded-xl p-8">
-          <h3 class="text-brand-yellow font-semibold text-sm uppercase tracking-widest mb-4">Years 2-4</h3>
-          <p class="text-white font-display text-5xl font-bold mb-2">$25,000<span class="text-2xl text-gray-400">/year</span></p>
-          <p class="text-gray-400">Annual operations and programming</p>
-        </div>
-      </div>
-
-      <div class="bg-brand-yellow/10 border border-brand-yellow/30 rounded-xl p-10 text-center">
-        <p class="text-brand-yellow font-semibold text-sm uppercase tracking-widest mb-4">Total 4-Year Investment</p>
-        <p class="text-white font-display text-6xl font-bold mb-4">$125,000</p>
-        <p class="text-gray-300 text-lg">Permanent community infrastructure with lasting impact</p>
-      </div>
-    </div>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <ImpactCalculator />
   </div>
 </section>
 
