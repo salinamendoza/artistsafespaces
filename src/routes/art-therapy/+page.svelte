@@ -23,7 +23,7 @@
 </section>
 
 <!-- About the Festival -->
-<section class="py-20 md:py-32 bg-white/5">
+<section class="py-20 md:py-32 bg-gray-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="grid lg:grid-cols-2 gap-12 items-center">
       <div>
@@ -31,7 +31,7 @@
           eyebrow="The Event"
           title="About Art Therapy"
         />
-        <div class="mt-8 space-y-6 text-lg text-gray-300 leading-relaxed">
+        <div class="mt-8 space-y-6 text-lg text-gray-600 leading-relaxed">
           <p>
             Art Therapy is our annual one-day festival dedicated to mental health awareness through creative expression. Each year, we partner with major retailers to create an immersive experience where art becomes a vehicle for conversation, healing, and connection.
           </p>
@@ -47,9 +47,9 @@
         <div class="aspect-square bg-gradient-to-br from-brand-yellow/20 to-brand-yellow/5 rounded-2xl flex items-center justify-center p-8">
           <div class="text-center">
             <p class="text-brand-yellow font-semibold text-sm uppercase tracking-widest mb-4">We Pay Artists</p>
-            <p class="text-white font-display text-5xl font-bold mb-4">100%</p>
-            <p class="text-gray-300 text-lg">Market-rate compensation</p>
-            <p class="text-gray-400 text-sm mt-2">Always. No exceptions.</p>
+            <p class="text-brand-black font-display text-5xl font-bold mb-4">100%</p>
+            <p class="text-gray-600 text-lg">Market-rate compensation</p>
+            <p class="text-gray-600 text-sm mt-2">Always. No exceptions.</p>
           </div>
         </div>
       </div>
@@ -69,20 +69,20 @@
     <div class="mt-16 max-w-4xl mx-auto">
       <div class="relative">
         <!-- Timeline line -->
-        <div class="absolute left-1/2 transform -translate-x-1/2 w-px h-full bg-white/20"></div>
+        <div class="absolute left-1/2 transform -translate-x-1/2 w-px h-full bg-gray-200"></div>
 
         <div class="space-y-12">
           {#each artTherapyThemes as theme, i}
             <div class="relative flex items-center {i % 2 === 0 ? 'justify-start' : 'justify-end'}">
               <!-- Timeline dot -->
-              <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full {theme.current ? 'bg-brand-yellow' : 'bg-white/40'}"></div>
+              <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full {theme.current ? 'bg-brand-yellow' : 'bg-gray-400'}"></div>
 
               <!-- Content card -->
               <div class="w-5/12 {i % 2 === 0 ? 'pr-8 text-right' : 'pl-8'}">
-                <div class="bg-white/5 border {theme.current ? 'border-brand-yellow/50' : 'border-white/10'} rounded-xl p-6 {theme.current ? 'ring-2 ring-brand-yellow/20' : ''}">
+                <div class="bg-gray-50 border {theme.current ? 'border-brand-yellow/50' : 'border-gray-200'} rounded-xl p-6 {theme.current ? 'ring-2 ring-brand-yellow/20' : ''}">
                   <p class="text-brand-yellow font-semibold text-sm mb-2">{theme.year}</p>
-                  <h3 class="text-white font-display text-3xl font-bold mb-2">{theme.theme}</h3>
-                  <p class="text-gray-400">{theme.description}</p>
+                  <h3 class="text-brand-black font-display text-3xl font-bold mb-2">{theme.theme}</h3>
+                  <p class="text-gray-600">{theme.description}</p>
                   {#if theme.current}
                     <span class="inline-block mt-3 px-3 py-1 bg-brand-yellow text-brand-black text-xs font-semibold rounded-full">
                       Current Theme
@@ -99,7 +99,7 @@
 </section>
 
 <!-- What Happens -->
-<section class="py-20 md:py-32 bg-white/5">
+<section class="py-20 md:py-32 bg-gray-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <SectionHeader
       eyebrow="Experience"
@@ -129,7 +129,7 @@
         title="We Pay Artists. Always."
         centered={true}
       />
-      <div class="mt-8 space-y-6 text-lg text-gray-300 leading-relaxed">
+      <div class="mt-8 space-y-6 text-lg text-gray-600 leading-relaxed">
         <p>
           Art Therapy isn't built on free labor. Every artist who performs, facilitates, or creates at our festival receives standard market-rate compensation. This isn't a perk—it's a principle.
         </p>

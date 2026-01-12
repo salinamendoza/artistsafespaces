@@ -80,8 +80,8 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h3 class="text-white font-display text-2xl font-bold mb-4">Inquiry Received!</h3>
-        <p class="text-gray-300 mb-6">
+        <h3 class="text-brand-black font-display text-2xl font-bold mb-4">Inquiry Received!</h3>
+        <p class="text-gray-600 mb-6">
           Thank you for your interest in partnering with Artist Safespaces. Our team will review your inquiry and reach out within 3-5 business days to discuss next steps.
         </p>
         <a href="/" class="text-brand-yellow hover:underline">Return to homepage</a>
@@ -96,7 +96,7 @@
 
         <!-- Organization Name -->
         <div>
-          <label for="organizationName" class="block text-white font-medium mb-2">
+          <label for="organizationName" class="block text-brand-black font-medium mb-2">
             Organization Name <span class="text-brand-yellow">*</span>
           </label>
           <input
@@ -104,14 +104,14 @@
             id="organizationName"
             bind:value={formData.organizationName}
             required
-            class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow"
+            class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-brand-black placeholder-gray-400 focus:outline-none focus:border-brand-black focus:ring-1 focus:ring-brand-black"
             placeholder="Your organization or company name"
           />
         </div>
 
         <!-- Contact Name -->
         <div>
-          <label for="contactName" class="block text-white font-medium mb-2">
+          <label for="contactName" class="block text-brand-black font-medium mb-2">
             Contact Name <span class="text-brand-yellow">*</span>
           </label>
           <input
@@ -119,14 +119,14 @@
             id="contactName"
             bind:value={formData.contactName}
             required
-            class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow"
+            class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-brand-black placeholder-gray-400 focus:outline-none focus:border-brand-black focus:ring-1 focus:ring-brand-black"
             placeholder="Your full name"
           />
         </div>
 
         <!-- Email -->
         <div>
-          <label for="email" class="block text-white font-medium mb-2">
+          <label for="email" class="block text-brand-black font-medium mb-2">
             Email <span class="text-brand-yellow">*</span>
           </label>
           <input
@@ -134,35 +134,35 @@
             id="email"
             bind:value={formData.email}
             required
-            class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow"
+            class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-brand-black placeholder-gray-400 focus:outline-none focus:border-brand-black focus:ring-1 focus:ring-brand-black"
             placeholder="your@email.com"
           />
         </div>
 
         <!-- Phone (optional) -->
         <div>
-          <label for="phone" class="block text-white font-medium mb-2">
+          <label for="phone" class="block text-brand-black font-medium mb-2">
             Phone <span class="text-gray-500">(optional)</span>
           </label>
           <input
             type="tel"
             id="phone"
             bind:value={formData.phone}
-            class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow"
+            class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-brand-black placeholder-gray-400 focus:outline-none focus:border-brand-black focus:ring-1 focus:ring-brand-black"
             placeholder="(555) 555-5555"
           />
         </div>
 
         <!-- Organization Type -->
         <div>
-          <label for="orgType" class="block text-white font-medium mb-2">
+          <label for="orgType" class="block text-brand-black font-medium mb-2">
             Organization Type <span class="text-brand-yellow">*</span>
           </label>
           <select
             id="orgType"
             bind:value={formData.orgType}
             required
-            class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow"
+            class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-brand-black focus:outline-none focus:border-brand-black focus:ring-1 focus:ring-brand-black"
           >
             <option value="" disabled>Select organization type</option>
             {#each organizationTypes as type}
@@ -173,7 +173,7 @@
 
         <!-- Partnership Interest -->
         <div>
-          <label class="block text-white font-medium mb-4">
+          <label class="block text-brand-black font-medium mb-4">
             Partnership Interest
           </label>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -182,8 +182,8 @@
                 type="button"
                 on:click={() => toggleInterest(interest)}
                 class="px-4 py-3 rounded-lg border text-left transition-colors {formData.interests.includes(interest)
-                  ? 'bg-brand-yellow/10 border-brand-yellow text-white'
-                  : 'bg-white/5 border-white/20 text-gray-300 hover:border-white/40'}"
+                  ? 'bg-brand-yellow/10 border-brand-yellow text-brand-black'
+                  : 'bg-gray-50 border-gray-200 text-gray-600 hover:border-gray-400'}"
               >
                 <div class="flex items-center gap-3">
                   <div class="w-5 h-5 rounded border-2 flex items-center justify-center {formData.interests.includes(interest) ? 'bg-brand-yellow border-brand-yellow' : 'border-gray-500'}">
@@ -202,14 +202,14 @@
 
         <!-- Message -->
         <div>
-          <label for="message" class="block text-white font-medium mb-2">
+          <label for="message" class="block text-brand-black font-medium mb-2">
             Message / Additional Info <span class="text-gray-500">(optional)</span>
           </label>
           <textarea
             id="message"
             bind:value={formData.message}
             rows="4"
-            class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow resize-none"
+            class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-brand-black placeholder-gray-400 focus:outline-none focus:border-brand-black focus:ring-1 focus:ring-brand-black resize-none"
             placeholder="Tell us more about your organization and what you're hoping to achieve..."
           ></textarea>
         </div>

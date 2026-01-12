@@ -24,7 +24,7 @@
 </section>
 
 <!-- Impact Calculator -->
-<section class="py-20 md:py-32 bg-white/5">
+<section class="py-20 md:py-32 bg-gray-50">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
     <ImpactCalculator />
   </div>
@@ -42,11 +42,11 @@
     <div class="mt-16 max-w-3xl mx-auto">
       <div class="space-y-6">
         {#each sponsorBenefits as benefit, i}
-          <div class="flex items-start gap-4 bg-white/5 border border-white/10 rounded-xl p-6 hover:border-brand-yellow/50 transition-colors">
+          <div class="flex items-start gap-4 bg-gray-50 border border-gray-200 rounded-xl p-6 hover:border-brand-yellow/50 transition-colors">
             <div class="w-10 h-10 bg-brand-yellow rounded-full flex items-center justify-center flex-shrink-0">
               <span class="text-brand-black font-bold">{i + 1}</span>
             </div>
-            <p class="text-white text-lg pt-1">{benefit}</p>
+            <p class="text-brand-black text-lg pt-1">{benefit}</p>
           </div>
         {/each}
       </div>
@@ -55,7 +55,7 @@
 </section>
 
 <!-- ROI Comparison -->
-<section class="py-20 md:py-32 bg-white/5">
+<section class="py-20 md:py-32 bg-gray-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <SectionHeader
       eyebrow="Value Proposition"
@@ -77,7 +77,7 @@
         </div>
         <div class="bg-brand-yellow/10 border border-brand-yellow/30 rounded-xl p-8">
           <h3 class="text-brand-yellow font-semibold mb-6">Art Park Sponsorship</h3>
-          <div class="space-y-4 text-white">
+          <div class="space-y-4 text-brand-black">
             <p>$125K creates permanent infrastructure</p>
             <p>Authentic community engagement</p>
             <p>48 branded events over 4 years</p>
@@ -87,24 +87,24 @@
         </div>
       </div>
 
-      <div class="mt-12 bg-white/5 border border-white/10 rounded-xl p-8">
-        <h3 class="text-white font-semibold text-xl mb-6">By the Numbers</h3>
+      <div class="mt-12 bg-white border border-gray-200 rounded-xl p-8">
+        <h3 class="text-brand-black font-semibold text-xl mb-6">By the Numbers</h3>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           <div>
-            <p class="text-brand-yellow font-display text-3xl font-bold">48</p>
-            <p class="text-gray-400 text-sm">Branded Events</p>
+            <p class="text-brand-black font-display text-3xl font-bold">48</p>
+            <p class="text-gray-600 text-sm">Branded Events</p>
           </div>
           <div>
-            <p class="text-brand-yellow font-display text-3xl font-bold">4</p>
-            <p class="text-gray-400 text-sm">Years of Naming Rights</p>
+            <p class="text-brand-black font-display text-3xl font-bold">4</p>
+            <p class="text-gray-600 text-sm">Years of Naming Rights</p>
           </div>
           <div>
-            <p class="text-brand-yellow font-display text-3xl font-bold">365</p>
-            <p class="text-gray-400 text-sm">Days/Year Visibility</p>
+            <p class="text-brand-black font-display text-3xl font-bold">365</p>
+            <p class="text-gray-600 text-sm">Days/Year Visibility</p>
           </div>
           <div>
-            <p class="text-brand-yellow font-display text-3xl font-bold">∞</p>
-            <p class="text-gray-400 text-sm">Community Goodwill</p>
+            <p class="text-brand-black font-display text-3xl font-bold">∞</p>
+            <p class="text-gray-600 text-sm">Community Goodwill</p>
           </div>
         </div>
       </div>
@@ -113,7 +113,7 @@
 </section>
 
 <!-- CTA Section -->
-<section class="py-20 md:py-32">
+<section class="py-20 md:py-32 bg-brand-black">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
     <h2 class="font-display text-4xl md:text-5xl font-bold text-white mb-6">
       Become a Founding Sponsor

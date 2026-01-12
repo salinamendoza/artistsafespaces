@@ -82,8 +82,8 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h3 class="text-white font-display text-2xl font-bold mb-4">Application Received!</h3>
-        <p class="text-gray-300 mb-6">
+        <h3 class="text-brand-black font-display text-2xl font-bold mb-4">Application Received!</h3>
+        <p class="text-gray-600 mb-6">
           Thank you for your interest in Artist Safespaces. We'll review your application and reach out about upcoming opportunities that match your skills and interests.
         </p>
         <a href="/" class="text-brand-yellow hover:underline">Return to homepage</a>
@@ -98,7 +98,7 @@
 
         <!-- Name -->
         <div>
-          <label for="name" class="block text-white font-medium mb-2">
+          <label for="name" class="block text-brand-black font-medium mb-2">
             Name <span class="text-brand-yellow">*</span>
           </label>
           <input
@@ -106,14 +106,14 @@
             id="name"
             bind:value={formData.name}
             required
-            class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow"
+            class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-brand-black placeholder-gray-400 focus:outline-none focus:border-brand-black focus:ring-1 focus:ring-brand-black"
             placeholder="Your full name"
           />
         </div>
 
         <!-- Email -->
         <div>
-          <label for="email" class="block text-white font-medium mb-2">
+          <label for="email" class="block text-brand-black font-medium mb-2">
             Email <span class="text-brand-yellow">*</span>
           </label>
           <input
@@ -121,14 +121,14 @@
             id="email"
             bind:value={formData.email}
             required
-            class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow"
+            class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-brand-black placeholder-gray-400 focus:outline-none focus:border-brand-black focus:ring-1 focus:ring-brand-black"
             placeholder="your@email.com"
           />
         </div>
 
         <!-- Location -->
         <div>
-          <label for="location" class="block text-white font-medium mb-2">
+          <label for="location" class="block text-brand-black font-medium mb-2">
             Location / City <span class="text-brand-yellow">*</span>
           </label>
           <input
@@ -136,49 +136,49 @@
             id="location"
             bind:value={formData.location}
             required
-            class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow"
+            class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-brand-black placeholder-gray-400 focus:outline-none focus:border-brand-black focus:ring-1 focus:ring-brand-black"
             placeholder="City, State"
           />
         </div>
 
         <!-- Website (optional) -->
         <div>
-          <label for="website" class="block text-white font-medium mb-2">
+          <label for="website" class="block text-brand-black font-medium mb-2">
             Website URL <span class="text-gray-500">(optional)</span>
           </label>
           <input
             type="url"
             id="website"
             bind:value={formData.website}
-            class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow"
+            class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-brand-black placeholder-gray-400 focus:outline-none focus:border-brand-black focus:ring-1 focus:ring-brand-black"
             placeholder="https://yoursite.com"
           />
         </div>
 
         <!-- Instagram (optional) -->
         <div>
-          <label for="instagram" class="block text-white font-medium mb-2">
+          <label for="instagram" class="block text-brand-black font-medium mb-2">
             Instagram Handle <span class="text-gray-500">(optional)</span>
           </label>
           <input
             type="text"
             id="instagram"
             bind:value={formData.instagram}
-            class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow"
+            class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-brand-black placeholder-gray-400 focus:outline-none focus:border-brand-black focus:ring-1 focus:ring-brand-black"
             placeholder="@yourhandle"
           />
         </div>
 
         <!-- Medium -->
         <div>
-          <label for="medium" class="block text-white font-medium mb-2">
+          <label for="medium" class="block text-brand-black font-medium mb-2">
             Primary Art Style / Medium <span class="text-brand-yellow">*</span>
           </label>
           <select
             id="medium"
             bind:value={formData.medium}
             required
-            class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow"
+            class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-brand-black focus:outline-none focus:border-brand-black focus:ring-1 focus:ring-brand-black"
           >
             <option value="" disabled>Select your primary medium</option>
             {#each artistMediums as medium}
@@ -189,7 +189,7 @@
 
         <!-- Bio -->
         <div>
-          <label for="bio" class="block text-white font-medium mb-2">
+          <label for="bio" class="block text-brand-black font-medium mb-2">
             About Your Work <span class="text-brand-yellow">*</span>
           </label>
           <textarea
@@ -197,14 +197,14 @@
             bind:value={formData.bio}
             required
             rows="4"
-            class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow resize-none"
+            class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-brand-black placeholder-gray-400 focus:outline-none focus:border-brand-black focus:ring-1 focus:ring-brand-black resize-none"
             placeholder="Tell us about your artistic practice, style, and experience..."
           ></textarea>
         </div>
 
         <!-- Interests -->
         <div>
-          <label class="block text-white font-medium mb-4">
+          <label class="block text-brand-black font-medium mb-4">
             What events interest you?
           </label>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -213,8 +213,8 @@
                 type="button"
                 on:click={() => toggleInterest(interest)}
                 class="px-4 py-3 rounded-lg border text-left transition-colors {formData.interests.includes(interest)
-                  ? 'bg-brand-yellow/10 border-brand-yellow text-white'
-                  : 'bg-white/5 border-white/20 text-gray-300 hover:border-white/40'}"
+                  ? 'bg-brand-yellow/10 border-brand-yellow text-brand-black'
+                  : 'bg-gray-50 border-gray-200 text-gray-600 hover:border-gray-400'}"
               >
                 <div class="flex items-center gap-3">
                   <div class="w-5 h-5 rounded border-2 flex items-center justify-center {formData.interests.includes(interest) ? 'bg-brand-yellow border-brand-yellow' : 'border-gray-500'}">
@@ -233,14 +233,14 @@
 
         <!-- Referral (optional) -->
         <div>
-          <label for="referral" class="block text-white font-medium mb-2">
+          <label for="referral" class="block text-brand-black font-medium mb-2">
             How did you hear about us? <span class="text-gray-500">(optional)</span>
           </label>
           <input
             type="text"
             id="referral"
             bind:value={formData.referral}
-            class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow"
+            class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-brand-black placeholder-gray-400 focus:outline-none focus:border-brand-black focus:ring-1 focus:ring-brand-black"
             placeholder="Instagram, friend, event, etc."
           />
         </div>

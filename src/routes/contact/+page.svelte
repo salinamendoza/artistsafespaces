@@ -65,13 +65,13 @@
     <div class="grid lg:grid-cols-3 gap-12">
       <!-- Contact Info -->
       <div class="lg:col-span-1">
-        <div class="bg-white/5 border border-white/10 rounded-xl p-8">
-          <h3 class="text-white font-semibold text-xl mb-6">Contact Info</h3>
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-8">
+          <h3 class="text-brand-black font-semibold text-xl mb-6">Contact Info</h3>
 
           <div class="space-y-6">
             <div>
               <p class="text-brand-yellow font-semibold text-sm uppercase tracking-widest mb-2">Email</p>
-              <a href="mailto:{siteConfig.email.general}" class="text-white hover:text-brand-yellow transition-colors">
+              <a href="mailto:{siteConfig.email.general}" class="text-brand-black hover:text-brand-yellow transition-colors">
                 {siteConfig.email.general}
               </a>
             </div>
@@ -83,7 +83,7 @@
                   href={siteConfig.socials.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-gray-400 hover:text-brand-yellow transition-colors"
+                  class="text-gray-600 hover:text-brand-yellow transition-colors"
                   aria-label="Instagram"
                 >
                   <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -94,7 +94,7 @@
                   href={siteConfig.socials.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-gray-400 hover:text-brand-yellow transition-colors"
+                  class="text-gray-600 hover:text-brand-yellow transition-colors"
                   aria-label="LinkedIn"
                 >
                   <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -105,22 +105,22 @@
             </div>
           </div>
 
-          <hr class="my-8 border-white/10" />
+          <hr class="my-8 border-gray-200" />
 
           <div class="space-y-4">
-            <a href="/partners/apply" class="flex items-center gap-3 text-gray-300 hover:text-brand-yellow transition-colors">
+            <a href="/partners/apply" class="flex items-center gap-3 text-gray-600 hover:text-brand-yellow transition-colors">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
               Partnership Inquiries
             </a>
-            <a href="/artists/apply" class="flex items-center gap-3 text-gray-300 hover:text-brand-yellow transition-colors">
+            <a href="/artists/apply" class="flex items-center gap-3 text-gray-600 hover:text-brand-yellow transition-colors">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
               </svg>
               Artist Applications
             </a>
-            <a href="/donate" class="flex items-center gap-3 text-gray-300 hover:text-brand-yellow transition-colors">
+            <a href="/donate" class="flex items-center gap-3 text-gray-600 hover:text-brand-yellow transition-colors">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
@@ -139,8 +139,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h3 class="text-white font-display text-2xl font-bold mb-4">Message Sent!</h3>
-            <p class="text-gray-300 mb-6">
+            <h3 class="text-brand-black font-display text-2xl font-bold mb-4">Message Sent!</h3>
+            <p class="text-gray-600 mb-6">
               Thank you for reaching out. We'll get back to you as soon as possible.
             </p>
             <a href="/" class="text-brand-yellow hover:underline">Return to homepage</a>
@@ -155,7 +155,7 @@
 
             <!-- Name -->
             <div>
-              <label for="name" class="block text-white font-medium mb-2">
+              <label for="name" class="block text-brand-black font-medium mb-2">
                 Name <span class="text-brand-yellow">*</span>
               </label>
               <input
@@ -163,14 +163,14 @@
                 id="name"
                 bind:value={formData.name}
                 required
-                class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow"
+                class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-brand-black placeholder-gray-400 focus:outline-none focus:border-brand-black focus:ring-1 focus:ring-brand-black"
                 placeholder="Your name"
               />
             </div>
 
             <!-- Email -->
             <div>
-              <label for="email" class="block text-white font-medium mb-2">
+              <label for="email" class="block text-brand-black font-medium mb-2">
                 Email <span class="text-brand-yellow">*</span>
               </label>
               <input
@@ -178,14 +178,14 @@
                 id="email"
                 bind:value={formData.email}
                 required
-                class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow"
+                class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-brand-black placeholder-gray-400 focus:outline-none focus:border-brand-black focus:ring-1 focus:ring-brand-black"
                 placeholder="your@email.com"
               />
             </div>
 
             <!-- Subject -->
             <div>
-              <label for="subject" class="block text-white font-medium mb-2">
+              <label for="subject" class="block text-brand-black font-medium mb-2">
                 Subject <span class="text-brand-yellow">*</span>
               </label>
               <input
@@ -193,14 +193,14 @@
                 id="subject"
                 bind:value={formData.subject}
                 required
-                class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow"
+                class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-brand-black placeholder-gray-400 focus:outline-none focus:border-brand-black focus:ring-1 focus:ring-brand-black"
                 placeholder="What's this about?"
               />
             </div>
 
             <!-- Message -->
             <div>
-              <label for="message" class="block text-white font-medium mb-2">
+              <label for="message" class="block text-brand-black font-medium mb-2">
                 Message <span class="text-brand-yellow">*</span>
               </label>
               <textarea
@@ -208,7 +208,7 @@
                 bind:value={formData.message}
                 required
                 rows="6"
-                class="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow resize-none"
+                class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-brand-black placeholder-gray-400 focus:outline-none focus:border-brand-black focus:ring-1 focus:ring-brand-black resize-none"
                 placeholder="Your message..."
               ></textarea>
             </div>

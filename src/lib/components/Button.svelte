@@ -5,11 +5,11 @@
   export let type: 'button' | 'submit' = 'button';
   export let disabled: boolean = false;
 
-  const baseClasses = 'inline-flex items-center justify-center font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:ring-offset-2 focus:ring-offset-brand-black';
+  const baseClasses = 'inline-flex items-center justify-center font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-black focus:ring-offset-2';
 
   const variantClasses = {
-    primary: 'bg-brand-yellow text-brand-black hover:bg-yellow-300 active:bg-yellow-400',
-    secondary: 'bg-transparent border-2 border-brand-yellow text-brand-yellow hover:bg-brand-yellow hover:text-brand-black'
+    primary: 'bg-brand-black text-white hover:bg-gray-800 active:bg-gray-900',
+    secondary: 'bg-transparent border-2 border-brand-black text-brand-black hover:bg-brand-black hover:text-white'
   };
 
   const sizeClasses = {

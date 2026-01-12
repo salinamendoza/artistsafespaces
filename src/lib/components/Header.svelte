@@ -14,13 +14,13 @@
   }
 </script>
 
-<header class="fixed top-0 left-0 right-0 z-50 bg-brand-black/95 backdrop-blur-sm border-b border-white/10">
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
   <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16 md:h-20">
       <!-- Logo -->
       <a href="/" class="flex items-center gap-2" on:click={closeMobileMenu}>
         <img src="/logo-icon.png" alt="Artist Safespaces" class="h-8 w-auto" />
-        <span class="font-display text-xl font-bold text-white hidden sm:block">Artist Safespaces</span>
+        <span class="font-display text-xl font-bold text-brand-black hidden sm:block">Artist Safespaces</span>
       </a>
 
       <!-- Desktop Navigation -->
@@ -28,7 +28,7 @@
         {#each navLinks as link}
           <a
             href={link.href}
-            class="text-white hover:text-brand-yellow transition-colors duration-200 font-medium {$page.url.pathname.startsWith(link.href) ? 'text-brand-yellow' : ''}"
+            class="text-gray-700 hover:text-brand-black transition-colors duration-200 font-medium {$page.url.pathname.startsWith(link.href) ? 'text-brand-black font-semibold' : ''}"
           >
             {link.label}
           </a>
@@ -39,7 +39,7 @@
       <!-- Mobile Menu Button -->
       <button
         type="button"
-        class="md:hidden p-2 text-white hover:text-brand-yellow transition-colors"
+        class="md:hidden p-2 text-gray-700 hover:text-brand-black transition-colors"
         on:click={toggleMobileMenu}
         aria-label="Toggle menu"
         aria-expanded={mobileMenuOpen}
@@ -58,12 +58,12 @@
 
     <!-- Mobile Navigation -->
     {#if mobileMenuOpen}
-      <div class="md:hidden py-4 border-t border-white/10">
+      <div class="md:hidden py-4 border-t border-gray-200">
         <div class="flex flex-col gap-4">
           {#each navLinks as link}
             <a
               href={link.href}
-              class="text-white hover:text-brand-yellow transition-colors duration-200 font-medium py-2 {$page.url.pathname.startsWith(link.href) ? 'text-brand-yellow' : ''}"
+              class="text-gray-700 hover:text-brand-black transition-colors duration-200 font-medium py-2 {$page.url.pathname.startsWith(link.href) ? 'text-brand-black font-semibold' : ''}"
               on:click={closeMobileMenu}
             >
               {link.label}
