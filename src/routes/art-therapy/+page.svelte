@@ -2,6 +2,7 @@
   import Button from '$lib/components/Button.svelte';
   import SectionHeader from '$lib/components/SectionHeader.svelte';
   import { artTherapyThemes, festivalActivities } from '$lib/data/site';
+  import { images, artTherapyImages } from '$lib/data/images';
 </script>
 
 <svelte:head>
@@ -9,15 +10,35 @@
   <meta name="description" content="Annual mental health awareness through creative expression. Live mural painting, spoken word, DJ sets, and community workshops." />
 </svelte:head>
 
-<!-- Hero Section -->
+<!-- Hero Section with image grid -->
 <section class="py-20 md:py-32">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="max-w-4xl">
-      <SectionHeader
-        eyebrow="Annual Event"
-        title="Art Therapy Festival"
-        description="Annual mental health awareness through creative expression. A one-day celebration bringing together artists, community members, and partners to explore themes that matter."
-      />
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div class="max-w-xl">
+        <SectionHeader
+          eyebrow="Annual Event"
+          title="Art Therapy Festival"
+          description="Annual mental health awareness through creative expression. A one-day celebration bringing together artists, community members, and partners to explore themes that matter."
+        />
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="space-y-4">
+          <div class="aspect-square rounded-xl overflow-hidden">
+            <img src={images.artTherapy.screenprintDemo} alt="Screenprinting workshop" class="w-full h-full object-cover" />
+          </div>
+          <div class="aspect-[4/3] rounded-xl overflow-hidden">
+            <img src={images.artTherapy.childPainting} alt="Child painting at event" class="w-full h-full object-cover" />
+          </div>
+        </div>
+        <div class="space-y-4 pt-8">
+          <div class="aspect-[4/3] rounded-xl overflow-hidden">
+            <img src={images.murals.artistPainting} alt="Artist creating mural" class="w-full h-full object-cover" />
+          </div>
+          <div class="aspect-square rounded-xl overflow-hidden">
+            <img src={images.artTherapy.girlPaintingMural} alt="Young artist painting" class="w-full h-full object-cover" />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -44,13 +65,17 @@
         </div>
       </div>
       <div class="relative">
-        <div class="aspect-square bg-gradient-to-br from-brand-yellow/20 to-brand-yellow/5 rounded-2xl flex items-center justify-center p-8">
-          <div class="text-center">
-            <p class="text-brand-yellow font-semibold text-sm uppercase tracking-widest mb-4">We Pay Artists</p>
-            <p class="text-brand-black font-display text-5xl font-bold mb-4">100%</p>
-            <p class="text-gray-600 text-lg">Market-rate compensation</p>
-            <p class="text-gray-600 text-sm mt-2">Always. No exceptions.</p>
-          </div>
+        <div class="aspect-square rounded-2xl overflow-hidden">
+          <img
+            src={images.artTherapy.screenprintParticipant}
+            alt="Community member learning screenprinting"
+            class="w-full h-full object-cover"
+          />
+        </div>
+        <div class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-sm rounded-xl p-4">
+          <p class="text-brand-yellow font-semibold text-xs uppercase tracking-widest mb-1">We Pay Artists</p>
+          <p class="text-brand-black font-display text-3xl font-bold">100% Market Rate</p>
+          <p class="text-gray-600 text-sm">Always. No exceptions.</p>
         </div>
       </div>
     </div>

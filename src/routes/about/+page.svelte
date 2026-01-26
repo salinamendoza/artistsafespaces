@@ -2,6 +2,7 @@
   import Button from '$lib/components/Button.svelte';
   import SectionHeader from '$lib/components/SectionHeader.svelte';
   import { siteConfig, trackRecord } from '$lib/data/site';
+  import { images, aboutImages } from '$lib/data/images';
 </script>
 
 <svelte:head>
@@ -12,12 +13,23 @@
 <!-- Hero Section -->
 <section class="py-20 md:py-32">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="max-w-4xl">
-      <SectionHeader
-        eyebrow="Who We Are"
-        title="About Artist Safespaces"
-        description={siteConfig.tagline}
-      />
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div class="max-w-xl">
+        <SectionHeader
+          eyebrow="Who We Are"
+          title="About Artist Safespaces"
+          description={siteConfig.tagline}
+        />
+      </div>
+      <div class="relative">
+        <div class="aspect-[4/3] rounded-2xl overflow-hidden">
+          <img
+            src={images.team.groupPhoto}
+            alt="Artist Safespaces team and volunteers"
+            class="w-full h-full object-cover"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -44,12 +56,25 @@
         </div>
       </div>
       <div class="relative">
-        <div class="aspect-square bg-gradient-to-br from-brand-yellow/20 to-brand-yellow/5 rounded-2xl flex items-center justify-center p-8">
-          <div class="text-center">
-            <p class="text-brand-yellow font-semibold text-sm uppercase tracking-widest mb-4">Founded</p>
-            <p class="text-brand-black font-display text-7xl font-bold mb-4">{siteConfig.founded}</p>
-            <p class="text-gray-600 text-lg">As a 501(c)(3) nonprofit</p>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="aspect-[3/4] rounded-xl overflow-hidden">
+            <img
+              src={images.team.speakerFemale}
+              alt="Speaker at Art Therapy event"
+              class="w-full h-full object-cover"
+            />
           </div>
+          <div class="aspect-[3/4] rounded-xl overflow-hidden">
+            <img
+              src={images.team.speakerMale}
+              alt="Speaker addressing the community"
+              class="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+        <div class="absolute -bottom-4 -right-4 bg-brand-yellow rounded-xl p-4 shadow-lg">
+          <p class="text-brand-black font-display text-3xl font-bold">{siteConfig.founded}</p>
+          <p class="text-brand-black/70 text-sm">Founded</p>
         </div>
       </div>
     </div>
