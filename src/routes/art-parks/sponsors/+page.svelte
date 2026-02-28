@@ -3,6 +3,7 @@
   import SectionHeader from '$lib/components/SectionHeader.svelte';
   import ImpactCalculator from '$lib/components/ImpactCalculator.svelte';
   import { sponsorBenefits } from '$lib/data/site';
+  import { images } from '$lib/data/images';
 </script>
 
 <svelte:head>
@@ -13,12 +14,27 @@
 <!-- Hero Section -->
 <section class="py-20 md:py-32">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="max-w-4xl">
-      <SectionHeader
-        eyebrow="Corporate Sponsorship"
-        title="Sponsor an Art Park"
-        description="A 4-year investment in permanent community infrastructure that delivers authentic community engagement, lasting brand recognition, and meaningful ESG impact."
-      />
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div class="max-w-xl">
+        <SectionHeader
+          eyebrow="Corporate Sponsorship"
+          title="Sponsor an Art Park"
+          description="A 4-year investment in permanent community infrastructure that delivers authentic community engagement, lasting brand recognition, and meaningful ESG impact."
+        />
+      </div>
+      <div class="relative">
+        <div class="aspect-video rounded-2xl overflow-hidden">
+          <img
+            src={images.murals.ikeaWide}
+            alt="IKEA Art Therapy partnership - artists painting murals"
+            class="w-full h-full object-cover"
+          />
+        </div>
+        <div class="absolute -bottom-4 -left-4 bg-brand-yellow rounded-xl p-4 shadow-lg">
+          <p class="text-brand-black font-semibold text-sm">Past Partner</p>
+          <p class="text-brand-black font-display text-2xl font-bold">IKEA</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -107,6 +123,31 @@
             <p class="text-gray-600 text-sm">Community Goodwill</p>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Event Gallery -->
+<section class="py-20 md:py-32">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <SectionHeader
+      eyebrow="Past Events"
+      title="See It in Action"
+      centered={true}
+    />
+    <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="aspect-square rounded-xl overflow-hidden">
+        <img src={images.murals.twoMurals} alt="Live murals at IKEA" class="w-full h-full object-cover hover:scale-105 transition-transform" />
+      </div>
+      <div class="aspect-square rounded-xl overflow-hidden">
+        <img src={images.community.djPerforming} alt="DJ at event" class="w-full h-full object-cover hover:scale-105 transition-transform" />
+      </div>
+      <div class="aspect-square rounded-xl overflow-hidden">
+        <img src={images.artTherapy.screenprintDemo} alt="Workshop demo" class="w-full h-full object-cover hover:scale-105 transition-transform" />
+      </div>
+      <div class="aspect-square rounded-xl overflow-hidden">
+        <img src={images.community.groupPhotoMural} alt="Community gathering" class="w-full h-full object-cover hover:scale-105 transition-transform" />
       </div>
     </div>
   </div>

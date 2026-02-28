@@ -53,8 +53,8 @@
         <div class="mt-8 space-y-4">
           {#each whatCitiesReceive as item}
             <div class="flex items-start gap-4">
-              <div class="w-6 h-6 bg-brand-yellow rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                <svg class="w-4 h-4 text-brand-black" fill="currentColor" viewBox="0 0 20 20">
+              <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                 </svg>
               </div>
@@ -131,8 +131,8 @@
 <section class="py-20 md:py-32">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="max-w-3xl mx-auto text-center">
-      <div class="inline-flex items-center justify-center w-20 h-20 bg-brand-yellow rounded-full mb-8">
-        <span class="text-brand-black font-display text-4xl font-bold">$0</span>
+      <div class="mb-8">
+        <span class="text-brand-black font-display text-7xl font-bold line-through decoration-2">$0</span>
       </div>
       <h2 class="font-display text-4xl md:text-5xl font-bold text-brand-black mb-6">
         Zero Budget Impact

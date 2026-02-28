@@ -70,7 +70,7 @@
           {#each artistOpportunities as opportunity}
             <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 hover:border-gray-400 transition-colors">
               <div class="flex items-center gap-4">
-                <div class="w-3 h-3 bg-brand-yellow rounded-full flex-shrink-0"></div>
+                <div class="w-3 h-3 bg-brand-black rounded-full flex-shrink-0"></div>
                 <p class="text-brand-black text-lg">{opportunity}</p>
               </div>
             </div>

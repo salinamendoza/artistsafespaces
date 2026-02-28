@@ -3,6 +3,7 @@
   import SectionHeader from '$lib/components/SectionHeader.svelte';
   import StatCard from '$lib/components/StatCard.svelte';
   import { stats, artTherapyThemes } from '$lib/data/site';
+  import { images, heroImages } from '$lib/data/images';
 
   const currentTheme = artTherapyThemes.find(t => t.current);
 </script>
@@ -11,11 +12,17 @@
   <title>Artist Safespaces | Free Art Parks for Every City</title>
 </svelte:head>
 
-<!-- Hero Section - Dark accent -->
+<!-- Hero Section - Dark accent with background image -->
 <section class="min-h-screen flex items-center justify-center relative overflow-hidden bg-brand-black">
-  <!-- Subtle accent elements -->
-  <div class="absolute top-20 left-10 w-64 h-64 bg-brand-yellow/10 rounded-full blur-3xl"></div>
-  <div class="absolute bottom-20 right-10 w-96 h-96 bg-brand-yellow/10 rounded-full blur-3xl"></div>
+  <!-- Background image -->
+  <div class="absolute inset-0">
+    <img
+      src={images.murals.twoMurals}
+      alt="Live mural painting at IKEA Art Therapy event"
+      class="w-full h-full object-cover opacity-30"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/80 to-brand-black/60"></div>
+  </div>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center relative z-10">
     <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-tight">
@@ -92,12 +99,12 @@
         </div>
       </div>
       <div class="relative">
-        <div class="aspect-square bg-brand-black rounded-2xl flex items-center justify-center">
-          <div class="text-center p-8">
-            <p class="text-brand-yellow font-display text-6xl font-bold mb-4">$0</p>
-            <p class="text-white text-xl">Cost to Cities</p>
-            <p class="text-gray-400 mt-2">Fully sponsor-funded</p>
-          </div>
+        <div class="aspect-square rounded-2xl overflow-hidden">
+          <img
+            src={images.murals.buildingBlocks}
+            alt="Artist painting colorful mural at Art Therapy event"
+            class="w-full h-full object-cover"
+          />
         </div>
       </div>
     </div>
@@ -110,15 +117,19 @@
     <div class="grid lg:grid-cols-2 gap-12 items-center">
       <div class="order-2 lg:order-1">
         <div class="relative">
-          <div class="aspect-video bg-brand-black rounded-2xl flex items-center justify-center">
-            {#if currentTheme}
-              <div class="text-center p-8">
-                <p class="text-brand-yellow font-semibold text-sm uppercase tracking-widest mb-2">{currentTheme.year} Theme</p>
-                <p class="text-white font-display text-5xl font-bold mb-3">{currentTheme.theme}</p>
-                <p class="text-gray-400">{currentTheme.description}</p>
-              </div>
-            {/if}
+          <div class="aspect-video rounded-2xl overflow-hidden">
+            <img
+              src={images.community.groupPhotoMural}
+              alt="Community group photo with How Are You Feeling mural"
+              class="w-full h-full object-cover"
+            />
           </div>
+          {#if currentTheme}
+            <div class="absolute bottom-4 left-4 right-4 bg-brand-black/90 backdrop-blur-sm rounded-lg p-4">
+              <p class="text-brand-yellow font-semibold text-xs uppercase tracking-widest mb-1">{currentTheme.year} Theme</p>
+              <p class="text-white font-display text-2xl font-bold">{currentTheme.theme}</p>
+            </div>
+          {/if}
         </div>
       </div>
       <div class="order-1 lg:order-2">
