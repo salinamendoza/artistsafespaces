@@ -93,7 +93,7 @@
     <div class="mt-16 max-w-3xl mx-auto">
       <div class="space-y-4">
         {#each trackRecord as item}
-          <div class="flex items-start gap-4 bg-gray-50 border border-gray-200 rounded-xl p-6 hover:border-brand-yellow/50 transition-colors">
+          <div class="flex items-start gap-4 bg-gray-50 border border-gray-200 rounded-xl p-6 hover:border-gray-400 transition-colors">
             <div class="w-6 h-6 bg-brand-yellow rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
               <svg class="w-4 h-4 text-brand-black" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -140,14 +140,14 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="grid md:grid-cols-2 gap-8">
       <div class="bg-gray-50 border border-gray-200 rounded-2xl p-10">
-        <h3 class="text-brand-yellow font-semibold text-sm uppercase tracking-widest mb-4">Our Mission</h3>
+        <h3 class="text-gray-500 font-semibold text-sm uppercase tracking-widest mb-4">Our Mission</h3>
         <p class="text-brand-black font-display text-2xl font-semibold leading-relaxed">
           Remove barriers to artistic expression and build permanent infrastructure for human connection.
         </p>
       </div>
-      <div class="bg-brand-yellow/10 border border-brand-yellow/30 rounded-2xl p-10">
+      <div class="bg-brand-black rounded-2xl p-10">
         <h3 class="text-brand-yellow font-semibold text-sm uppercase tracking-widest mb-4">Our Commitment</h3>
-        <p class="text-brand-black font-display text-2xl font-semibold leading-relaxed">
+        <p class="text-white font-display text-2xl font-semibold leading-relaxed">
           Every artist we work with is compensated at market rates. Always. No exceptions.
         </p>
       </div>

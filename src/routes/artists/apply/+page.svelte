@@ -76,9 +76,9 @@
 <section class="pb-20 md:pb-32">
   <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
     {#if success}
-      <div class="bg-brand-yellow/10 border border-brand-yellow/30 rounded-xl p-10 text-center">
-        <div class="w-16 h-16 mx-auto mb-6 bg-brand-yellow rounded-full flex items-center justify-center">
-          <svg class="w-8 h-8 text-brand-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="bg-gray-50 border border-gray-200 rounded-xl p-10 text-center">
+        <div class="w-16 h-16 mx-auto mb-6 bg-brand-black rounded-full flex items-center justify-center">
+          <svg class="w-8 h-8 text-brand-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
           </svg>
         </div>
@@ -86,7 +86,7 @@
         <p class="text-gray-600 mb-6">
           Thank you for your interest in Artist Safespaces. We'll review your application and reach out about upcoming opportunities that match your skills and interests.
         </p>
-        <a href="/" class="text-brand-yellow hover:underline">Return to homepage</a>
+        <a href="/" class="text-brand-black font-semibold hover:underline">Return to homepage</a>
       </div>
     {:else}
       <form on:submit|preventDefault={handleSubmit} class="space-y-8">
@@ -99,7 +99,7 @@
         <!-- Name -->
         <div>
           <label for="name" class="block text-brand-black font-medium mb-2">
-            Name <span class="text-brand-yellow">*</span>
+            Name <span class="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -114,7 +114,7 @@
         <!-- Email -->
         <div>
           <label for="email" class="block text-brand-black font-medium mb-2">
-            Email <span class="text-brand-yellow">*</span>
+            Email <span class="text-red-500">*</span>
           </label>
           <input
             type="email"
@@ -129,7 +129,7 @@
         <!-- Location -->
         <div>
           <label for="location" class="block text-brand-black font-medium mb-2">
-            Location / City <span class="text-brand-yellow">*</span>
+            Location / City <span class="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -172,7 +172,7 @@
         <!-- Medium -->
         <div>
           <label for="medium" class="block text-brand-black font-medium mb-2">
-            Primary Art Style / Medium <span class="text-brand-yellow">*</span>
+            Primary Art Style / Medium <span class="text-red-500">*</span>
           </label>
           <select
             id="medium"
@@ -190,7 +190,7 @@
         <!-- Bio -->
         <div>
           <label for="bio" class="block text-brand-black font-medium mb-2">
-            About Your Work <span class="text-brand-yellow">*</span>
+            About Your Work <span class="text-red-500">*</span>
           </label>
           <textarea
             id="bio"

@@ -73,7 +73,7 @@
           />
         </div>
         <div class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-sm rounded-xl p-4">
-          <p class="text-brand-yellow font-semibold text-xs uppercase tracking-widest mb-1">We Pay Artists</p>
+          <p class="text-brand-black font-semibold text-xs uppercase tracking-widest mb-1">We Pay Artists</p>
           <p class="text-brand-black font-display text-3xl font-bold">100% Market Rate</p>
           <p class="text-gray-600 text-sm">Always. No exceptions.</p>
         </div>
@@ -104,8 +104,8 @@
 
               <!-- Content card -->
               <div class="w-5/12 {i % 2 === 0 ? 'pr-8 text-right' : 'pl-8'}">
-                <div class="bg-gray-50 border {theme.current ? 'border-brand-yellow/50' : 'border-gray-200'} rounded-xl p-6 {theme.current ? 'ring-2 ring-brand-yellow/20' : ''}">
-                  <p class="text-brand-yellow font-semibold text-sm mb-2">{theme.year}</p>
+                <div class="bg-white border {theme.current ? 'border-brand-black' : 'border-gray-200'} rounded-xl p-6 {theme.current ? 'shadow-lg' : ''}">
+                  <p class="text-gray-500 font-semibold text-sm mb-2">{theme.year}</p>
                   <h3 class="text-brand-black font-display text-3xl font-bold mb-2">{theme.theme}</h3>
                   <p class="text-gray-600">{theme.description}</p>
                   {#if theme.current}
