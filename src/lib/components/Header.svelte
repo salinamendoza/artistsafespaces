@@ -19,10 +19,7 @@
     <div class="flex items-center justify-between h-16 md:h-20">
       <!-- Logo -->
       <a href="/" class="flex items-center gap-2" on:click={closeMobileMenu}>
-        <svg class="h-8 w-8" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Artist Safespaces">
-          <rect width="32" height="32" rx="8" fill="#1a1a1a"/>
-          <text x="16" y="22" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="16" fill="#fbfc53">AS</text>
-        </svg>
+        <img src="/logo-icon.png" alt="Artist Safespaces" class="h-8 w-8" />
         <span class="font-display text-xl font-bold text-brand-black hidden sm:block">Artist Safespaces</span>
       </a>
 
