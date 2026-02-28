@@ -8,7 +8,11 @@
       <!-- Brand Column -->
       <div class="lg:col-span-1">
         <a href="/" class="inline-block mb-4">
-          <img src="/logo-full.png" alt="Artist Safespaces" class="h-10 w-auto" />
+          <svg class="h-10" viewBox="0 0 200 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Artist Safespaces">
+            <rect width="32" height="32" rx="8" fill="#fbfc53"/>
+            <text x="16" y="22" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="16" fill="#1a1a1a">AS</text>
+            <text x="40" y="22" font-family="system-ui, sans-serif" font-weight="700" font-size="14" fill="white">Artist Safespaces</text>
+          </svg>
         </a>
         <p class="text-gray-400 text-sm leading-relaxed mb-6">
           {siteConfig.tagline}
