@@ -90,7 +90,7 @@
     <!-- Bottom Bar -->
     <div class="mt-12 pt-8 border-t border-white/10">
       <p class="text-gray-500 text-sm text-center">
-        &copy; {new Date().getFullYear()} {siteConfig.name}. 501(c)(3) nonprofit.
+        &copy; {new Date().getFullYear()} {siteConfig.name}. 501(c)(3) nonprofit status pending.
       </p>
     </div>
   </div>
