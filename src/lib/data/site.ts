@@ -74,7 +74,6 @@ export const trackRecord = [
   'Founded 2020 as nonprofit',
   '6+ years building offline events and safe spaces',
   'Established corporate partnerships (IKEA)',
-  'Board membership at United Way level',
   'Successfully negotiated standard market-rate artist compensation',
   'Festival experience with large retail partners'
 ];
