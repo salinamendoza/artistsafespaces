@@ -3,5 +3,5 @@ compatibility_date = "2024-01-01"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "artistsafespaces-db"
-database_id = "YOUR_DATABASE_ID_HERE" # Run: npx wrangler d1 create artistsafespaces-db
+database_name = "artist-safespaces"
+database_id = "c7c67f87-f282-4871-8cf7-1031688b450c"
