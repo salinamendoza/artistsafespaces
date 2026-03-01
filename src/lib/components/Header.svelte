@@ -18,9 +18,8 @@
   <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16 md:h-20">
       <!-- Logo -->
-      <a href="/" class="flex items-center gap-2" on:click={closeMobileMenu}>
-        <img src="/logo-icon.png" alt="Artist Safespaces" class="h-8 md:h-10 w-8 md:w-10 rounded-lg" />
-        <span class="font-bold text-lg md:text-xl text-brand-black tracking-tight">Artist Safespaces</span>
+      <a href="/" class="flex items-center" on:click={closeMobileMenu}>
+        <img src="/logo-icon.png" alt="Artist Safespaces" class="h-8 md:h-10 w-auto" />
       </a>
 
       <!-- Desktop Navigation -->

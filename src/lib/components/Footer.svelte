@@ -7,9 +7,8 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-8">
       <!-- Brand Column -->
       <div class="lg:col-span-1">
-        <a href="/" class="inline-flex items-center gap-2 mb-4">
-          <img src="/logo-icon.png" alt="Artist Safespaces" class="h-10 w-10 rounded-lg" />
-          <span class="font-bold text-xl text-white tracking-tight">Artist Safespaces</span>
+        <a href="/" class="inline-block mb-4">
+          <img src="/logo-icon.png" alt="Artist Safespaces" class="h-8 md:h-10 w-auto brightness-0 invert" />
         </a>
         <p class="text-gray-400 text-sm leading-relaxed mb-6">
           {siteConfig.tagline}
