@@ -74,17 +74,12 @@
 <section class="pb-20 md:pb-32">
   <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
     {#if success}
-      <div class="bg-gray-50 border border-gray-200 rounded-xl p-10 text-center">
-        <div class="w-16 h-16 mx-auto mb-6 bg-brand-black rounded-full flex items-center justify-center">
-          <svg class="w-8 h-8 text-brand-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
-        <h3 class="text-brand-black font-display text-2xl font-bold mb-4">Inquiry Received!</h3>
-        <p class="text-gray-600 mb-6">
-          Thank you for your interest in partnering with Artist Safespaces. Our team will review your inquiry and reach out within 3-5 business days to discuss next steps.
+      <div class="border-t-2 border-brand-yellow pt-10 text-center">
+        <h3 class="text-brand-black font-display text-3xl font-bold mb-4">We got it.</h3>
+        <p class="text-gray-600 mb-8 max-w-md mx-auto">
+          Thanks for reaching out. We'll review your inquiry and get back to you soon.
         </p>
-        <a href="/" class="text-brand-black font-semibold hover:underline">Return to homepage</a>
+        <a href="/" class="text-brand-black font-semibold underline underline-offset-4 hover:text-gray-600 transition-colors">Back to home</a>
       </div>
     {:else}
       <form on:submit|preventDefault={handleSubmit} class="space-y-8">
