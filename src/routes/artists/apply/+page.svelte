@@ -147,11 +147,11 @@
             Website URL <span class="text-gray-500">(optional)</span>
           </label>
           <input
-            type="url"
+            type="text"
             id="website"
             bind:value={formData.website}
             class="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-brand-black placeholder-gray-400 focus:outline-none focus:border-brand-black focus:ring-1 focus:ring-brand-black"
-            placeholder="https://yoursite.com"
+            placeholder="yoursite.com"
           />
         </div>
 
