@@ -37,16 +37,16 @@
     error = '';
 
     try {
-      // TODO: Replace with actual form submission
-      // await fetch('https://submit-form.com/YOUR_ID', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(formData)
-      // });
-      await new Promise(r => setTimeout(r, 1000)); // Simulate delay
+      const res = await fetch('/api/apply/artist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.error);
       success = true;
-    } catch (e) {
-      error = 'Something went wrong. Please try again.';
+    } catch (e: any) {
+      error = e.message || 'Something went wrong. Please try again.';
     } finally {
       submitting = false;
     }
