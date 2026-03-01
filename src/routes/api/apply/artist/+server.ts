@@ -10,8 +10,14 @@ export const POST: RequestHandler = async ({ request, platform }) => {
 		return json({ error: 'Please fill in all required fields.' }, { status: 400 });
 	}
 
+	const db = platform?.env?.DB;
+	if (!db) {
+		console.error('D1 database binding "DB" is not available. Check your Cloudflare Pages D1 binding settings.');
+		return json({ error: 'Database is not configured. Please contact the site admin.' }, { status: 500 });
+	}
+
 	try {
-		await platform!.env.DB.prepare(
+		await db.prepare(
 			`INSERT INTO artist_applications (name, email, location, website, instagram, medium, bio, interests, referral)
 			 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
 		)
