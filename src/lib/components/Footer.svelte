@@ -8,7 +8,7 @@
       <!-- Brand Column -->
       <div class="lg:col-span-1">
         <a href="/" class="inline-block mb-4">
-          <img src="/logo-icon.png" alt="Artist Safespaces" class="h-8 md:h-10 w-auto brightness-0 invert" />
+          <img src="/logo-icon.png" alt="Artist Safespaces" class="h-5 md:h-6 w-auto brightness-0 invert" />
         </a>
         <p class="text-gray-400 text-sm leading-relaxed mb-6">
           {siteConfig.tagline}
