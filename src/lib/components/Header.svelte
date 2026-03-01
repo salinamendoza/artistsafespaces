@@ -19,7 +19,7 @@
     <div class="flex items-center justify-between h-16 md:h-20">
       <!-- Logo -->
       <a href="/" class="flex items-center" on:click={closeMobileMenu}>
-        <img src="/logo.svg" alt="Artist Safespaces" class="h-10 md:h-12 w-auto" />
+        <img src="/logo-icon.png" alt="Artist Safespaces" class="h-10 md:h-12 w-auto" />
       </a>
 
       <!-- Desktop Navigation -->
