@@ -1,6 +1,7 @@
 <script lang="ts">
   import Button from '$lib/components/Button.svelte';
   import SectionHeader from '$lib/components/SectionHeader.svelte';
+  import OptimizedImage from '$lib/components/OptimizedImage.svelte';
   import { artTherapyThemes, festivalActivities } from '$lib/data/site';
   import { images, artTherapyImages } from '$lib/data/images';
 </script>
@@ -23,20 +24,12 @@
       </div>
       <div class="grid grid-cols-2 gap-4">
         <div class="space-y-4">
-          <div class="aspect-square rounded-xl overflow-hidden">
-            <img src={images.artTherapy.screenprintDemo} alt="Screenprinting workshop" class="w-full h-full object-cover" />
-          </div>
-          <div class="aspect-[4/3] rounded-xl overflow-hidden">
-            <img src={images.artTherapy.childPainting} alt="Child painting at event" class="w-full h-full object-cover" />
-          </div>
+          <OptimizedImage src={images.artTherapy.screenprintDemo} alt="Screenprinting workshop" aspect="square" eager={true} />
+          <OptimizedImage src={images.artTherapy.childPainting} alt="Child painting at event" aspect="4/3" eager={true} />
         </div>
         <div class="space-y-4 pt-8">
-          <div class="aspect-[4/3] rounded-xl overflow-hidden">
-            <img src={images.murals.artistPainting} alt="Artist creating mural" class="w-full h-full object-cover" />
-          </div>
-          <div class="aspect-square rounded-xl overflow-hidden">
-            <img src={images.artTherapy.girlPaintingMural} alt="Young artist painting" class="w-full h-full object-cover" />
-          </div>
+          <OptimizedImage src={images.murals.artistPainting} alt="Artist creating mural" aspect="4/3" eager={true} />
+          <OptimizedImage src={images.artTherapy.girlPaintingMural} alt="Young artist painting" aspect="square" eager={true} />
         </div>
       </div>
     </div>
@@ -65,13 +58,12 @@
         </div>
       </div>
       <div class="relative">
-        <div class="aspect-square rounded-2xl overflow-hidden">
-          <img
-            src={images.artTherapy.screenprintParticipant}
-            alt="Community member learning screenprinting"
-            class="w-full h-full object-cover"
-          />
-        </div>
+        <OptimizedImage
+          src={images.artTherapy.screenprintParticipant}
+          alt="Community member learning screenprinting"
+          aspect="square"
+          rounded="rounded-2xl"
+        />
         <div class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-sm rounded-xl p-4">
           <p class="text-brand-black font-semibold text-xs uppercase tracking-widest mb-1">We Pay Artists</p>
           <p class="text-brand-black font-display text-3xl font-bold">100% Market Rate</p>
@@ -104,16 +96,21 @@
 
               <!-- Content card -->
               <div class="w-5/12 {i % 2 === 0 ? 'pr-8 text-right' : 'pl-8'}">
-                <div class="bg-white border {theme.current ? 'border-brand-black' : 'border-gray-200'} rounded-xl p-6 {theme.current ? 'shadow-lg' : ''}">
-                  <p class="text-gray-500 font-semibold text-sm mb-2">{theme.year}</p>
-                  <h3 class="text-brand-black font-display text-3xl font-bold mb-2">{theme.theme}</h3>
-                  <p class="text-gray-600">{theme.description}</p>
-                  {#if theme.current}
-                    <span class="inline-block mt-3 px-3 py-1 bg-brand-yellow text-brand-black text-xs font-semibold rounded-full">
-                      Current Theme
-                    </span>
-                  {/if}
-                </div>
+                <a href={theme.href} class="block group">
+                  <div class="bg-white border {theme.current ? 'border-brand-black' : 'border-gray-200'} rounded-xl p-6 {theme.current ? 'shadow-lg' : ''} group-hover:shadow-md group-hover:border-brand-yellow transition-all duration-200">
+                    <p class="text-gray-500 font-semibold text-sm mb-2">{theme.year}</p>
+                    <h3 class="text-brand-black font-display text-3xl font-bold mb-2">{theme.theme}</h3>
+                    <p class="text-gray-600">{theme.description}</p>
+                    {#if theme.current}
+                      <span class="inline-block mt-3 px-3 py-1 bg-brand-yellow text-brand-black text-xs font-semibold rounded-full">
+                        Current Theme
+                      </span>
+                    {/if}
+                    <p class="mt-3 text-sm font-semibold text-gray-400 group-hover:text-brand-black transition-colors">
+                      View Gallery &rarr;
+                    </p>
+                  </div>
+                </a>
               </div>
             </div>
           {/each}

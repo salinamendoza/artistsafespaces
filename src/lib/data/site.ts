@@ -65,9 +65,28 @@ export const financialModel = {
 };
 
 export const artTherapyThemes = [
-  { year: 2024, theme: 'Present', description: 'Being here, now' },
-  { year: 2025, theme: 'Anxiety', description: 'Confronting what weighs on us', current: true },
-  { year: 2026, theme: 'Understanding', description: 'Finding clarity together' }
+  {
+    year: 2024,
+    theme: 'Present',
+    description: 'Being here, now',
+    longDescription: 'Our inaugural theme explored the power of presence — dropping distractions, showing up for each other, and finding meaning in the moment. Artists and community members gathered to create work that celebrated stillness, attention, and the radical act of simply being here.',
+    href: '/art-therapy/2024'
+  },
+  {
+    year: 2025,
+    theme: 'Anxiety',
+    description: 'Confronting what weighs on us',
+    current: true,
+    longDescription: 'In our second year, we turned toward what so many carry silently. Through murals, music, and conversation, we created space to name anxiety — not to fix it, but to sit with it together. Art became a bridge between isolation and understanding.',
+    href: '/art-therapy/2025'
+  },
+  {
+    year: 2026,
+    theme: 'Understanding',
+    description: 'Finding clarity together',
+    longDescription: 'This year we ask: what happens when we truly try to understand one another? Through collaborative art, dialogue, and shared creative experiences, we explore empathy, perspective, and the patience it takes to really listen.',
+    href: '/art-therapy/2026'
+  }
 ];
 
 export const trackRecord = [

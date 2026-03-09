@@ -54,3 +54,31 @@ export const galleryImages = [
   { src: images.artTherapy.screenprintDemo, alt: 'Screenprinting workshop', category: 'workshop' },
   { src: images.community.groupPhotoMural, alt: 'Community gathering', category: 'community' }
 ];
+
+// Theme-specific gallery images for each year
+export const themeGalleryImages: Record<number, { src: string; alt: string; category: string }[]> = {
+  2024: [
+    { src: images.artTherapy.rockPainting, alt: 'Mindful rock painting activity', category: 'workshop' },
+    { src: images.community.communityPainting, alt: 'Community painting together', category: 'community' },
+    { src: images.artTherapy.childPainting, alt: 'Child fully present in painting', category: 'workshop' },
+    { src: images.murals.artistPainting, alt: 'Artist absorbed in mural creation', category: 'murals' },
+    { src: images.community.groupPhotoMural, alt: 'Group gathered around finished mural', category: 'community' },
+    { src: images.artTherapy.screenprintArtwork, alt: 'Screenprint artwork from the festival', category: 'artwork' }
+  ],
+  2025: [
+    { src: images.artTherapy.screenprintDemo, alt: 'Screenprinting workshop demonstration', category: 'workshop' },
+    { src: images.artTherapy.screenprintParticipant, alt: 'Participant learning screenprinting', category: 'workshop' },
+    { src: images.artTherapy.girlPaintingMural, alt: 'Young artist expressing through mural', category: 'murals' },
+    { src: images.murals.twoMurals, alt: 'Two expressive murals at IKEA', category: 'murals' },
+    { src: images.community.djPerforming, alt: 'DJ performing at the festival', category: 'performance' },
+    { src: images.murals.buildingBlocks, alt: 'Building blocks mural installation', category: 'murals' }
+  ],
+  2026: [
+    { src: images.artTherapy.screenprintDemo, alt: 'Collaborative screenprinting session', category: 'workshop' },
+    { src: images.community.communityPainting, alt: 'Community building understanding through art', category: 'community' },
+    { src: images.artTherapy.childPainting, alt: 'Young artists connecting through creativity', category: 'workshop' },
+    { src: images.murals.ikeaWide, alt: 'Artists painting together at IKEA', category: 'murals' },
+    { src: images.team.groupPhoto, alt: 'Artist Safespaces team and volunteers', category: 'community' },
+    { src: images.community.djShowroom, alt: 'DJ set in the showroom space', category: 'performance' }
+  ]
+};
