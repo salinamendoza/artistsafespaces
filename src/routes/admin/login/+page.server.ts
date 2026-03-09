@@ -12,7 +12,7 @@ export const actions: Actions = {
       return fail(401, { error: 'Invalid password' });
     }
 
-    cookies.set('admin_session', createSessionToken(), {
+    cookies.set('admin_session', await createSessionToken(), {
       path: '/',
       httpOnly: true,
       secure: true,
