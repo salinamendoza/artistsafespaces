@@ -79,22 +79,23 @@
     <h2 class="font-display text-4xl md:text-5xl font-bold text-brand-black mb-6">
       {#if theme.current}
         Join Us This Year
-      {:else if theme.year > new Date().getFullYear()}
-        Be Part of {theme.year}
       {:else}
-        Explore More Themes
+        Join Us for {new Date().getFullYear()}
       {/if}
     </h2>
     <p class="text-xl text-brand-black/70 max-w-2xl mx-auto mb-10">
       {#if theme.current}
         Art Therapy {theme.year} is happening soon. Apply to perform, partner with us, or just show up.
       {:else}
-        See all our annual themes and what's coming next.
+        Loved this year's theme? Our next festival is coming up — get involved.
       {/if}
     </p>
     <div class="flex flex-wrap gap-4 justify-center">
-      <Button href="/art-therapy" size="lg">All Themes</Button>
-      <Button href="/artists/apply" variant="secondary" size="lg">Apply to Perform</Button>
+      {#if !theme.current}
+        <Button href="/art-therapy/{new Date().getFullYear()}" size="lg">See This Year's Theme</Button>
+      {/if}
+      <Button href="/artists/apply" variant={theme.current ? 'primary' : 'secondary'} size="lg">Apply to Perform</Button>
+      <Button href="/art-therapy" variant="secondary" size="lg">All Themes</Button>
     </div>
   </div>
 </section>
