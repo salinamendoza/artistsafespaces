@@ -1,17 +1,17 @@
 import { redirect, type Handle } from '@sveltejs/kit';
-import { ADMIN_SECRET } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { createHmac } from 'node:crypto';
 
 const SESSION_COOKIE = 'admin_session';
 
 export function verifySession(cookie: string | undefined): boolean {
-  if (!cookie || !ADMIN_SECRET) return false;
-  const expected = createHmac('sha256', ADMIN_SECRET).update('admin').digest('hex');
+  if (!cookie || !env.ADMIN_SECRET) return false;
+  const expected = createHmac('sha256', env.ADMIN_SECRET).update('admin').digest('hex');
   return cookie === expected;
 }
 
 export function createSessionToken(): string {
-  return createHmac('sha256', ADMIN_SECRET).update('admin').digest('hex');
+  return createHmac('sha256', env.ADMIN_SECRET!).update('admin').digest('hex');
 }
 
 export const handle: Handle = async ({ event, resolve }) => {
