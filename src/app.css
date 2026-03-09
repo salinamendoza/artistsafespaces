@@ -30,11 +30,13 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-brand-black);
 }
 
-/* Form input styling for light mode — :where() keeps specificity low so utility classes can override */
-:where(input, select, textarea) {
-  color: var(--color-brand-black);
-}
+/* Form input styling for light mode — in base layer so utility classes can override */
+@layer base {
+  input, select, textarea {
+    color: var(--color-brand-black);
+  }
 
-:where(input, textarea)::placeholder {
-  color: #9ca3af;
+  input::placeholder, textarea::placeholder {
+    color: #9ca3af;
+  }
 }
