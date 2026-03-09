@@ -76,7 +76,6 @@ export const artTherapyThemes = [
     year: 2025,
     theme: 'Anxiety',
     description: 'Confronting what weighs on us',
-    current: true,
     longDescription: 'In our second year, we turned toward what so many carry silently. Through murals, music, and conversation, we created space to name anxiety — not to fix it, but to sit with it together. Art became a bridge between isolation and understanding.',
     href: '/art-therapy/2025'
   },
@@ -84,6 +83,7 @@ export const artTherapyThemes = [
     year: 2026,
     theme: 'Understanding',
     description: 'Finding clarity together',
+    current: true,
     longDescription: 'This year we ask: what happens when we truly try to understand one another? Through collaborative art, dialogue, and shared creative experiences, we explore empathy, perspective, and the patience it takes to really listen.',
     href: '/art-therapy/2026'
   }
