@@ -1,5 +1,5 @@
 import { fail, redirect } from '@sveltejs/kit';
-import { ADMIN_SECRET } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { createSessionToken } from '../../../hooks.server';
 import type { Actions } from './$types';
 
@@ -8,7 +8,7 @@ export const actions: Actions = {
     const form = await request.formData();
     const password = form.get('password')?.toString() ?? '';
 
-    if (password !== ADMIN_SECRET) {
+    if (password !== env.ADMIN_SECRET) {
       return fail(401, { error: 'Invalid password' });
     }
 
