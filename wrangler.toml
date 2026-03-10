@@ -5,3 +5,7 @@ compatibility_date = "2024-01-01"
 binding = "DB"
 database_name = "artist-safespaces"
 database_id = "c7c67f87-f282-4871-8cf7-1031688b450c"
+
+[[r2_buckets]]
+binding = "IMAGES"
+bucket_name = "artist-safespaces-images"

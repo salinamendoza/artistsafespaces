@@ -49,11 +49,16 @@
       <span class="text-white/30 font-mono text-xs">/</span>
       <span class="font-mono text-white/60 text-sm">contacts</span>
     </div>
-    <form method="POST" action="?/logout" use:enhance>
-      <button type="submit" class="text-white/40 hover:text-white font-mono text-xs transition-colors">
-        logout
-      </button>
-    </form>
+    <div class="flex items-center gap-4">
+      <a href="/admin/images" class="text-white/40 hover:text-brand-yellow font-mono text-xs transition-colors">
+        images
+      </a>
+      <form method="POST" action="?/logout" use:enhance>
+        <button type="submit" class="text-white/40 hover:text-white font-mono text-xs transition-colors">
+          logout
+        </button>
+      </form>
+    </div>
   </header>
 
   <div class="max-w-6xl mx-auto px-6 py-8">
