@@ -1,28 +1,34 @@
+// Image paths served from Cloudflare R2 via /api/images/
+// Upload images at /admin/images, then reference them here.
+// Fallback to /images/ (static) if R2 isn't set up yet.
+
+const CDN = '/api/images';
+
 export const images = {
   murals: {
-    artistPainting: '/images/murals/artist-painting-abstract.webp',
-    ikeaWide: '/images/murals/ikea-murals-wide.webp',
-    twoMurals: '/images/murals/two-murals-ikea.webp',
-    buildingBlocks: '/images/murals/building-blocks-mural.webp'
+    artistPainting: `${CDN}/murals/artist-painting-abstract.webp`,
+    ikeaWide: `${CDN}/murals/ikea-murals-wide.webp`,
+    twoMurals: `${CDN}/murals/two-murals-ikea.webp`,
+    buildingBlocks: `${CDN}/murals/building-blocks-mural.webp`
   },
   team: {
-    speakerFemale: '/images/team/speaker-female.webp',
-    speakerMale: '/images/team/speaker-male.webp',
-    groupPhoto: '/images/team/team-group-photo.webp'
+    speakerFemale: `${CDN}/team/speaker-female.webp`,
+    speakerMale: `${CDN}/team/speaker-male.webp`,
+    groupPhoto: `${CDN}/team/team-group-photo.webp`
   },
   community: {
-    communityPainting: '/images/community/community-painting.webp',
-    djShowroom: '/images/community/dj-showroom.webp',
-    djPerforming: '/images/community/dj-performing.webp',
-    groupPhotoMural: '/images/community/group-photo-mural.webp'
+    communityPainting: `${CDN}/community/community-painting.webp`,
+    djShowroom: `${CDN}/community/dj-showroom.webp`,
+    djPerforming: `${CDN}/community/dj-performing.webp`,
+    groupPhotoMural: `${CDN}/community/group-photo-mural.webp`
   },
   artTherapy: {
-    screenprintDemo: '/images/art-therapy/screenprint-demo.webp',
-    screenprintParticipant: '/images/art-therapy/screenprint-participant.webp',
-    screenprintArtwork: '/images/art-therapy/screenprint-artwork.webp',
-    rockPainting: '/images/art-therapy/rock-painting.webp',
-    childPainting: '/images/art-therapy/child-painting.webp',
-    girlPaintingMural: '/images/art-therapy/girl-painting-mural.webp'
+    screenprintDemo: `${CDN}/art-therapy/screenprint-demo.webp`,
+    screenprintParticipant: `${CDN}/art-therapy/screenprint-participant.webp`,
+    screenprintArtwork: `${CDN}/art-therapy/screenprint-artwork.webp`,
+    rockPainting: `${CDN}/art-therapy/rock-painting.webp`,
+    childPainting: `${CDN}/art-therapy/child-painting.webp`,
+    girlPaintingMural: `${CDN}/art-therapy/girl-painting-mural.webp`
   }
 };
 
