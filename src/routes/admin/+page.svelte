@@ -63,7 +63,7 @@
 
   <div class="max-w-6xl mx-auto px-6 py-8">
     <!-- Stats -->
-    <div class="grid grid-cols-3 gap-4 mb-8">
+    <div class="grid grid-cols-3 gap-4 mb-4">
       <div class="bg-white/5 border border-white/10 rounded-lg px-5 py-4">
         <p class="font-mono text-3xl font-bold text-white">{stats.total}</p>
         <p class="font-mono text-xs text-white/40 mt-1">total contacts</p>
@@ -75,6 +75,16 @@
       <div class="bg-white/5 border border-white/10 rounded-lg px-5 py-4">
         <p class="font-mono text-3xl font-bold text-white/50">{stats.archived}</p>
         <p class="font-mono text-xs text-white/40 mt-1">archived</p>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-4 mb-8">
+      <div class="bg-white/5 border border-white/10 rounded-lg px-5 py-4">
+        <p class="font-mono text-3xl font-bold text-white">{stats.artistApplications}</p>
+        <p class="font-mono text-xs text-white/40 mt-1">artist applications</p>
+      </div>
+      <div class="bg-white/5 border border-white/10 rounded-lg px-5 py-4">
+        <p class="font-mono text-3xl font-bold text-white">{stats.partnerApplications}</p>
+        <p class="font-mono text-xs text-white/40 mt-1">partner applications</p>
       </div>
     </div>
 
