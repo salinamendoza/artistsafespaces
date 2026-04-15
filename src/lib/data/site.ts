@@ -98,15 +98,15 @@ export const trackRecord = [
 ];
 
 export const teamMembers = [
-  { name: 'Sam', role: 'Founder & Executive Director' },
-  { name: 'Hugo', role: 'Community Murals & Youth Programs Lead' },
-  { name: 'Marcus', role: 'Poetry Program Lead' },
-  { name: 'John', role: 'Creative Director' },
+  { name: 'Sam', role: 'Founder & Executive Director', photo: '/api/images/team/SamAS.png' },
+  { name: 'Hugo', role: 'Community Murals & Youth Programs Lead', photo: '/api/images/team/hugoAS.png' },
+  { name: 'Marcus', role: 'Poetry Program Lead', photo: '/api/images/team/marcusAS.png' },
+  { name: 'John', role: 'Creative Director', photo: '/api/images/team/johnAS.png' },
   { name: 'Tom', role: 'Lead Photographer' }
 ];
 
 export const boardMembers = [
-  { name: 'Angely Andrade Vallarta', role: 'Board Director, Development' },
+  { name: 'Angely Andrade Vallarta', role: 'Board Director, Development', photo: '/api/images/team/angelyAS.png' },
   { name: 'Shawn Pons', role: 'Treasurer' }
 ];
 

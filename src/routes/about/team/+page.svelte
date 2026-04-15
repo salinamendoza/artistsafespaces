@@ -27,9 +27,15 @@
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {#each teamMembers as member}
         <div class="bg-white border border-gray-200 rounded-xl p-8 hover:border-gray-400 transition-colors">
-          <div class="w-12 h-12 bg-brand-yellow rounded-full flex items-center justify-center mb-5">
-            <span class="text-brand-black font-display text-xl font-bold">{member.name[0]}</span>
-          </div>
+          {#if member.photo}
+            <div class="aspect-[3/4] rounded-lg overflow-hidden mb-5">
+              <img src={member.photo} alt={member.name} class="w-full h-full object-cover" loading="lazy" />
+            </div>
+          {:else}
+            <div class="w-12 h-12 bg-brand-yellow rounded-full flex items-center justify-center mb-5">
+              <span class="text-brand-black font-display text-xl font-bold">{member.name[0]}</span>
+            </div>
+          {/if}
           <h3 class="font-display text-xl font-bold text-brand-black">{member.name}</h3>
           <p class="text-gray-600 mt-1">{member.role}</p>
         </div>
@@ -51,11 +57,17 @@
       <div class="mt-12 space-y-4">
         {#each boardMembers as member}
           <div class="flex items-center gap-4 bg-gray-50 border border-gray-200 rounded-xl p-6">
-            <div class="w-10 h-10 bg-brand-black rounded-full flex items-center justify-center flex-shrink-0">
-              <span class="text-white font-display text-sm font-bold">
-                {member.name.split(' ').map(n => n[0]).join('')}
-              </span>
-            </div>
+            {#if member.photo}
+              <div class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+                <img src={member.photo} alt={member.name} class="w-full h-full object-cover" loading="lazy" />
+              </div>
+            {:else}
+              <div class="w-10 h-10 bg-brand-black rounded-full flex items-center justify-center flex-shrink-0">
+                <span class="text-white font-display text-sm font-bold">
+                  {member.name.split(' ').map(n => n[0]).join('')}
+                </span>
+              </div>
+            {/if}
             <div>
               <h3 class="font-display text-lg font-semibold text-brand-black">{member.name}</h3>
               <p class="text-gray-500 text-sm">{member.role}</p>
