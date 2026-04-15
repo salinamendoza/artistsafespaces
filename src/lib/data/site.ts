@@ -97,6 +97,19 @@ export const trackRecord = [
   'Festival experience with large retail partners'
 ];
 
+export const teamMembers = [
+  { name: 'Sam', role: 'Founder & Executive Director' },
+  { name: 'Hugo', role: 'Community Murals & Youth Programs Lead' },
+  { name: 'Marcus', role: 'Poetry Program Lead' },
+  { name: 'John', role: 'Creative Director' },
+  { name: 'Tom', role: 'Lead Photographer' }
+];
+
+export const boardMembers = [
+  { name: 'Angely Andrade Vallarta', role: 'Board Director, Development' },
+  { name: 'Shawn Pons', role: 'Treasurer' }
+];
+
 export const navLinks = [
   { href: '/art-parks', label: 'Art Parks' },
   { href: '/art-therapy', label: 'Art Therapy' },
@@ -119,6 +132,7 @@ export const footerLinks = {
   ],
   about: [
     { href: '/about', label: 'Our Story' },
+    { href: '/about/team', label: 'Our Team' },
     { href: '/contact', label: 'Contact' }
   ]
 };
