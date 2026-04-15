@@ -107,7 +107,7 @@ export const teamMembers = [
 
 export const boardMembers = [
   { name: 'Angely Andrade Vallarta', role: 'Board Director, Development', photo: '/api/images/team/angelyAS.png' },
-  { name: 'Shawn Pons', role: 'Treasurer' }
+  { name: 'Shawn Pons', role: 'Treasurer', photo: '/api/images/team/shawnAS.png' }
 ];
 
 export const navLinks = [
