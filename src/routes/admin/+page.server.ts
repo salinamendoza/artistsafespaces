@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ platform, url }) => {
   const view = url.searchParams.get('view') === 'archived' ? 'archived' : 'active';
   const archivedFlag = view === 'archived' ? 1 : 0;
 
-  const [contacts, statsResult] = await Promise.all([
+  const [contacts, statsResult, artistCount, partnerCount] = await Promise.all([
     db.prepare('SELECT * FROM contact_submissions WHERE archived = ? ORDER BY created_at DESC')
       .bind(archivedFlag)
       .all<ContactRow>(),
@@ -33,7 +33,9 @@ export const load: PageServerLoad = async ({ platform, url }) => {
         SUM(CASE WHEN contacted = 1 THEN 1 ELSE 0 END) as contacted,
         SUM(CASE WHEN archived = 1 THEN 1 ELSE 0 END) as archived
       FROM contact_submissions
-    `).first<{ total: number; contacted: number; archived: number }>()
+    `).first<{ total: number; contacted: number; archived: number }>(),
+    db.prepare('SELECT COUNT(*) as count FROM artist_applications').first<{ count: number }>(),
+    db.prepare('SELECT COUNT(*) as count FROM partner_applications').first<{ count: number }>()
   ]);
 
   return {
@@ -41,7 +43,9 @@ export const load: PageServerLoad = async ({ platform, url }) => {
     stats: {
       total: statsResult?.total ?? 0,
       contacted: statsResult?.contacted ?? 0,
-      archived: statsResult?.archived ?? 0
+      archived: statsResult?.archived ?? 0,
+      artistApplications: artistCount?.count ?? 0,
+      partnerApplications: partnerCount?.count ?? 0
     },
     view
   };

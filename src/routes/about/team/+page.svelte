@@ -58,12 +58,12 @@
         {#each boardMembers as member}
           <div class="flex items-center gap-4 bg-gray-50 border border-gray-200 rounded-xl p-6">
             {#if member.photo}
-              <div class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
+              <div class="w-14 h-14 rounded-full overflow-hidden flex-shrink-0">
                 <img src={member.photo} alt={member.name} class="w-full h-full object-cover" loading="lazy" />
               </div>
             {:else}
-              <div class="w-10 h-10 bg-brand-black rounded-full flex items-center justify-center flex-shrink-0">
-                <span class="text-white font-display text-sm font-bold">
+              <div class="w-14 h-14 bg-brand-black rounded-full flex items-center justify-center flex-shrink-0">
+                <span class="text-white font-display text-base font-bold">
                   {member.name.split(' ').map(n => n[0]).join('')}
                 </span>
               </div>
