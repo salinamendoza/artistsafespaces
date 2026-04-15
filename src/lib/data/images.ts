@@ -14,7 +14,12 @@ export const images = {
   team: {
     speakerFemale: `${CDN}/team/speaker-female.webp`,
     speakerMale: `${CDN}/team/speaker-male.webp`,
-    groupPhoto: `${CDN}/team/team-group-photo.webp`
+    groupPhoto: `${CDN}/team/team-group-photo.webp`,
+    sam: `${CDN}/team/SamAS.png`,
+    hugo: `${CDN}/team/hugoAS.png`,
+    marcus: `${CDN}/team/marcusAS.png`,
+    john: `${CDN}/team/johnAS.png`,
+    angely: `${CDN}/team/angelyAS.png`
   },
   community: {
     communityPainting: `${CDN}/community/community-painting.webp`,
