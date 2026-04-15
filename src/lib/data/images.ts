@@ -19,7 +19,8 @@ export const images = {
     hugo: `${CDN}/team/hugoAS.png`,
     marcus: `${CDN}/team/marcusAS.png`,
     john: `${CDN}/team/johnAS.png`,
-    angely: `${CDN}/team/angelyAS.png`
+    angely: `${CDN}/team/angelyAS.png`,
+    shawn: `${CDN}/team/shawnAS.png`
   },
   community: {
     communityPainting: `${CDN}/community/community-painting.webp`,
