@@ -1,5 +1,6 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
+  import AdminHeader from '$lib/components/AdminHeader.svelte';
   import type { PageData } from './$types';
 
   export let data: PageData;
@@ -42,24 +43,7 @@
 </svelte:head>
 
 <div class="min-h-screen bg-brand-black text-white">
-  <!-- Top bar -->
-  <header class="border-b border-white/10 px-6 py-4 flex items-center justify-between">
-    <div class="flex items-center gap-3">
-      <span class="font-mono text-brand-yellow text-sm font-bold">admin</span>
-      <span class="text-white/30 font-mono text-xs">/</span>
-      <span class="font-mono text-white/60 text-sm">contacts</span>
-    </div>
-    <div class="flex items-center gap-4">
-      <a href="/admin/images" class="text-white/40 hover:text-brand-yellow font-mono text-xs transition-colors">
-        images
-      </a>
-      <form method="POST" action="?/logout" use:enhance>
-        <button type="submit" class="text-white/40 hover:text-white font-mono text-xs transition-colors">
-          logout
-        </button>
-      </form>
-    </div>
-  </header>
+  <AdminHeader section="contacts" />
 
   <div class="max-w-6xl mx-auto px-6 py-8">
     <!-- Stats -->
