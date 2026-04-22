@@ -22,11 +22,17 @@ export const load: PageServerLoad = async ({ platform, params, url }) => {
 
   const schema = selectedType ? parseBriefSchema(selectedType.brief_schema_json) : [];
 
+  const prefillData: Record<string, string> = {};
+  if (event.event_date) prefillData['event_date'] = event.event_date;
+  if (event.event_date) prefillData['start_date'] = event.event_date;
+  if (event.location) prefillData['location'] = event.location;
+
   return {
     event,
     activationTypes: activationTypes.results ?? [],
     selectedType,
-    schema
+    schema,
+    prefillData
   };
 };
 
