@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { BriefFieldDef } from '$lib/server/brief-schema';
+  import type { BriefFieldDef } from '$lib/types/brief-schema';
 
   export let schema: BriefFieldDef[] = [];
   export let data: Record<string, string> = {};

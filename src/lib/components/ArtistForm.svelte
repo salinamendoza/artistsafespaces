@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Artist, ActivationType } from '$lib/server/db-types';
+  import type { Artist, ActivationType } from '$lib/types/db-types';
 
   export let artist: Partial<Artist> = {};
   export let activationTypes: Pick<ActivationType, 'slug' | 'name'>[] = [];

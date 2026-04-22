@@ -1,5 +1,5 @@
 import type { PageServerLoad } from './$types';
-import type { Event } from '$lib/server/db-types';
+import type { Event } from '$lib/types/db-types';
 
 type EventWithCounts = Event & { brief_count: number; booking_count: number };
 

@@ -1,6 +1,6 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
-import type { Event } from '$lib/server/db-types';
+import type { Event } from '$lib/types/db-types';
 
 interface BriefRow {
   id: number;

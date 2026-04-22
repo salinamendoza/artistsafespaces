@@ -4,7 +4,7 @@
   import AdminHeader from '$lib/components/AdminHeader.svelte';
   import BriefFieldsView from '$lib/components/BriefFieldsView.svelte';
   import MarkdownView from '$lib/components/MarkdownView.svelte';
-  import { parseBriefSchema, parseBriefData } from '$lib/server/brief-schema';
+  import { parseBriefSchema, parseBriefData } from '$lib/types/brief-schema';
   import type { PageData, ActionData } from './$types';
 
   export let data: PageData;
