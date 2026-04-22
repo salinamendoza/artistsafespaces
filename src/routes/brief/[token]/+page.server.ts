@@ -1,7 +1,7 @@
 import { error, fail } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
-import { parseBriefSchema, parseBriefData } from '$lib/server/brief-schema';
-import type { Booking, Brief, Event, Artist, ActivationType } from '$lib/server/db-types';
+import { parseBriefSchema, parseBriefData } from '$lib/types/brief-schema';
+import type { Booking, Brief, Event, Artist, ActivationType } from '$lib/types/db-types';
 
 interface LoadedRow {
   // booking

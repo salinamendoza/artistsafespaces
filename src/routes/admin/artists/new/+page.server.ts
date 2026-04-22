@@ -1,6 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
-import type { ActivationType } from '$lib/server/db-types';
+import type { ActivationType } from '$lib/types/db-types';
 
 export const load: PageServerLoad = async ({ platform }) => {
   const db = platform?.env?.DB;

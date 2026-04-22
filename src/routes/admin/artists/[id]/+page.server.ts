@@ -1,6 +1,6 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
-import type { Artist } from '$lib/server/db-types';
+import type { Artist } from '$lib/types/db-types';
 
 interface BookingRow {
   id: number;

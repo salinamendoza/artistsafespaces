@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Event } from '$lib/server/db-types';
+  import type { Event } from '$lib/types/db-types';
 
   export let event: Partial<Event> = {};
   export let submitLabel = 'Save';

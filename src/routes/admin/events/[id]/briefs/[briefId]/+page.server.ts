@@ -1,6 +1,6 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
-import type { Event, Brief, ActivationType, Artist, Booking } from '$lib/server/db-types';
+import type { Event, Brief, ActivationType, Artist, Booking } from '$lib/types/db-types';
 import { generateShareToken } from '$lib/server/tokens';
 
 interface BookingWithArtist extends Booking {

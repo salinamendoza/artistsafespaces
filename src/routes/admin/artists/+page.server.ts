@@ -1,5 +1,5 @@
 import type { PageServerLoad } from './$types';
-import type { Artist } from '$lib/server/db-types';
+import type { Artist } from '$lib/types/db-types';
 
 type ArtistWithCount = Artist & { booking_count: number };
 
