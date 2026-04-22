@@ -11,6 +11,14 @@ interface BriefRow {
   created_at: string;
 }
 
+interface BookingSummaryRow {
+  artist_name: string;
+  rate: number;
+  materials_allowance: number | null;
+  brief_title: string;
+  activation_type_name: string;
+}
+
 export const load: PageServerLoad = async ({ platform, params }) => {
   const db = platform?.env?.DB;
   if (!db) throw error(500, 'Database unavailable');
@@ -19,20 +27,50 @@ export const load: PageServerLoad = async ({ platform, params }) => {
   const event = await db.prepare('SELECT * FROM events WHERE id = ?').bind(id).first<Event>();
   if (!event) throw error(404, 'Event not found');
 
-  const briefs = await db
-    .prepare(`
-      SELECT br.id, br.title, br.status, br.created_at,
-             at.name AS activation_type_name,
-             (SELECT COUNT(*) FROM bookings WHERE brief_id = br.id) AS booking_count
-      FROM briefs br
-      JOIN activation_types at ON at.id = br.activation_type_id
-      WHERE br.event_id = ?
-      ORDER BY br.created_at DESC
-    `)
-    .bind(id)
-    .all<BriefRow>();
+  const [briefs, bookingSummary] = await Promise.all([
+    db
+      .prepare(`
+        SELECT br.id, br.title, br.status, br.created_at,
+               at.name AS activation_type_name,
+               (SELECT COUNT(*) FROM bookings WHERE brief_id = br.id) AS booking_count
+        FROM briefs br
+        JOIN activation_types at ON at.id = br.activation_type_id
+        WHERE br.event_id = ?
+        ORDER BY br.created_at DESC
+      `)
+      .bind(id)
+      .all<BriefRow>(),
+    db
+      .prepare(`
+        SELECT a.name AS artist_name, bk.rate, bk.materials_allowance,
+               br.title AS brief_title, at.name AS activation_type_name
+        FROM bookings bk
+        JOIN briefs br ON br.id = bk.brief_id
+        JOIN artists a ON a.id = bk.artist_id
+        JOIN activation_types at ON at.id = br.activation_type_id
+        WHERE br.event_id = ?
+        ORDER BY at.name, a.name
+      `)
+      .bind(id)
+      .all<BookingSummaryRow>()
+  ]);
 
-  return { event, briefs: briefs.results ?? [] };
+  const bookings = bookingSummary.results ?? [];
+  const uniqueArtists = new Set(bookings.map((b) => b.artist_name)).size;
+  const totalRate = bookings.reduce((sum, b) => sum + (b.rate ?? 0), 0);
+  const totalMaterials = bookings.reduce((sum, b) => sum + (b.materials_allowance ?? 0), 0);
+
+  return {
+    event,
+    briefs: briefs.results ?? [],
+    eventStats: {
+      artistCount: uniqueArtists,
+      totalRate,
+      totalMaterials,
+      totalCost: totalRate + totalMaterials,
+      breakdown: bookings
+    }
+  };
 };
 
 export const actions: Actions = {
