@@ -6,7 +6,7 @@
   export let data: PageData;
   export let form: ActionData;
 
-  $: ({ event, activationTypes, selectedType, schema } = data);
+  $: ({ event, activationTypes, selectedType, schema, prefillData } = data);
 </script>
 
 <svelte:head><title>New Brief | Admin</title></svelte:head>
@@ -48,12 +48,12 @@
         <div class="space-y-5">
           <div>
             <label for="title" class="block font-mono text-xs text-white/60 mb-1.5">Brief Title <span class="text-brand-yellow">*</span></label>
-            <input id="title" name="title" type="text" required placeholder="e.g. Live Painting — IKEA Art Therapy 2026" class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm font-mono text-white placeholder:text-white/20 focus:outline-none focus:border-brand-yellow/40" />
+            <input id="title" name="title" type="text" required value="{selectedType.name} — {event.name}" class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm font-mono text-white placeholder:text-white/20 focus:outline-none focus:border-brand-yellow/40" />
           </div>
 
           <div class="pt-2 border-t border-white/10">
             <p class="font-mono text-[10px] uppercase tracking-widest text-white/40 mb-4 mt-4">Structured Fields</p>
-            <BriefFieldsForm {schema} data={{}} />
+            <BriefFieldsForm {schema} data={prefillData} />
           </div>
         </div>
 
