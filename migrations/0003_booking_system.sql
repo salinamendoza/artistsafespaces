@@ -112,7 +112,7 @@ Who the client is and how the work will be seen.
 Sam — hello@artistsafespaces.org',
   '## Terms of Engagement
 
-**Compensation.** The rate and materials allowance shown above are the full compensation for this engagement. Payment is made by the organization or client within 30 days of invoice submission. Invoicing flow for this specific event will be confirmed by Sam.
+**Compensation.** The rate and materials allowance shown above are the full compensation for this engagement. Payment is made in full, either in advance or on the day of the event. On client-curated events, the client pays the artist directly. Sam will confirm timing and payment source for each engagement.
 
 **Scope.** The artist agrees to create the work described in this brief during the time and at the location specified. Substantial changes to scope must be agreed in writing.
 
@@ -152,7 +152,7 @@ Who''s attending and how the prints fit the event.
 Sam — hello@artistsafespaces.org',
   '## Terms of Engagement
 
-**Compensation.** The rate and materials allowance shown above are the full compensation for this engagement. Payment is made by the organization or client within 30 days of invoice submission. Invoicing flow for this specific event will be confirmed by Sam.
+**Compensation.** The rate and materials allowance shown above are the full compensation for this engagement. Payment is made in full, either in advance or on the day of the event. On client-curated events, the client pays the artist directly. Sam will confirm timing and payment source for each engagement.
 
 **Scope.** The artist runs the screen-printing station for the duration specified, producing the edition described above. Any additional prints beyond the edition are discretionary and unpaid.
 
@@ -193,7 +193,7 @@ Who the community is and what the mural means for them.
 Sam — hello@artistsafespaces.org',
   '## Terms of Engagement
 
-**Compensation.** The rate and materials allowance shown above are the full compensation for this engagement, across all sessions. Payment terms and invoicing flow will be confirmed by Sam before work begins.
+**Compensation.** The rate and materials allowance shown above are the full compensation for this engagement, across all sessions. Payment is made in full, either in advance or at session start. On client-curated events, the client pays the artist directly. Sam will confirm timing and payment source for each engagement.
 
 **Scope.** The artist leads the design and execution of the mural, facilitating community participation as described above. Touch-ups and sealing are included if specified; otherwise handled separately.
 
@@ -232,7 +232,7 @@ Any relevant context about the commissioning party and the intended use.
 Sam — hello@artistsafespaces.org',
   '## Terms of Engagement
 
-**Compensation.** The rate and materials allowance shown above are the full compensation for this commission. Payment is made within 30 days of delivery unless otherwise agreed. Invoicing flow will be confirmed by Sam.
+**Compensation.** The rate and materials allowance shown above are the full compensation for this commission. Payment is made in full, either in advance or on delivery. On client-curated commissions, the client pays the artist directly. Sam will confirm timing and payment source for each engagement.
 
 **Scope.** The artist produces the work described above and delivers on the stated date. The included revision rounds cover reasonable direction changes within the original concept. Additional revisions or scope changes require a revised agreement.
 
@@ -272,7 +272,7 @@ Who will be watching and what the audience is there for.
 Sam — hello@artistsafespaces.org',
   '## Terms of Engagement
 
-**Compensation.** The rate and materials allowance shown above are the full compensation for this engagement. Payment is made by the organization or client within 30 days of invoice submission. Invoicing flow will be confirmed by Sam.
+**Compensation.** The rate and materials allowance shown above are the full compensation for this engagement. Payment is made in full, either in advance or on the day of the event. On client-curated events, the client pays the artist directly. Sam will confirm timing and payment source for each engagement.
 
 **Scope.** The artist paints their own mural during the stated duration. Creative direction is the artist''s, within any theme agreed in the brief.
 
@@ -310,7 +310,7 @@ Who the audience is and what the night feels like.
 Sam — hello@artistsafespaces.org',
   '## Terms of Engagement
 
-**Compensation.** The rate shown above is the full compensation for this engagement. Payment is made by the organization or client within 30 days of invoice submission. Invoicing flow will be confirmed by Sam.
+**Compensation.** The rate shown above is the full compensation for this engagement. Payment is made in full, either in advance or on the day of the event. On client-curated events, the client pays the artist directly. Sam will confirm timing and payment source for each engagement.
 
 **Scope.** The artist performs a set of the length specified. Content is the artist''s; the brief may specify a theme but does not dictate individual pieces.
 
@@ -348,7 +348,7 @@ Who''s in the room and what they came for.
 Sam — hello@artistsafespaces.org',
   '## Terms of Engagement
 
-**Compensation.** The rate shown above is the full compensation for this engagement. Payment is made by the organization or client within 30 days of invoice submission. Invoicing flow will be confirmed by Sam.
+**Compensation.** The rate shown above is the full compensation for this engagement. Payment is made in full, either in advance or on the day of the event. On client-curated events, the client pays the artist directly. Sam will confirm timing and payment source for each engagement.
 
 **Scope.** The DJ plays a set of the length specified, within the agreed genre/vibe. Set content is the DJ''s.
 
