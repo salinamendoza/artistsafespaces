@@ -33,11 +33,12 @@ interface LoadedRow {
   br_terms_markdown: string | null;
   br_visual_sheet_slug: string | null;
   // event
-  e_id: number;
   e_name: string;
   e_client_name: string | null;
   e_event_date: string | null;
   e_location: string | null;
+  e_billing_to: string | null;
+  e_invoice_email: string | null;
   // artist
   a_name: string;
   a_email: string | null;
@@ -67,8 +68,9 @@ export const load: PageServerLoad = async ({ platform, params }) => {
         br.brief_data_json AS br_brief_data_json, br.brief_body AS br_brief_body,
         br.terms_markdown AS br_terms_markdown,
         br.visual_sheet_slug AS br_visual_sheet_slug,
-        e.id AS e_id, e.name AS e_name, e.client_name AS e_client_name,
+        e.name AS e_name, e.client_name AS e_client_name,
         e.event_date AS e_event_date, e.location AS e_location,
+        e.billing_to AS e_billing_to, e.invoice_email AS e_invoice_email,
         a.name AS a_name, a.email AS a_email,
         at.name AS at_name, at.brief_schema_json AS at_brief_schema_json
       FROM bookings b
@@ -82,23 +84,6 @@ export const load: PageServerLoad = async ({ platform, params }) => {
     .first<LoadedRow>();
 
   if (!row) throw error(404, 'Brief not found');
-
-  // Pull billing fields in a separate query so the page still loads if
-  // migration 0008 hasn't been applied to this D1 yet.
-  let billing_to: string | null = null;
-  let invoice_email: string | null = null;
-  try {
-    const billing = await db
-      .prepare('SELECT billing_to, invoice_email FROM events WHERE id = ?')
-      .bind(row.e_id)
-      .first<{ billing_to: string | null; invoice_email: string | null }>();
-    if (billing) {
-      billing_to = billing.billing_to;
-      invoice_email = billing.invoice_email;
-    }
-  } catch {
-    // columns don't exist — caller hasn't run migration 0008 yet; fall back to nulls
-  }
 
   return {
     booking: {
@@ -129,8 +114,8 @@ export const load: PageServerLoad = async ({ platform, params }) => {
       client_name: row.e_client_name,
       event_date: row.e_event_date,
       location: row.e_location,
-      billing_to,
-      invoice_email
+      billing_to: row.e_billing_to,
+      invoice_email: row.e_invoice_email
     },
     artist: {
       name: row.a_name,
