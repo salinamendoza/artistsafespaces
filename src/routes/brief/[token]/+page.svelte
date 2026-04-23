@@ -75,6 +75,96 @@
       <p class="font-mono text-sm text-gray-600 mt-3">{data.activationTypeName}</p>
     </div>
 
+    <!-- Accepted: status + point of contact + invoice info + submit. Shown first so returning artists see current state and next step at the top. -->
+    {#if booking.status === 'accepted'}
+      <div class="space-y-6">
+        <p class="flex items-center gap-2 font-mono text-xs">
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-green-600"></span>
+          <span class="uppercase tracking-widest text-green-700 font-medium">Accepted</span>
+          <span class="text-gray-400">·</span>
+          <span class="text-gray-600">{formatAcceptedDate(booking.accepted_at)}</span>
+        </p>
+
+        <div>
+          <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-2">Important — point of contact</p>
+          <p class="text-sm text-gray-800 leading-relaxed">
+            <strong class="text-brand-black">Artist Safespaces is your point of contact for this engagement.</strong>
+            We built the relationship with {data.event.client_name ?? 'the client'} and coordinate all communication on our side.
+            The client may pay you directly via the link you provide below, but please route all questions, scheduling, follow-ups, and future opportunities through us — never the client directly.
+            Reach out any time at <a href="mailto:salina@artistsafespaces.org" class="text-brand-black underline hover:no-underline">salina@artistsafespaces.org</a>.
+          </p>
+        </div>
+      </div>
+
+      <section>
+        <div class="border-t border-gray-200 pt-6 mb-2">
+          <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500">Put this on your invoice</p>
+          <p class="font-mono text-xs text-gray-500 mt-1">Copy any row and paste it into your invoice tool.</p>
+        </div>
+        <dl class="divide-y divide-gray-200">
+          {#each invoiceRows as row (row.key)}
+            <div class="flex items-start justify-between gap-4 py-3">
+              <div class="min-w-0 flex-1">
+                <dt class="font-mono text-[10px] uppercase tracking-widest text-gray-500">{row.label}</dt>
+                <dd class="font-mono text-sm text-brand-black whitespace-pre-wrap break-words mt-0.5">{row.value}</dd>
+              </div>
+              <button type="button" on:click={() => copyValue(row.key, row.value)} class="px-2 py-1 bg-brand-yellow text-brand-black font-mono text-[10px] font-bold rounded hover:bg-yellow-300 flex-shrink-0">{copiedKey === row.key ? 'Copied' : 'Copy'}</button>
+            </div>
+          {/each}
+        </dl>
+      </section>
+
+      <div class="rounded-lg border border-gray-200 p-6">
+        <div class="flex items-baseline justify-between gap-3 mb-1 flex-wrap">
+          <p class="font-display text-xl font-bold text-brand-black">Send your invoice + payment link</p>
+          {#if booking.invoice_status === 'paid'}
+            <span class="px-2 py-0.5 rounded-full border border-green-200 bg-green-50 text-green-700 font-mono text-[10px] uppercase tracking-widest">Paid {booking.invoice_paid_at ? `· ${formatAcceptedDate(booking.invoice_paid_at)}` : ''}</span>
+          {:else if booking.invoice_status === 'submitted'}
+            <span class="px-2 py-0.5 rounded-full border border-green-200 bg-green-50 text-green-700 font-mono text-[10px] uppercase tracking-widest">Submitted {booking.invoice_submitted_at ? `· ${formatAcceptedDate(booking.invoice_submitted_at)}` : ''}</span>
+          {/if}
+        </div>
+        <p class="font-mono text-xs text-gray-500 mb-5">
+          Paste your invoice link and a credit-card payment link below. We'll forward both to the client.
+        </p>
+
+        {#if form?.error}
+          <p class="mb-4 px-3 py-2 bg-red-500/10 border border-red-500/30 rounded text-red-700 font-mono text-xs">{form.error}</p>
+        {/if}
+        {#if form?.invoiceSubmitted}
+          <p class="mb-4 px-3 py-2 bg-green-50 border border-green-200 rounded text-green-700 font-mono text-xs">Got it — we'll pass this along to the client.</p>
+        {/if}
+
+        <form method="POST" action="?/submitInvoice" use:enhance class="space-y-5">
+          <div>
+            <label for="invoice_url" class="block font-mono text-xs text-gray-700 mb-1.5">Invoice PDF link</label>
+            <input id="invoice_url" name="invoice_url" type="url" value={booking.invoice_url ?? ''} placeholder="https://drive.google.com/…" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black" />
+            <p class="font-mono text-[11px] text-gray-500 mt-1.5">
+              No hosting link? Upload the PDF to Google Drive and paste its share link, or email the PDF to <a href="mailto:salina@artistsafespaces.org" class="underline hover:no-underline">salina@artistsafespaces.org</a> and we'll handle the rest.
+            </p>
+          </div>
+
+          <div>
+            <label for="payment_link_url" class="block font-mono text-xs text-gray-700 mb-1.5">Credit-card payment link</label>
+            <input id="payment_link_url" name="payment_link_url" type="url" value={booking.payment_link_url ?? ''} placeholder="https://buy.stripe.com/… or square.link/… or paypal.me/…" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black" />
+            <p class="font-mono text-[11px] text-gray-500 mt-1.5">
+              Our clients prefer paying by credit card. A Stripe payment link, Square checkout, PayPal.me, or invoice-with-pay-button all work.
+            </p>
+          </div>
+
+          <div>
+            <label for="invoice_notes" class="block font-mono text-xs text-gray-700 mb-1.5">Notes <span class="text-gray-400">(optional)</span></label>
+            <textarea id="invoice_notes" name="invoice_notes" rows="2" placeholder="Net terms, tax info, anything the client should know…" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black">{booking.invoice_notes ?? ''}</textarea>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button type="submit" class="px-6 py-3 bg-brand-yellow text-brand-black font-mono text-sm font-bold rounded hover:bg-yellow-300 transition-colors">
+              {booking.invoice_status === 'not_submitted' ? 'Submit invoice details' : 'Update'}
+            </button>
+          </div>
+        </form>
+      </div>
+    {/if}
+
     <!-- Event + Compensation at-a-glance -->
     <div class="border border-gray-200 rounded-lg overflow-hidden">
       <div class="p-6">
@@ -136,97 +226,8 @@
       </div>
     {/if}
 
-    <!-- Response state -->
-    {#if booking.status === 'accepted'}
-      <!-- Accepted status line -->
-      <p class="flex items-center gap-2 font-mono text-xs">
-        <span class="inline-block w-1.5 h-1.5 rounded-full bg-green-600"></span>
-        <span class="uppercase tracking-widest text-green-700 font-medium">Accepted</span>
-        <span class="text-gray-400">·</span>
-        <span class="text-gray-600">{formatAcceptedDate(booking.accepted_at)}</span>
-      </p>
-
-      <!-- Point of contact — editorial callout, no fill -->
-      <div class="border-l-4 border-brand-black pl-5 py-0.5">
-        <p class="font-mono text-[10px] uppercase tracking-widest text-brand-black/70 mb-2">Important — point of contact</p>
-        <p class="text-sm text-gray-800 leading-relaxed">
-          <strong class="text-brand-black">Artist Safespaces is your point of contact for this engagement.</strong>
-          We built the relationship with {data.event.client_name ?? 'the client'} and coordinate all communication on our side.
-          The client may pay you directly via the link you provide below, but please route all questions, scheduling, follow-ups, and future opportunities through us — never the client directly.
-          Reach out any time at <a href="mailto:salina@artistsafespaces.org" class="text-brand-black underline hover:no-underline">salina@artistsafespaces.org</a>.
-        </p>
-      </div>
-
-      <!-- Copy-paste billing info — section, not a card -->
-      <section>
-        <div class="border-t border-gray-200 pt-6 mb-2">
-          <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500">Put this on your invoice</p>
-          <p class="font-mono text-xs text-gray-500 mt-1">Copy any row and paste it into your invoice tool.</p>
-        </div>
-        <dl class="divide-y divide-gray-200">
-          {#each invoiceRows as row (row.key)}
-            <div class="flex items-start justify-between gap-4 py-3">
-              <div class="min-w-0 flex-1">
-                <dt class="font-mono text-[10px] uppercase tracking-widest text-gray-500">{row.label}</dt>
-                <dd class="font-mono text-sm text-brand-black whitespace-pre-wrap break-words mt-0.5">{row.value}</dd>
-              </div>
-              <button type="button" on:click={() => copyValue(row.key, row.value)} class="px-2 py-1 bg-brand-yellow text-brand-black font-mono text-[10px] font-bold rounded hover:bg-yellow-300 flex-shrink-0">{copiedKey === row.key ? 'Copied' : 'Copy'}</button>
-            </div>
-          {/each}
-        </dl>
-      </section>
-
-      <!-- Invoice + payment submission -->
-      <div class="rounded-lg border border-gray-200 p-6">
-        <div class="flex items-baseline justify-between gap-3 mb-1 flex-wrap">
-          <p class="font-display text-xl font-bold text-brand-black">Send your invoice + payment link</p>
-          {#if booking.invoice_status === 'paid'}
-            <span class="px-2 py-0.5 rounded-full border border-green-200 bg-green-50 text-green-700 font-mono text-[10px] uppercase tracking-widest">Paid {booking.invoice_paid_at ? `· ${formatAcceptedDate(booking.invoice_paid_at)}` : ''}</span>
-          {:else if booking.invoice_status === 'submitted'}
-            <span class="px-2 py-0.5 rounded-full border border-green-200 bg-green-50 text-green-700 font-mono text-[10px] uppercase tracking-widest">Submitted {booking.invoice_submitted_at ? `· ${formatAcceptedDate(booking.invoice_submitted_at)}` : ''}</span>
-          {/if}
-        </div>
-        <p class="font-mono text-xs text-gray-500 mb-5">
-          Paste your invoice link and a credit-card payment link below. We'll forward both to the client.
-        </p>
-
-        {#if form?.error}
-          <p class="mb-4 px-3 py-2 bg-red-500/10 border border-red-500/30 rounded text-red-700 font-mono text-xs">{form.error}</p>
-        {/if}
-        {#if form?.invoiceSubmitted}
-          <p class="mb-4 px-3 py-2 bg-green-50 border border-green-200 rounded text-green-700 font-mono text-xs">Got it — we'll pass this along to the client.</p>
-        {/if}
-
-        <form method="POST" action="?/submitInvoice" use:enhance class="space-y-5">
-          <div>
-            <label for="invoice_url" class="block font-mono text-xs text-gray-700 mb-1.5">Invoice PDF link</label>
-            <input id="invoice_url" name="invoice_url" type="url" value={booking.invoice_url ?? ''} placeholder="https://drive.google.com/…" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black" />
-            <p class="font-mono text-[11px] text-gray-500 mt-1.5">
-              No hosting link? Upload the PDF to Google Drive and paste its share link, or email the PDF to <a href="mailto:salina@artistsafespaces.org" class="underline hover:no-underline">salina@artistsafespaces.org</a> and we'll handle the rest.
-            </p>
-          </div>
-
-          <div>
-            <label for="payment_link_url" class="block font-mono text-xs text-gray-700 mb-1.5">Credit-card payment link</label>
-            <input id="payment_link_url" name="payment_link_url" type="url" value={booking.payment_link_url ?? ''} placeholder="https://buy.stripe.com/… or square.link/… or paypal.me/…" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black" />
-            <p class="font-mono text-[11px] text-gray-500 mt-1.5">
-              Our clients prefer paying by credit card. A Stripe payment link, Square checkout, PayPal.me, or invoice-with-pay-button all work.
-            </p>
-          </div>
-
-          <div>
-            <label for="invoice_notes" class="block font-mono text-xs text-gray-700 mb-1.5">Notes <span class="text-gray-400">(optional)</span></label>
-            <textarea id="invoice_notes" name="invoice_notes" rows="2" placeholder="Net terms, tax info, anything the client should know…" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black">{booking.invoice_notes ?? ''}</textarea>
-          </div>
-
-          <div class="flex items-center gap-3">
-            <button type="submit" class="px-6 py-3 bg-brand-yellow text-brand-black font-mono text-sm font-bold rounded hover:bg-yellow-300 transition-colors">
-              {booking.invoice_status === 'not_submitted' ? 'Submit invoice details' : 'Update'}
-            </button>
-          </div>
-        </form>
-      </div>
-    {:else if booking.status === 'declined'}
+    <!-- Response state for non-accepted bookings (accepted state is rendered at the top) -->
+    {#if booking.status === 'declined'}
       <div class="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center">
         <p class="font-display text-2xl font-bold text-gray-700 mb-1">Declined</p>
         <p class="font-mono text-xs text-gray-500">on {formatAcceptedDate(booking.declined_at)}</p>
