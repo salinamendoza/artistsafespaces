@@ -14,19 +14,45 @@ interface ContactRow {
   contact_note: string | null;
 }
 
+interface ArtistAppRow {
+  id: number;
+  name: string;
+  email: string;
+  location: string;
+  medium: string;
+  bio: string;
+  website: string | null;
+  instagram: string | null;
+  interests: string | null;
+  created_at: string;
+}
+
+interface PartnerAppRow {
+  id: number;
+  organization_name: string;
+  contact_name: string;
+  email: string;
+  phone: string | null;
+  org_type: string;
+  interests: string | null;
+  message: string | null;
+  created_at: string;
+}
+
+type ViewType = 'active' | 'archived' | 'artist-apps' | 'partner-apps';
+
 export const load: PageServerLoad = async ({ platform, url }) => {
   const db = platform?.env?.DB;
   if (!db) {
-    return { contacts: [], stats: { total: 0, contacted: 0, archived: 0 }, view: 'active' };
+    return { contacts: [], artistApps: [], partnerApps: [], stats: { total: 0, contacted: 0, archived: 0, artistApplications: 0, partnerApplications: 0 }, view: 'active' as ViewType };
   }
 
-  const view = url.searchParams.get('view') === 'archived' ? 'archived' : 'active';
-  const archivedFlag = view === 'archived' ? 1 : 0;
+  const rawView = url.searchParams.get('view') ?? 'active';
+  const view: ViewType = ['active', 'archived', 'artist-apps', 'partner-apps'].includes(rawView)
+    ? rawView as ViewType
+    : 'active';
 
-  const [contacts, statsResult, artistCount, partnerCount] = await Promise.all([
-    db.prepare('SELECT * FROM contact_submissions WHERE archived = ? ORDER BY created_at DESC')
-      .bind(archivedFlag)
-      .all<ContactRow>(),
+  const [statsResult, artistCount, partnerCount] = await Promise.all([
     db.prepare(`
       SELECT
         COUNT(*) as total,
@@ -38,8 +64,28 @@ export const load: PageServerLoad = async ({ platform, url }) => {
     db.prepare('SELECT COUNT(*) as count FROM partner_applications').first<{ count: number }>()
   ]);
 
+  let contacts: ContactRow[] = [];
+  let artistApps: ArtistAppRow[] = [];
+  let partnerApps: PartnerAppRow[] = [];
+
+  if (view === 'artist-apps') {
+    const result = await db.prepare('SELECT * FROM artist_applications ORDER BY created_at DESC').all<ArtistAppRow>();
+    artistApps = result.results ?? [];
+  } else if (view === 'partner-apps') {
+    const result = await db.prepare('SELECT * FROM partner_applications ORDER BY created_at DESC').all<PartnerAppRow>();
+    partnerApps = result.results ?? [];
+  } else {
+    const archivedFlag = view === 'archived' ? 1 : 0;
+    const result = await db.prepare('SELECT * FROM contact_submissions WHERE archived = ? ORDER BY created_at DESC')
+      .bind(archivedFlag)
+      .all<ContactRow>();
+    contacts = result.results ?? [];
+  }
+
   return {
-    contacts: contacts.results ?? [],
+    contacts,
+    artistApps,
+    partnerApps,
     stats: {
       total: statsResult?.total ?? 0,
       contacted: statsResult?.contacted ?? 0,
