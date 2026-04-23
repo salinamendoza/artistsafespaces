@@ -7,6 +7,7 @@
   import { parseBriefSchema, parseBriefData } from '$lib/types/brief-schema';
   import { visualSheetRegistry, hasVisualSheet } from '$lib/briefs/visualSheets';
   import { AS_CORE_TERMS } from '$lib/briefs/coreTerms';
+  import { formatDate as fmtDate } from '$lib/utils/date';
   import type { PageData, ActionData } from './$types';
 
   export let data: PageData;
@@ -27,8 +28,7 @@
   }
 
   function formatDate(iso: string | null): string {
-    if (!iso) return '—';
-    return new Date(iso.length <= 10 ? iso : iso + 'Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+    return fmtDate(iso, { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }) || '—';
   }
 </script>
 

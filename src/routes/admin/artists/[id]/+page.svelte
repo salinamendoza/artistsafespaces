@@ -1,6 +1,7 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
   import AdminHeader from '$lib/components/AdminHeader.svelte';
+  import { formatDate as fmtDate } from '$lib/utils/date';
   import type { PageData, ActionData } from './$types';
 
   export let data: PageData;
@@ -30,8 +31,7 @@
   }
 
   function formatDate(iso: string | null): string {
-    if (!iso) return '—';
-    return new Date(iso.length <= 10 ? iso : iso + 'Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return fmtDate(iso, { month: 'short', day: 'numeric', year: 'numeric' }) || '—';
   }
 
   let copiedKey: string | null = null;
