@@ -41,10 +41,29 @@ interface PartnerAppRow {
 
 type ViewType = 'active' | 'archived' | 'artist-apps' | 'partner-apps';
 
+export type ActivityType =
+  | 'brief_accepted'
+  | 'brief_declined'
+  | 'invoice_submitted'
+  | 'invoice_paid'
+  | 'contact_submitted'
+  | 'artist_applied'
+  | 'partner_applied';
+
+export interface ActivityRow {
+  type: ActivityType;
+  ts: string;
+  actor: string | null;
+  title: string | null;
+  context: string | null;
+  event_id: number | null;
+  brief_id: number | null;
+}
+
 export const load: PageServerLoad = async ({ platform, url }) => {
   const db = platform?.env?.DB;
   if (!db) {
-    return { contacts: [], artistApps: [], partnerApps: [], stats: { total: 0, contacted: 0, archived: 0, artistApplications: 0, partnerApplications: 0 }, view: 'active' as ViewType };
+    return { contacts: [], artistApps: [], partnerApps: [], activity: [] as ActivityRow[], stats: { total: 0, contacted: 0, archived: 0, artistApplications: 0, partnerApplications: 0 }, view: 'active' as ViewType };
   }
 
   const rawView = url.searchParams.get('view') ?? 'active';
@@ -52,7 +71,7 @@ export const load: PageServerLoad = async ({ platform, url }) => {
     ? rawView as ViewType
     : 'active';
 
-  const [statsResult, artistCount, partnerCount] = await Promise.all([
+  const [statsResult, artistCount, partnerCount, activityResult] = await Promise.all([
     db.prepare(`
       SELECT
         COUNT(*) as total,
@@ -61,8 +80,60 @@ export const load: PageServerLoad = async ({ platform, url }) => {
       FROM contact_submissions
     `).first<{ total: number; contacted: number; archived: number }>(),
     db.prepare('SELECT COUNT(*) as count FROM artist_applications').first<{ count: number }>(),
-    db.prepare('SELECT COUNT(*) as count FROM partner_applications').first<{ count: number }>()
+    db.prepare('SELECT COUNT(*) as count FROM partner_applications').first<{ count: number }>(),
+    db.prepare(`
+      SELECT type, ts, actor, title, context, event_id, brief_id FROM (
+        SELECT 'brief_accepted' AS type, b.accepted_at AS ts,
+               a.name AS actor, br.title AS title, e.name AS context,
+               e.id AS event_id, br.id AS brief_id
+        FROM bookings b
+        JOIN artists a ON a.id = b.artist_id
+        JOIN briefs br ON br.id = b.brief_id
+        JOIN events e ON e.id = br.event_id
+        WHERE b.accepted_at IS NOT NULL
+
+        UNION ALL
+        SELECT 'brief_declined', b.declined_at, a.name, br.title, e.name, e.id, br.id
+        FROM bookings b
+        JOIN artists a ON a.id = b.artist_id
+        JOIN briefs br ON br.id = b.brief_id
+        JOIN events e ON e.id = br.event_id
+        WHERE b.declined_at IS NOT NULL
+
+        UNION ALL
+        SELECT 'invoice_submitted', b.invoice_submitted_at, a.name, br.title, e.name, e.id, br.id
+        FROM bookings b
+        JOIN artists a ON a.id = b.artist_id
+        JOIN briefs br ON br.id = b.brief_id
+        JOIN events e ON e.id = br.event_id
+        WHERE b.invoice_submitted_at IS NOT NULL
+
+        UNION ALL
+        SELECT 'invoice_paid', b.invoice_paid_at, a.name, br.title, e.name, e.id, br.id
+        FROM bookings b
+        JOIN artists a ON a.id = b.artist_id
+        JOIN briefs br ON br.id = b.brief_id
+        JOIN events e ON e.id = br.event_id
+        WHERE b.invoice_paid_at IS NOT NULL
+
+        UNION ALL
+        SELECT 'contact_submitted', c.created_at, c.name, NULL, c.subject, NULL, NULL
+        FROM contact_submissions c
+
+        UNION ALL
+        SELECT 'artist_applied', aa.created_at, aa.name, NULL, aa.medium, NULL, NULL
+        FROM artist_applications aa
+
+        UNION ALL
+        SELECT 'partner_applied', pa.created_at, pa.contact_name, NULL, pa.organization_name, NULL, NULL
+        FROM partner_applications pa
+      ) AS activity
+      ORDER BY ts DESC
+      LIMIT 20
+    `).all<ActivityRow>()
   ]);
+
+  const activity: ActivityRow[] = activityResult.results ?? [];
 
   let contacts: ContactRow[] = [];
   let artistApps: ArtistAppRow[] = [];
@@ -86,6 +157,7 @@ export const load: PageServerLoad = async ({ platform, url }) => {
     contacts,
     artistApps,
     partnerApps,
+    activity,
     stats: {
       total: statsResult?.total ?? 0,
       contacted: statsResult?.contacted ?? 0,
