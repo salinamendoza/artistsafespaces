@@ -6,7 +6,7 @@
   export let data: PageData;
   export let form: ActionData;
 
-  $: ({ event, briefs, eventStats } = data);
+  $: ({ event, briefs, eventStats, partners, partnerStats } = data);
 
   function formatDate(iso: string | null): string {
     if (!iso) return '—';
@@ -15,6 +15,12 @@
 
   function money(n: number): string {
     return '$' + n.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+  }
+
+  function paidByLabel(v: string): string {
+    if (v === 'us') return 'Paid by us';
+    if (v === 'client') return 'Paid by client';
+    return 'Not paid';
   }
 </script>
 
@@ -59,8 +65,8 @@
     {/if}
 
     <!-- At-a-glance stats -->
-    {#if eventStats.breakdown.length > 0}
-      <div class="grid grid-cols-2 gap-4">
+    {#if eventStats.breakdown.length > 0 || partnerStats.count > 0}
+      <div class="grid gap-4 {partnerStats.count > 0 ? 'md:grid-cols-3 grid-cols-1' : 'grid-cols-2'}">
         <div class="relative group bg-gray-50 border border-gray-200 rounded-lg px-5 py-4 cursor-default">
           <p class="font-mono text-3xl font-bold text-brand-black">{eventStats.artistCount}</p>
           <p class="font-mono text-xs text-gray-500 mt-1">artist{eventStats.artistCount === 1 ? '' : 's'} booked</p>
@@ -106,8 +112,78 @@
             </div>
           </div>
         </div>
+        {#if partnerStats.count > 0}
+          <div class="relative group bg-gray-50 border border-gray-200 rounded-lg px-5 py-4 cursor-default">
+            <p class="font-mono text-3xl font-bold text-brand-black">{money(partnerStats.totalSpend)}</p>
+            <p class="font-mono text-xs text-gray-500 mt-1">partner spend · {partnerStats.count} partner{partnerStats.count === 1 ? '' : 's'}</p>
+            <!-- Hover breakdown -->
+            <div class="absolute right-0 top-full mt-2 z-20 w-80 bg-white border border-gray-300 rounded-lg p-4 shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity">
+              <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-3">Partners &amp; vendors</p>
+              <div class="space-y-2 mb-3">
+                {#each partners as p}
+                  <div class="flex items-center justify-between gap-3">
+                    <div class="min-w-0">
+                      <p class="font-mono text-xs text-brand-black font-bold truncate">{p.name}</p>
+                      <p class="font-mono text-[10px] text-gray-500">{paidByLabel(p.paid_by)}</p>
+                    </div>
+                    <p class="font-mono text-xs text-gray-700 flex-shrink-0">{p.amount ? money(p.amount) : '—'}</p>
+                  </div>
+                {/each}
+              </div>
+              <div class="pt-2 border-t border-gray-200 flex justify-between">
+                <p class="font-mono text-[10px] text-gray-500">By us: {money(partnerStats.spendByUs)}</p>
+                <p class="font-mono text-[10px] text-gray-500">By client: {money(partnerStats.spendByClient)}</p>
+              </div>
+            </div>
+          </div>
+        {/if}
       </div>
     {/if}
+
+    <!-- Partners & Vendors -->
+    <div>
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-display text-xl font-bold text-brand-black">Partners &amp; Vendors</h2>
+        <a href={`/admin/events/${event.id}/partners/new`} class="px-3 py-1.5 bg-brand-yellow text-brand-black font-mono text-xs font-bold rounded hover:bg-yellow-300 transition-colors">+ Add Partner</a>
+      </div>
+      {#if partners.length === 0}
+        <p class="font-mono text-xs text-gray-400 py-6 text-center border border-gray-200 rounded-lg">No partners or vendors yet.</p>
+      {:else}
+        <div class="space-y-2">
+          {#each partners as p}
+            <div class="border border-gray-200 rounded-lg p-4">
+              <div class="flex items-start justify-between gap-4">
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <p class="font-mono text-sm text-brand-black font-bold">{p.name}</p>
+                    <span class="px-2 py-0.5 rounded-full border text-[10px] font-mono uppercase tracking-widest
+                      {p.paid_by === 'us' ? 'bg-green-50 border-green-200 text-green-700' :
+                       p.paid_by === 'client' ? 'bg-blue-50 border-blue-200 text-blue-700' :
+                       'bg-gray-50 border-gray-200 text-gray-600'}">{paidByLabel(p.paid_by)}</span>
+                    {#if p.amount}<span class="font-mono text-xs text-gray-700">{money(p.amount)}</span>{/if}
+                  </div>
+                  {#if p.role}<p class="font-mono text-xs text-gray-500 mt-1">{p.role}</p>{/if}
+                  {#if p.website || p.contact}
+                    <div class="mt-1 flex flex-wrap gap-3 font-mono text-xs">
+                      {#if p.website}<a href={p.website} target="_blank" rel="noopener" class="text-gray-600 underline hover:text-brand-black truncate">{p.website}</a>{/if}
+                      {#if p.contact}<span class="text-gray-500">{p.contact}</span>{/if}
+                    </div>
+                  {/if}
+                  {#if p.notes}<p class="text-sm text-gray-700 mt-2 whitespace-pre-wrap">{p.notes}</p>{/if}
+                </div>
+                <div class="flex gap-2 flex-shrink-0">
+                  <a href={`/admin/events/${event.id}/partners/${p.id}/edit`} class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-700 hover:border-gray-400 hover:text-brand-black transition-colors">Edit</a>
+                  <form method="POST" action="?/deletePartner" use:enhance>
+                    <input type="hidden" name="partnerId" value={p.id} />
+                    <button type="submit" class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-500 hover:text-red-400 hover:border-red-400/30 transition-colors">Delete</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          {/each}
+        </div>
+      {/if}
+    </div>
 
     <!-- Briefs -->
     <div>

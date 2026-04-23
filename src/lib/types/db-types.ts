@@ -51,6 +51,19 @@ export interface Brief {
   updated_at: string;
 }
 
+export interface EventPartner {
+  id: number;
+  event_id: number;
+  name: string;
+  role: string | null;
+  paid_by: 'us' | 'client' | 'none';
+  amount: number | null;
+  website: string | null;
+  contact: string | null;
+  notes: string | null;
+  created_at: string;
+}
+
 export interface Booking {
   id: number;
   brief_id: number;
