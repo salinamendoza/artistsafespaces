@@ -1,13 +1,13 @@
 <script lang="ts">
   import AdminHeader from '$lib/components/AdminHeader.svelte';
+  import { formatDate as fmtDate } from '$lib/utils/date';
   import type { PageData } from './$types';
 
   export let data: PageData;
   $: ({ events } = data);
 
   function formatDate(iso: string | null): string {
-    if (!iso) return '—';
-    return new Date(iso.length <= 10 ? iso : iso + 'Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return fmtDate(iso, { month: 'short', day: 'numeric', year: 'numeric' }) || '—';
   }
 </script>
 

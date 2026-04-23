@@ -3,6 +3,7 @@
   import BriefFieldsView from '$lib/components/BriefFieldsView.svelte';
   import MarkdownView from '$lib/components/MarkdownView.svelte';
   import { visualSheetRegistry, hasVisualSheet } from '$lib/briefs/visualSheets';
+  import { formatDate } from '$lib/utils/date';
   import type { PageData, ActionData } from './$types';
 
   export let data: PageData;
@@ -15,13 +16,11 @@
   let showDecline = false;
 
   function formatEventDate(iso: string | null): string {
-    if (!iso) return '';
-    return new Date(iso.length <= 10 ? iso : iso + 'Z').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    return formatDate(iso, { month: 'long', day: 'numeric', year: 'numeric' });
   }
 
   function formatAcceptedDate(iso: string | null): string {
-    if (!iso) return '';
-    return new Date(iso + 'Z').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+    return formatDate(iso, { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
   }
 
   function money(n: number | null | undefined): string {
