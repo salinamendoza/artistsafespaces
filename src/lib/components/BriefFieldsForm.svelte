@@ -24,7 +24,7 @@
           name={`${namePrefix}${field.key}`}
           rows="3"
           required={field.required}
-          class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-yellow/40"
+          class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black"
           value={valueFor(field.key)}
         ></textarea>
       {:else if field.type === 'select'}
@@ -32,7 +32,7 @@
           id={`${namePrefix}${field.key}`}
           name={`${namePrefix}${field.key}`}
           required={field.required}
-          class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-yellow/40"
+          class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-black"
           value={valueFor(field.key)}
         >
           <option value="" class="bg-white">Select…</option>
@@ -47,7 +47,7 @@
           type="text"
           required={field.required}
           placeholder="e.g. 24 x 36 in"
-          class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-yellow/40"
+          class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black"
           value={valueFor(field.key)}
         />
       {:else}
@@ -56,7 +56,7 @@
           name={`${namePrefix}${field.key}`}
           type={field.type === 'number' ? 'number' : field.type === 'date' ? 'date' : 'text'}
           required={field.required}
-          class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-yellow/40"
+          class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black"
           value={valueFor(field.key)}
         />
       {/if}

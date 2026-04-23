@@ -43,14 +43,14 @@
             {#each events as e (e.id)}
               <tr class="border-t border-gray-100 hover:bg-gray-50">
                 <td class="px-4 py-3">
-                  <a href={`/admin/events/${e.id}`} class="text-brand-black hover:text-brand-yellow transition-colors font-bold">{e.name}</a>
+                  <a href={`/admin/events/${e.id}`} class="text-brand-black hover:text-brand-black transition-colors font-bold">{e.name}</a>
                   {#if e.location}<div class="text-[10px] text-gray-500 mt-0.5">{e.location}</div>{/if}
                 </td>
                 <td class="px-4 py-3 text-gray-600">{e.client_name ?? '—'}</td>
                 <td class="px-4 py-3 text-gray-600">{formatDate(e.event_date)}</td>
                 <td class="px-4 py-3">
                   <span class="px-2 py-0.5 rounded-full border text-[10px] uppercase tracking-widest
-                    {e.status === 'confirmed' ? 'bg-brand-yellow/10 border-brand-yellow/20 text-brand-yellow' :
+                    {e.status === 'confirmed' ? 'bg-brand-yellow/10 border-brand-yellow/20 text-green-700' :
                      e.status === 'live' ? 'bg-green-500/10 border-green-500/30 text-green-400' :
                      e.status === 'wrapped' ? 'bg-gray-50 border-gray-200 text-gray-500' :
                      e.status === 'cancelled' ? 'bg-red-500/10 border-red-500/30 text-red-400' :

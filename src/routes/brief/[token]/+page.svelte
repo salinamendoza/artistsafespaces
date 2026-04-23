@@ -169,7 +169,7 @@
         {:else}
           <form method="POST" action="?/decline" use:enhance>
             <label for="declined_reason" class="block font-mono text-xs text-gray-600 mb-2">Let us know why (optional)</label>
-            <textarea id="declined_reason" name="declined_reason" rows="3" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-yellow/40 mb-4" placeholder="Schedule conflict, scope, anything..."></textarea>
+            <textarea id="declined_reason" name="declined_reason" rows="3" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black mb-4" placeholder="Schedule conflict, scope, anything..."></textarea>
             <div class="flex gap-3">
               <button type="submit" class="px-6 py-3 bg-white/10 border border-gray-300 text-brand-black font-mono text-sm rounded hover:bg-white/15 transition-colors">Confirm Decline</button>
               <button type="button" on:click={() => (showDecline = false)} class="px-6 py-3 bg-transparent text-gray-600 font-mono text-sm rounded hover:text-brand-black transition-colors">Cancel</button>

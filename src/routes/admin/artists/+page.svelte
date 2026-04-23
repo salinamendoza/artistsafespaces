@@ -36,11 +36,11 @@
             {#each artists as a (a.id)}
               <tr class="border-t border-gray-100 hover:bg-gray-50">
                 <td class="px-4 py-3">
-                  <a href={`/admin/artists/${a.id}`} class="text-brand-black hover:text-brand-yellow transition-colors font-bold">{a.name}</a>
+                  <a href={`/admin/artists/${a.id}`} class="text-brand-black hover:text-brand-black transition-colors font-bold">{a.name}</a>
                 </td>
                 <td class="px-4 py-3 text-gray-600">{a.city ?? '—'}</td>
                 <td class="px-4 py-3 text-gray-600">
-                  {#if a.email}<a href={`mailto:${a.email}`} class="hover:text-brand-yellow">{a.email}</a>{:else}—{/if}
+                  {#if a.email}<a href={`mailto:${a.email}`} class="hover:text-brand-black">{a.email}</a>{:else}—{/if}
                 </td>
                 <td class="px-4 py-3 text-right text-gray-600">{a.booking_count}</td>
               </tr>

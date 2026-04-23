@@ -32,7 +32,7 @@
           <span>{formatDate(event.event_date)}</span>
           {#if event.location}<span>{event.location}</span>{/if}
           <span class="px-2 py-0.5 rounded-full border text-[10px] uppercase tracking-widest
-            {event.status === 'confirmed' ? 'bg-brand-yellow/10 border-brand-yellow/20 text-brand-yellow' :
+            {event.status === 'confirmed' ? 'bg-brand-yellow/10 border-brand-yellow/20 text-green-700' :
              event.status === 'live' ? 'bg-green-500/10 border-green-500/30 text-green-400' :
              event.status === 'wrapped' ? 'bg-gray-50 border-gray-200 text-gray-500' :
              event.status === 'cancelled' ? 'bg-red-500/10 border-red-500/30 text-red-400' :
@@ -40,7 +40,7 @@
         </div>
       </div>
       <div class="flex gap-2">
-        <a href={`/admin/events/${event.id}/edit`} class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-700 hover:border-brand-yellow/30 hover:text-brand-yellow transition-colors">Edit</a>
+        <a href={`/admin/events/${event.id}/edit`} class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-700 hover:border-gray-400 hover:text-brand-black transition-colors">Edit</a>
         <form method="POST" action="?/delete" use:enhance>
           <button type="submit" class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-500 hover:text-red-400 hover:border-red-400/30 transition-colors">Delete</button>
         </form>
@@ -86,7 +86,7 @@
           </div>
         </div>
         <div class="relative group bg-gray-50 border border-gray-200 rounded-lg px-5 py-4 cursor-default">
-          <p class="font-mono text-3xl font-bold text-brand-yellow">{money(eventStats.totalCost)}</p>
+          <p class="font-mono text-3xl font-bold text-brand-black">{money(eventStats.totalCost)}</p>
           <p class="font-mono text-xs text-gray-500 mt-1">total cost</p>
           <!-- Hover breakdown -->
           <div class="absolute right-0 top-full mt-2 z-20 w-80 bg-white border border-gray-300 rounded-lg p-4 shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity">
@@ -129,7 +129,7 @@
                 <div class="flex items-center gap-3 text-[10px] font-mono uppercase tracking-widest">
                   <span class="text-gray-500">{b.booking_count} booking{b.booking_count === 1 ? '' : 's'}</span>
                   <span class="px-2 py-0.5 rounded-full border
-                    {b.status === 'sent' ? 'bg-brand-yellow/10 border-brand-yellow/20 text-brand-yellow' :
+                    {b.status === 'sent' ? 'bg-brand-yellow/10 border-brand-yellow/20 text-green-700' :
                      b.status === 'ready' ? 'bg-green-500/10 border-green-500/30 text-green-400' :
                      'bg-gray-50 border-gray-200 text-gray-600'}">{b.status}</span>
                 </div>

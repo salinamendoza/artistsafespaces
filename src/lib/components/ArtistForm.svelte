@@ -26,33 +26,33 @@
   <div class="grid sm:grid-cols-2 gap-4">
     <div>
       <label for="name" class="block font-mono text-xs text-gray-600 mb-1.5">Name <span class="text-red-500">*</span></label>
-      <input id="name" name="name" type="text" required value={artist.name ?? ''} class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-yellow/40" />
+      <input id="name" name="name" type="text" required value={artist.name ?? ''} class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-black" />
     </div>
     <div>
       <label for="city" class="block font-mono text-xs text-gray-600 mb-1.5">City</label>
-      <input id="city" name="city" type="text" value={artist.city ?? ''} class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-yellow/40" />
+      <input id="city" name="city" type="text" value={artist.city ?? ''} class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-black" />
     </div>
     <div>
       <label for="email" class="block font-mono text-xs text-gray-600 mb-1.5">Email</label>
-      <input id="email" name="email" type="email" value={artist.email ?? ''} class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-yellow/40" />
+      <input id="email" name="email" type="email" value={artist.email ?? ''} class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-black" />
     </div>
     <div>
       <label for="phone" class="block font-mono text-xs text-gray-600 mb-1.5">Phone</label>
-      <input id="phone" name="phone" type="tel" value={artist.phone ?? ''} class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-yellow/40" />
+      <input id="phone" name="phone" type="tel" value={artist.phone ?? ''} class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-black" />
     </div>
     <div>
       <label for="portfolio_url" class="block font-mono text-xs text-gray-600 mb-1.5">Portfolio URL</label>
-      <input id="portfolio_url" name="portfolio_url" type="url" value={artist.portfolio_url ?? ''} class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-yellow/40" />
+      <input id="portfolio_url" name="portfolio_url" type="url" value={artist.portfolio_url ?? ''} class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-black" />
     </div>
     <div>
       <label for="instagram_handle" class="block font-mono text-xs text-gray-600 mb-1.5">Instagram</label>
-      <input id="instagram_handle" name="instagram_handle" type="text" placeholder="@handle" value={artist.instagram_handle ?? ''} class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-yellow/40" />
+      <input id="instagram_handle" name="instagram_handle" type="text" placeholder="@handle" value={artist.instagram_handle ?? ''} class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black" />
     </div>
   </div>
 
   <div>
     <label for="bio" class="block font-mono text-xs text-gray-600 mb-1.5">Bio</label>
-    <textarea id="bio" name="bio" rows="3" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-yellow/40">{artist.bio ?? ''}</textarea>
+    <textarea id="bio" name="bio" rows="3" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-black">{artist.bio ?? ''}</textarea>
   </div>
 
   {#if activationTypes.length}
@@ -71,7 +71,7 @@
 
   <div>
     <label for="internal_notes" class="block font-mono text-xs text-gray-600 mb-1.5">Internal Notes</label>
-    <textarea id="internal_notes" name="internal_notes" rows="3" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-yellow/40">{artist.internal_notes ?? ''}</textarea>
+    <textarea id="internal_notes" name="internal_notes" rows="3" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-black">{artist.internal_notes ?? ''}</textarea>
   </div>
 
   <div class="flex items-center gap-3">
