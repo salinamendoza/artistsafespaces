@@ -27,7 +27,7 @@
         <p class="font-mono text-sm text-gray-600 mb-4">Pick an activation type to start.</p>
         <div class="grid sm:grid-cols-2 gap-3">
           {#each activationTypes as t}
-            <a href={`?type=${t.slug}`} class="block border border-gray-200 rounded-lg p-5 hover:border-brand-yellow/40 transition-colors">
+            <a href={`?type=${t.slug}`} class="block border border-gray-200 rounded-lg p-5 hover:border-gray-400 transition-colors">
               <p class="font-display text-lg font-bold text-brand-black">{t.name}</p>
               {#if t.description}<p class="font-mono text-xs text-gray-500 mt-1">{t.description}</p>{/if}
             </a>
@@ -48,7 +48,7 @@
         <div class="space-y-5">
           <div>
             <label for="title" class="block font-mono text-xs text-gray-600 mb-1.5">Brief Title <span class="text-red-500">*</span></label>
-            <input id="title" name="title" type="text" required value="{selectedType.name} — {event.name}" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-yellow/40" />
+            <input id="title" name="title" type="text" required value="{selectedType.name} — {event.name}" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black" />
           </div>
 
           <div class="pt-2 border-t border-gray-200">
@@ -61,11 +61,11 @@
         <div class="space-y-5">
           <div>
             <label for="brief_body" class="block font-mono text-xs text-gray-600 mb-1.5">Brief Body (Markdown)</label>
-            <textarea id="brief_body" name="brief_body" rows="20" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black focus:outline-none focus:border-brand-yellow/40">{selectedType.brief_body_template ?? ''}</textarea>
+            <textarea id="brief_body" name="brief_body" rows="20" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black focus:outline-none focus:border-brand-black">{selectedType.brief_body_template ?? ''}</textarea>
           </div>
           <div>
             <label for="terms_markdown" class="block font-mono text-xs text-gray-600 mb-1.5">Terms (Markdown)</label>
-            <textarea id="terms_markdown" name="terms_markdown" rows="14" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black focus:outline-none focus:border-brand-yellow/40">{selectedType.terms_template ?? ''}</textarea>
+            <textarea id="terms_markdown" name="terms_markdown" rows="14" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black focus:outline-none focus:border-brand-black">{selectedType.terms_template ?? ''}</textarea>
           </div>
         </div>
 

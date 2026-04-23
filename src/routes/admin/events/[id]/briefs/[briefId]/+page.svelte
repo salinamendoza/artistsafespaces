@@ -50,14 +50,14 @@
         <h1 class="font-display text-3xl font-bold text-brand-black">{brief.title}</h1>
         <div class="mt-2 flex items-center gap-3 font-mono text-[10px] uppercase tracking-widest text-gray-500">
           <span class="px-2 py-0.5 rounded-full border
-            {brief.status === 'sent' ? 'bg-brand-yellow/10 border-brand-yellow/20 text-brand-yellow' :
+            {brief.status === 'sent' ? 'bg-brand-yellow/10 border-brand-yellow/20 text-green-700' :
              brief.status === 'ready' ? 'bg-green-500/10 border-green-500/30 text-green-400' :
              'bg-gray-50 border-gray-200 text-gray-600'}">{brief.status}</span>
           <span>updated {formatDate(brief.updated_at)}</span>
         </div>
       </div>
       <div class="flex gap-2">
-        <a href={`/admin/events/${event.id}/briefs/${brief.id}/edit`} class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-700 hover:border-brand-yellow/30 hover:text-brand-yellow transition-colors">Edit Brief</a>
+        <a href={`/admin/events/${event.id}/briefs/${brief.id}/edit`} class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-700 hover:border-gray-400 hover:text-brand-black transition-colors">Edit Brief</a>
         <form method="POST" action="?/deleteBrief" use:enhance>
           <button type="submit" class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-500 hover:text-red-400 hover:border-red-400/30 transition-colors">Delete</button>
         </form>
@@ -127,7 +127,7 @@
             <div class="border border-gray-200 rounded-lg p-5">
               <div class="flex items-start justify-between gap-4 mb-4">
                 <div>
-                  <a href={`/admin/artists/${b.artist_id}`} class="font-mono text-sm font-bold text-brand-black hover:text-brand-yellow">{b.artist_name}</a>
+                  <a href={`/admin/artists/${b.artist_id}`} class="font-mono text-sm font-bold text-brand-black hover:text-brand-black">{b.artist_name}</a>
                   {#if b.artist_email}
                     <p class="font-mono text-[10px] text-gray-500">{b.artist_email}</p>
                   {/if}
@@ -136,7 +136,7 @@
                   <span class="px-2 py-0.5 rounded-full border
                     {b.status === 'accepted' ? 'bg-green-500/10 border-green-500/30 text-green-400' :
                      b.status === 'declined' ? 'bg-red-500/10 border-red-500/30 text-red-400' :
-                     b.status === 'completed' ? 'bg-brand-yellow/10 border-brand-yellow/20 text-brand-yellow' :
+                     b.status === 'completed' ? 'bg-brand-yellow/10 border-brand-yellow/20 text-green-700' :
                      b.status === 'cancelled' ? 'bg-gray-50 border-gray-200 text-gray-500' :
                      'bg-gray-50 border-gray-200 text-gray-600'}">{b.status}</span>
                 </div>
@@ -158,25 +158,25 @@
                 <input type="hidden" name="id" value={b.id} />
                 <div>
                   <label class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Rate ($)</label>
-                  <input name="rate" type="number" step="0.01" value={b.rate} class="w-full px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black focus:outline-none focus:border-brand-yellow/40" />
+                  <input name="rate" type="number" step="0.01" value={b.rate} class="w-full px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black focus:outline-none focus:border-brand-black" />
                 </div>
                 <div>
                   <label class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Materials ($)</label>
-                  <input name="materials_allowance" type="number" step="0.01" value={b.materials_allowance ?? 0} class="w-full px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black focus:outline-none focus:border-brand-yellow/40" />
+                  <input name="materials_allowance" type="number" step="0.01" value={b.materials_allowance ?? 0} class="w-full px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black focus:outline-none focus:border-brand-black" />
                 </div>
                 <div>
                   <label class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Invoice</label>
-                  <select name="invoice_status" class="w-full px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black focus:outline-none focus:border-brand-yellow/40" value={b.invoice_status}>
+                  <select name="invoice_status" class="w-full px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black focus:outline-none focus:border-brand-black" value={b.invoice_status}>
                     <option value="not_submitted" class="bg-white">not submitted</option>
                     <option value="submitted" class="bg-white">submitted</option>
                     <option value="paid" class="bg-white">paid</option>
                   </select>
                 </div>
                 <div class="flex items-end">
-                  <button type="submit" class="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-[10px] text-gray-700 hover:border-brand-yellow/30 hover:text-brand-yellow transition-colors">Save</button>
+                  <button type="submit" class="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-[10px] text-gray-700 hover:border-gray-400 hover:text-brand-black transition-colors">Save</button>
                 </div>
                 <div class="sm:col-span-4">
-                  <input name="invoice_notes" type="text" placeholder="Invoice notes (optional)" value={b.invoice_notes ?? ''} class="w-full px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-yellow/40" />
+                  <input name="invoice_notes" type="text" placeholder="Invoice notes (optional)" value={b.invoice_notes ?? ''} class="w-full px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black" />
                 </div>
               </form>
 
@@ -220,8 +220,8 @@
                 <input type="hidden" name="id" value={b.id} />
                 <label class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Internal Notes</label>
                 <div class="flex gap-2">
-                  <textarea name="internal_notes" rows="2" class="flex-1 px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black focus:outline-none focus:border-brand-yellow/40">{b.internal_notes ?? ''}</textarea>
-                  <button type="submit" class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-[10px] text-gray-700 hover:border-brand-yellow/30 hover:text-brand-yellow transition-colors self-start">Save</button>
+                  <textarea name="internal_notes" rows="2" class="flex-1 px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black focus:outline-none focus:border-brand-black">{b.internal_notes ?? ''}</textarea>
+                  <button type="submit" class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-[10px] text-gray-700 hover:border-gray-400 hover:text-brand-black transition-colors self-start">Save</button>
                 </div>
               </form>
             </div>
@@ -236,7 +236,7 @@
           <div class="grid sm:grid-cols-4 gap-3">
             <div class="sm:col-span-2">
               <label class="block font-mono text-xs text-gray-600 mb-1.5">Artist</label>
-              <select name="artist_id" required class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-yellow/40">
+              <select name="artist_id" required class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-black">
                 <option value="" class="bg-white">Select…</option>
                 {#each unbookedArtists as a}
                   <option value={a.id} class="bg-white">{a.name}</option>
@@ -245,14 +245,14 @@
             </div>
             <div>
               <label class="block font-mono text-xs text-gray-600 mb-1.5">Rate ($)</label>
-              <input name="rate" type="number" step="0.01" required class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-yellow/40" />
+              <input name="rate" type="number" step="0.01" required class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-black" />
             </div>
             <div>
               <label class="block font-mono text-xs text-gray-600 mb-1.5">Materials ($)</label>
-              <input name="materials_allowance" type="number" step="0.01" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-yellow/40" />
+              <input name="materials_allowance" type="number" step="0.01" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-black" />
             </div>
             <div class="sm:col-span-4">
-              <textarea name="internal_notes" rows="2" placeholder="Internal notes (optional)" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-yellow/40"></textarea>
+              <textarea name="internal_notes" rows="2" placeholder="Internal notes (optional)" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black"></textarea>
             </div>
             <div>
               <button type="submit" class="px-3 py-1.5 bg-brand-yellow text-brand-black font-mono text-xs font-bold rounded hover:bg-yellow-300 transition-colors">Book Artist</button>
@@ -260,7 +260,7 @@
           </div>
         </form>
       {:else if bookings.length > 0}
-        <p class="font-mono text-xs text-gray-400 text-center py-4 border border-dashed border-gray-200 rounded-lg">All artists are booked to this brief. <a href="/admin/artists/new" class="underline hover:text-brand-yellow">Add another artist</a>.</p>
+        <p class="font-mono text-xs text-gray-400 text-center py-4 border border-dashed border-gray-200 rounded-lg">All artists are booked to this brief. <a href="/admin/artists/new" class="underline hover:text-brand-black">Add another artist</a>.</p>
       {/if}
     </div>
   </div>

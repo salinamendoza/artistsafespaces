@@ -36,7 +36,7 @@
       <div class="space-y-5">
         <div>
           <label for="title" class="block font-mono text-xs text-gray-600 mb-1.5">Brief Title <span class="text-red-500">*</span></label>
-          <input id="title" name="title" type="text" required value={brief.title} class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-yellow/40" />
+          <input id="title" name="title" type="text" required value={brief.title} class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-black" />
         </div>
 
         <div class="pt-2 border-t border-gray-200">
@@ -48,16 +48,16 @@
       <div class="space-y-5">
         <div>
           <label for="brief_body" class="block font-mono text-xs text-gray-600 mb-1.5">Brief Body (Markdown)</label>
-          <textarea id="brief_body" name="brief_body" rows="20" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black focus:outline-none focus:border-brand-yellow/40">{brief.brief_body ?? ''}</textarea>
+          <textarea id="brief_body" name="brief_body" rows="20" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black focus:outline-none focus:border-brand-black">{brief.brief_body ?? ''}</textarea>
         </div>
         <div>
           <label for="terms_markdown" class="block font-mono text-xs text-gray-600 mb-1.5">Terms (Markdown)</label>
-          <textarea id="terms_markdown" name="terms_markdown" rows="14" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black focus:outline-none focus:border-brand-yellow/40">{brief.terms_markdown ?? ''}</textarea>
+          <textarea id="terms_markdown" name="terms_markdown" rows="14" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black focus:outline-none focus:border-brand-black">{brief.terms_markdown ?? ''}</textarea>
         </div>
         {#if sheetSlugs.length}
           <div>
             <label for="visual_sheet_slug" class="block font-mono text-xs text-gray-600 mb-1.5">Visual Sheet (optional)</label>
-            <select id="visual_sheet_slug" name="visual_sheet_slug" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-yellow/40" value={brief.visual_sheet_slug ?? ''}>
+            <select id="visual_sheet_slug" name="visual_sheet_slug" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-black" value={brief.visual_sheet_slug ?? ''}>
               <option value="">None</option>
               {#each sheetSlugs as slug}
                 <option value={slug}>{slug}</option>

@@ -37,7 +37,7 @@
         {#if artist.city}<p class="font-mono text-xs text-gray-500 mt-1">{artist.city}</p>{/if}
       </div>
       <div class="flex gap-2">
-        <a href={`/admin/artists/${artist.id}/edit`} class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-700 hover:border-brand-yellow/30 hover:text-brand-yellow transition-colors">Edit</a>
+        <a href={`/admin/artists/${artist.id}/edit`} class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-700 hover:border-gray-400 hover:text-brand-black transition-colors">Edit</a>
         <form method="POST" action="?/delete" use:enhance>
           <button type="submit" class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-500 hover:text-red-400 hover:border-red-400/30 transition-colors">Delete</button>
         </form>
@@ -53,7 +53,7 @@
       <dl class="grid sm:grid-cols-2 gap-x-6 gap-y-4">
         <div>
           <dt class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Email</dt>
-          <dd class="font-mono text-sm text-brand-black">{#if artist.email}<a href={`mailto:${artist.email}`} class="hover:text-brand-yellow">{artist.email}</a>{:else}—{/if}</dd>
+          <dd class="font-mono text-sm text-brand-black">{#if artist.email}<a href={`mailto:${artist.email}`} class="hover:text-brand-black">{artist.email}</a>{:else}—{/if}</dd>
         </div>
         <div>
           <dt class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Phone</dt>
@@ -61,7 +61,7 @@
         </div>
         <div>
           <dt class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Portfolio</dt>
-          <dd class="font-mono text-sm text-brand-black">{#if artist.portfolio_url}<a href={artist.portfolio_url} target="_blank" rel="noopener" class="hover:text-brand-yellow underline">{artist.portfolio_url}</a>{:else}—{/if}</dd>
+          <dd class="font-mono text-sm text-brand-black">{#if artist.portfolio_url}<a href={artist.portfolio_url} target="_blank" rel="noopener" class="hover:text-brand-black underline">{artist.portfolio_url}</a>{:else}—{/if}</dd>
         </div>
         <div>
           <dt class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Instagram</dt>
@@ -114,7 +114,7 @@
                   <span class="px-2 py-0.5 rounded-full border
                     {b.status === 'accepted' ? 'bg-green-500/10 border-green-500/30 text-green-400' :
                      b.status === 'declined' ? 'bg-gray-50 border-gray-200 text-gray-500' :
-                     b.status === 'completed' ? 'bg-brand-yellow/10 border-brand-yellow/20 text-brand-yellow' :
+                     b.status === 'completed' ? 'bg-brand-yellow/10 border-brand-yellow/20 text-green-700' :
                      'bg-gray-50 border-gray-200 text-gray-600'}">{b.status}</span>
                   <span class="text-gray-500">${b.rate}</span>
                 </div>

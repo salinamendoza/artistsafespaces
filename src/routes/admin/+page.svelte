@@ -53,7 +53,7 @@
         <p class="font-mono text-xs text-gray-500 mt-1">total contacts</p>
       </div>
       <div class="bg-gray-50 border border-gray-200 rounded-lg px-5 py-4">
-        <p class="font-mono text-3xl font-bold text-brand-yellow">{stats.contacted}</p>
+        <p class="font-mono text-3xl font-bold text-brand-black">{stats.contacted}</p>
         <p class="font-mono text-xs text-gray-500 mt-1">contacted</p>
       </div>
       <div class="bg-gray-50 border border-gray-200 rounded-lg px-5 py-4">
@@ -90,7 +90,7 @@
       </div>
       <button
         on:click={exportCsv}
-        class="px-4 py-2 border border-gray-200 rounded-lg font-mono text-xs text-gray-500 hover:text-brand-yellow hover:border-brand-yellow/30 transition-colors"
+        class="px-4 py-2 border border-gray-200 rounded-lg font-mono text-xs text-gray-500 hover:text-brand-black hover:border-gray-400 transition-colors"
       >
         Export CSV
       </button>
@@ -118,7 +118,7 @@
                     </span>
                   {/if}
                 </div>
-                <a href="mailto:{contact.email}" class="font-mono text-xs text-gray-500 hover:text-brand-yellow transition-colors">
+                <a href="mailto:{contact.email}" class="font-mono text-xs text-gray-500 hover:text-brand-black transition-colors">
                   {contact.email}
                 </a>
               </div>
@@ -157,7 +157,7 @@
                   </div>
                   <button
                     type="submit"
-                    class="px-3 py-1.5 rounded text-xs font-mono font-bold transition-colors {contact.contacted ? 'bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/20 hover:bg-transparent' : 'bg-gray-50 text-gray-500 border border-gray-200 hover:text-brand-yellow hover:border-brand-yellow/30'}"
+                    class="px-3 py-1.5 rounded text-xs font-mono font-bold transition-colors {contact.contacted ? 'bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/20 hover:bg-transparent' : 'bg-gray-50 text-gray-500 border border-gray-200 hover:text-brand-black hover:border-gray-400'}"
                   >
                     {contact.contacted ? 'Undo Contact' : 'Mark Contacted'}
                   </button>
@@ -188,7 +188,7 @@
                   <input type="hidden" name="id" value={contact.id} />
                   <button
                     type="submit"
-                    class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-gray-400 hover:text-brand-yellow hover:border-brand-yellow/30 transition-colors"
+                    class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-gray-400 hover:text-brand-black hover:border-gray-400 transition-colors"
                   >
                     Unarchive
                   </button>
