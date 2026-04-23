@@ -50,7 +50,7 @@
         <h1 class="font-display text-3xl font-bold text-brand-black">{brief.title}</h1>
         <div class="mt-2 flex items-center gap-3 font-mono text-[10px] uppercase tracking-widest text-gray-500">
           <span class="px-2 py-0.5 rounded-full border
-            {brief.status === 'sent' ? 'bg-brand-yellow/10 border-brand-yellow/20 text-green-700' :
+            {brief.status === 'sent' ? 'bg-green-50 border-green-200 text-green-700' :
              brief.status === 'ready' ? 'bg-green-500/10 border-green-500/30 text-green-400' :
              'bg-gray-50 border-gray-200 text-gray-600'}">{brief.status}</span>
           <span>updated {formatDate(brief.updated_at)}</span>
@@ -136,7 +136,7 @@
                   <span class="px-2 py-0.5 rounded-full border
                     {b.status === 'accepted' ? 'bg-green-500/10 border-green-500/30 text-green-400' :
                      b.status === 'declined' ? 'bg-red-500/10 border-red-500/30 text-red-400' :
-                     b.status === 'completed' ? 'bg-brand-yellow/10 border-brand-yellow/20 text-green-700' :
+                     b.status === 'completed' ? 'bg-green-50 border-green-200 text-green-700' :
                      b.status === 'cancelled' ? 'bg-gray-50 border-gray-200 text-gray-500' :
                      'bg-gray-50 border-gray-200 text-gray-600'}">{b.status}</span>
                 </div>
