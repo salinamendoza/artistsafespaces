@@ -68,64 +68,98 @@ export const load: PageServerLoad = async ({ platform, url, setHeaders }) => {
     db.prepare('SELECT COUNT(*) as count FROM partner_applications').first<{ count: number }>()
   ]);
 
-  // Activity feed — derived from existing timestamps; wrapped defensively so a
-  // bad row or D1 quirk never takes down the dashboard.
-  let activity: ActivityRow[] = [];
-  try {
-    const activityResult = await db.prepare(`
-      SELECT type, ts, actor, title, context, event_id, brief_id FROM (
-        SELECT 'brief_accepted' AS type, b.accepted_at AS ts,
-               a.name AS actor, br.title AS title, e.name AS context,
-               e.id AS event_id, br.id AS brief_id
-        FROM bookings b
-        LEFT JOIN artists a ON a.id = b.artist_id
-        LEFT JOIN briefs br ON br.id = b.brief_id
-        LEFT JOIN events e ON e.id = br.event_id
-        WHERE b.accepted_at IS NOT NULL
+  // Activity feed — seven simple queries instead of one big UNION ALL.
+  // D1's SDK was silently failing on the UNION form even though the SQL
+  // worked in the D1 Console. Seven small parallel queries are also more
+  // resilient: one bad table doesn't wipe out the whole feed, and each
+  // failure logs independently.
+  const fetchActivity = async <T extends Record<string, unknown>>(
+    sql: string,
+    label: string
+  ): Promise<T[]> => {
+    try {
+      const r = await db.prepare(sql).all<T>();
+      return r.results ?? [];
+    } catch (err) {
+      console.error(`activity query failed (${label}):`, err);
+      return [];
+    }
+  };
 
-        UNION ALL
-        SELECT 'brief_declined', b.declined_at, a.name, br.title, e.name, e.id, br.id
-        FROM bookings b
-        LEFT JOIN artists a ON a.id = b.artist_id
-        LEFT JOIN briefs br ON br.id = b.brief_id
-        LEFT JOIN events e ON e.id = br.event_id
-        WHERE b.declined_at IS NOT NULL
+  type Raw = {
+    ts: string | null;
+    actor: string | null;
+    title: string | null;
+    context: string | null;
+    event_id: number | null;
+    brief_id: number | null;
+  };
 
-        UNION ALL
-        SELECT 'invoice_submitted', b.invoice_submitted_at, a.name, br.title, e.name, e.id, br.id
-        FROM bookings b
-        LEFT JOIN artists a ON a.id = b.artist_id
-        LEFT JOIN briefs br ON br.id = b.brief_id
-        LEFT JOIN events e ON e.id = br.event_id
-        WHERE b.invoice_submitted_at IS NOT NULL
+  const [acceptedRows, declinedRows, invSubRows, invPaidRows, contactRows, artistAppRows, partnerAppRows] = await Promise.all([
+    fetchActivity<Raw>(`
+      SELECT b.accepted_at AS ts, a.name AS actor, br.title AS title, e.name AS context, e.id AS event_id, br.id AS brief_id
+      FROM bookings b
+      LEFT JOIN artists a ON a.id = b.artist_id
+      LEFT JOIN briefs br ON br.id = b.brief_id
+      LEFT JOIN events e ON e.id = br.event_id
+      WHERE b.accepted_at IS NOT NULL
+      ORDER BY b.accepted_at DESC LIMIT 20
+    `, 'brief_accepted'),
+    fetchActivity<Raw>(`
+      SELECT b.declined_at AS ts, a.name AS actor, br.title AS title, e.name AS context, e.id AS event_id, br.id AS brief_id
+      FROM bookings b
+      LEFT JOIN artists a ON a.id = b.artist_id
+      LEFT JOIN briefs br ON br.id = b.brief_id
+      LEFT JOIN events e ON e.id = br.event_id
+      WHERE b.declined_at IS NOT NULL
+      ORDER BY b.declined_at DESC LIMIT 20
+    `, 'brief_declined'),
+    fetchActivity<Raw>(`
+      SELECT b.invoice_submitted_at AS ts, a.name AS actor, br.title AS title, e.name AS context, e.id AS event_id, br.id AS brief_id
+      FROM bookings b
+      LEFT JOIN artists a ON a.id = b.artist_id
+      LEFT JOIN briefs br ON br.id = b.brief_id
+      LEFT JOIN events e ON e.id = br.event_id
+      WHERE b.invoice_submitted_at IS NOT NULL
+      ORDER BY b.invoice_submitted_at DESC LIMIT 20
+    `, 'invoice_submitted'),
+    fetchActivity<Raw>(`
+      SELECT b.invoice_paid_at AS ts, a.name AS actor, br.title AS title, e.name AS context, e.id AS event_id, br.id AS brief_id
+      FROM bookings b
+      LEFT JOIN artists a ON a.id = b.artist_id
+      LEFT JOIN briefs br ON br.id = b.brief_id
+      LEFT JOIN events e ON e.id = br.event_id
+      WHERE b.invoice_paid_at IS NOT NULL
+      ORDER BY b.invoice_paid_at DESC LIMIT 20
+    `, 'invoice_paid'),
+    fetchActivity<Raw>(`
+      SELECT created_at AS ts, name AS actor, NULL AS title, subject AS context, NULL AS event_id, NULL AS brief_id
+      FROM contact_submissions ORDER BY created_at DESC LIMIT 20
+    `, 'contact_submitted'),
+    fetchActivity<Raw>(`
+      SELECT created_at AS ts, name AS actor, NULL AS title, medium AS context, NULL AS event_id, NULL AS brief_id
+      FROM artist_applications ORDER BY created_at DESC LIMIT 20
+    `, 'artist_applied'),
+    fetchActivity<Raw>(`
+      SELECT created_at AS ts, contact_name AS actor, NULL AS title, organization_name AS context, NULL AS event_id, NULL AS brief_id
+      FROM partner_applications ORDER BY created_at DESC LIMIT 20
+    `, 'partner_applied')
+  ]);
 
-        UNION ALL
-        SELECT 'invoice_paid', b.invoice_paid_at, a.name, br.title, e.name, e.id, br.id
-        FROM bookings b
-        LEFT JOIN artists a ON a.id = b.artist_id
-        LEFT JOIN briefs br ON br.id = b.brief_id
-        LEFT JOIN events e ON e.id = br.event_id
-        WHERE b.invoice_paid_at IS NOT NULL
+  const tag = (rows: Raw[], t: ActivityRow['type']): ActivityRow[] =>
+    rows.filter((r) => r.ts).map((r) => ({ type: t, ts: r.ts as string, actor: r.actor, title: r.title, context: r.context, event_id: r.event_id, brief_id: r.brief_id }));
 
-        UNION ALL
-        SELECT 'contact_submitted', c.created_at, c.name, NULL, c.subject, NULL, NULL
-        FROM contact_submissions c
-
-        UNION ALL
-        SELECT 'artist_applied', aa.created_at, aa.name, NULL, aa.medium, NULL, NULL
-        FROM artist_applications aa
-
-        UNION ALL
-        SELECT 'partner_applied', pa.created_at, pa.contact_name, NULL, pa.organization_name, NULL, NULL
-        FROM partner_applications pa
-      ) AS activity
-      ORDER BY ts DESC
-      LIMIT 50
-    `).all<ActivityRow>();
-    activity = activityResult.results ?? [];
-  } catch (err) {
-    console.error('admin activity feed query failed:', err);
-  }
+  const activity: ActivityRow[] = [
+    ...tag(acceptedRows, 'brief_accepted'),
+    ...tag(declinedRows, 'brief_declined'),
+    ...tag(invSubRows, 'invoice_submitted'),
+    ...tag(invPaidRows, 'invoice_paid'),
+    ...tag(contactRows, 'contact_submitted'),
+    ...tag(artistAppRows, 'artist_applied'),
+    ...tag(partnerAppRows, 'partner_applied')
+  ]
+    .sort((a, b) => (b.ts > a.ts ? 1 : b.ts < a.ts ? -1 : 0))
+    .slice(0, 50);
 
   let contacts: ContactRow[] = [];
   let artistApps: ArtistAppRow[] = [];
