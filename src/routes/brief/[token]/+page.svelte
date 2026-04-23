@@ -2,6 +2,7 @@
   import { enhance } from '$app/forms';
   import BriefFieldsView from '$lib/components/BriefFieldsView.svelte';
   import MarkdownView from '$lib/components/MarkdownView.svelte';
+  import { visualSheetRegistry, hasVisualSheet } from '$lib/briefs/visualSheets';
   import type { PageData, ActionData } from './$types';
 
   export let data: PageData;
@@ -98,6 +99,15 @@
     {#if brief.body}
       <div class="border border-gray-200 rounded-lg p-6">
         <MarkdownView source={brief.body} dark={false} />
+      </div>
+    {/if}
+
+    <!-- Visual Sheet -->
+    {#if brief.visualSheetSlug && hasVisualSheet(brief.visualSheetSlug)}
+      <div class="border border-gray-200 rounded-lg overflow-hidden">
+        {#await visualSheetRegistry[brief.visualSheetSlug]() then mod}
+          <svelte:component this={mod.default} />
+        {/await}
       </div>
     {/if}
 
