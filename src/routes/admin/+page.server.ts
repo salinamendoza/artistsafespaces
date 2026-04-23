@@ -42,7 +42,10 @@ interface PartnerAppRow {
 
 type ViewType = 'active' | 'archived' | 'artist-apps' | 'partner-apps';
 
-export const load: PageServerLoad = async ({ platform, url }) => {
+export const load: PageServerLoad = async ({ platform, url, setHeaders }) => {
+  // Never cache the admin dashboard — status changes need to be reflected on reload.
+  setHeaders({ 'cache-control': 'no-store' });
+
   const db = platform?.env?.DB;
   if (!db) {
     return { contacts: [], artistApps: [], partnerApps: [], activity: [] as ActivityRow[], stats: { total: 0, contacted: 0, archived: 0, artistApplications: 0, partnerApplications: 0 }, view: 'active' as ViewType };
@@ -75,33 +78,33 @@ export const load: PageServerLoad = async ({ platform, url }) => {
                a.name AS actor, br.title AS title, e.name AS context,
                e.id AS event_id, br.id AS brief_id
         FROM bookings b
-        JOIN artists a ON a.id = b.artist_id
-        JOIN briefs br ON br.id = b.brief_id
-        JOIN events e ON e.id = br.event_id
+        LEFT JOIN artists a ON a.id = b.artist_id
+        LEFT JOIN briefs br ON br.id = b.brief_id
+        LEFT JOIN events e ON e.id = br.event_id
         WHERE b.accepted_at IS NOT NULL
 
         UNION ALL
         SELECT 'brief_declined', b.declined_at, a.name, br.title, e.name, e.id, br.id
         FROM bookings b
-        JOIN artists a ON a.id = b.artist_id
-        JOIN briefs br ON br.id = b.brief_id
-        JOIN events e ON e.id = br.event_id
+        LEFT JOIN artists a ON a.id = b.artist_id
+        LEFT JOIN briefs br ON br.id = b.brief_id
+        LEFT JOIN events e ON e.id = br.event_id
         WHERE b.declined_at IS NOT NULL
 
         UNION ALL
         SELECT 'invoice_submitted', b.invoice_submitted_at, a.name, br.title, e.name, e.id, br.id
         FROM bookings b
-        JOIN artists a ON a.id = b.artist_id
-        JOIN briefs br ON br.id = b.brief_id
-        JOIN events e ON e.id = br.event_id
+        LEFT JOIN artists a ON a.id = b.artist_id
+        LEFT JOIN briefs br ON br.id = b.brief_id
+        LEFT JOIN events e ON e.id = br.event_id
         WHERE b.invoice_submitted_at IS NOT NULL
 
         UNION ALL
         SELECT 'invoice_paid', b.invoice_paid_at, a.name, br.title, e.name, e.id, br.id
         FROM bookings b
-        JOIN artists a ON a.id = b.artist_id
-        JOIN briefs br ON br.id = b.brief_id
-        JOIN events e ON e.id = br.event_id
+        LEFT JOIN artists a ON a.id = b.artist_id
+        LEFT JOIN briefs br ON br.id = b.brief_id
+        LEFT JOIN events e ON e.id = br.event_id
         WHERE b.invoice_paid_at IS NOT NULL
 
         UNION ALL
@@ -117,7 +120,7 @@ export const load: PageServerLoad = async ({ platform, url }) => {
         FROM partner_applications pa
       ) AS activity
       ORDER BY ts DESC
-      LIMIT 20
+      LIMIT 50
     `).all<ActivityRow>();
     activity = activityResult.results ?? [];
   } catch (err) {
