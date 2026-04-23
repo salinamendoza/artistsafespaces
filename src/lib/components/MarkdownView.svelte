@@ -53,6 +53,13 @@
         out.push(`<h${level}>${renderInline(h[2])}</h${level}>`);
         continue;
       }
+      const img = line.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+      if (img) {
+        flushParagraph();
+        closeList();
+        out.push(`<img src="${escapeHtml(img[2])}" alt="${escapeHtml(img[1])}" class="rounded-lg max-w-full my-4" loading="lazy" />`);
+        continue;
+      }
       const li = line.match(/^\s*[-*]\s+(.*)$/);
       if (li) {
         flushParagraph();
@@ -84,6 +91,7 @@
   .prose-md :global(p) { margin: 0.5rem 0; line-height: 1.65; }
   .prose-md :global(ul) { margin: 0.5rem 0 0.75rem 1.25rem; list-style: disc; }
   .prose-md :global(li) { margin: 0.25rem 0; line-height: 1.5; }
+  .prose-md :global(img) { max-width: 100%; height: auto; border-radius: 0.5rem; margin: 1rem 0; }
   .prose-md :global(strong) { font-weight: 700; }
   .prose-md :global(code) { font-family: var(--font-mono); font-size: 0.9em; padding: 0.1em 0.35em; border-radius: 3px; }
 
