@@ -51,7 +51,8 @@
           <textarea id="brief_body" name="brief_body" rows="20" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black focus:outline-none focus:border-brand-black">{brief.brief_body ?? ''}</textarea>
         </div>
         <div>
-          <label for="terms_markdown" class="block font-mono text-xs text-gray-600 mb-1.5">Terms (Markdown)</label>
+          <label for="terms_markdown" class="block font-mono text-xs text-gray-600 mb-1.5">Brief-specific Terms (Markdown)</label>
+          <p class="font-mono text-[11px] text-gray-500 mb-1.5">AS standard terms — point of contact, no direct solicitation, confidentiality — are automatically prepended to every brief. Only add clauses specific to this engagement (dimensions, cancellation, materials handling, etc.).</p>
           <textarea id="terms_markdown" name="terms_markdown" rows="14" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black focus:outline-none focus:border-brand-black">{brief.terms_markdown ?? ''}</textarea>
         </div>
         {#if sheetSlugs.length}

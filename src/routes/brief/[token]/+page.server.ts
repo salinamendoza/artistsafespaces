@@ -2,6 +2,12 @@ import { error, fail } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import { parseBriefSchema, parseBriefData } from '$lib/types/brief-schema';
 import type { Booking, Brief, Event, Artist, ActivationType } from '$lib/types/db-types';
+import { AS_CORE_TERMS } from '$lib/briefs/coreTerms';
+
+function composeTerms(briefTerms: string | null): string {
+  if (!briefTerms || !briefTerms.trim()) return AS_CORE_TERMS;
+  return `${AS_CORE_TERMS}\n\n---\n\n## Brief-specific terms\n\n${briefTerms.trim()}`;
+}
 
 interface LoadedRow {
   // booking
@@ -95,7 +101,7 @@ export const load: PageServerLoad = async ({ platform, params }) => {
     brief: {
       title: row.br_title,
       body: row.br_brief_body,
-      terms: row.br_terms_markdown,
+      terms: composeTerms(row.br_terms_markdown),
       visualSheetSlug: row.br_visual_sheet_slug
     },
     briefData: parseBriefData(row.br_brief_data_json),
@@ -149,6 +155,8 @@ export const actions: Actions = {
       ip = getClientAddress();
     } catch {}
 
+    const snapshot = composeTerms(booking.terms_markdown);
+
     await db
       .prepare(
         `UPDATE bookings SET
@@ -158,7 +166,7 @@ export const actions: Actions = {
           accepted_terms_snapshot = ?
          WHERE id = ?`
       )
-      .bind(nowStamp(), ip, booking.terms_markdown ?? '', booking.id)
+      .bind(nowStamp(), ip, snapshot, booking.id)
       .run();
 
     return { accepted: true };
