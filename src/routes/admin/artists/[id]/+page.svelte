@@ -81,7 +81,7 @@
           <dt class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-2">Specialties</dt>
           <dd class="flex flex-wrap gap-2">
             {#each specialties(artist.specialties_json) as slug}
-              <span class="px-2 py-0.5 bg-brand-yellow/10 text-brand-yellow font-mono text-[10px] rounded-full border border-brand-yellow/20">{slug}</span>
+              <span class="px-2 py-0.5 bg-gray-100 text-gray-700 font-mono text-[10px] rounded-full border border-gray-200">{slug}</span>
             {/each}
           </dd>
         </div>
@@ -114,7 +114,7 @@
                   <span class="px-2 py-0.5 rounded-full border
                     {b.status === 'accepted' ? 'bg-green-500/10 border-green-500/30 text-green-400' :
                      b.status === 'declined' ? 'bg-gray-50 border-gray-200 text-gray-500' :
-                     b.status === 'completed' ? 'bg-brand-yellow/10 border-brand-yellow/20 text-green-700' :
+                     b.status === 'completed' ? 'bg-green-50 border-green-200 text-green-700' :
                      'bg-gray-50 border-gray-200 text-gray-600'}">{b.status}</span>
                   <span class="text-gray-500">${b.rate}</span>
                 </div>

@@ -32,7 +32,7 @@
           <span>{formatDate(event.event_date)}</span>
           {#if event.location}<span>{event.location}</span>{/if}
           <span class="px-2 py-0.5 rounded-full border text-[10px] uppercase tracking-widest
-            {event.status === 'confirmed' ? 'bg-brand-yellow/10 border-brand-yellow/20 text-green-700' :
+            {event.status === 'confirmed' ? 'bg-green-50 border-green-200 text-green-700' :
              event.status === 'live' ? 'bg-green-500/10 border-green-500/30 text-green-400' :
              event.status === 'wrapped' ? 'bg-gray-50 border-gray-200 text-gray-500' :
              event.status === 'cancelled' ? 'bg-red-500/10 border-red-500/30 text-red-400' :
@@ -129,7 +129,7 @@
                 <div class="flex items-center gap-3 text-[10px] font-mono uppercase tracking-widest">
                   <span class="text-gray-500">{b.booking_count} booking{b.booking_count === 1 ? '' : 's'}</span>
                   <span class="px-2 py-0.5 rounded-full border
-                    {b.status === 'sent' ? 'bg-brand-yellow/10 border-brand-yellow/20 text-green-700' :
+                    {b.status === 'sent' ? 'bg-green-50 border-green-200 text-green-700' :
                      b.status === 'ready' ? 'bg-green-500/10 border-green-500/30 text-green-400' :
                      'bg-gray-50 border-gray-200 text-gray-600'}">{b.status}</span>
                 </div>

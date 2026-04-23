@@ -50,7 +50,7 @@
                 <td class="px-4 py-3 text-gray-600">{formatDate(e.event_date)}</td>
                 <td class="px-4 py-3">
                   <span class="px-2 py-0.5 rounded-full border text-[10px] uppercase tracking-widest
-                    {e.status === 'confirmed' ? 'bg-brand-yellow/10 border-brand-yellow/20 text-green-700' :
+                    {e.status === 'confirmed' ? 'bg-green-50 border-green-200 text-green-700' :
                      e.status === 'live' ? 'bg-green-500/10 border-green-500/30 text-green-400' :
                      e.status === 'wrapped' ? 'bg-gray-50 border-gray-200 text-gray-500' :
                      e.status === 'cancelled' ? 'bg-red-500/10 border-red-500/30 text-red-400' :
