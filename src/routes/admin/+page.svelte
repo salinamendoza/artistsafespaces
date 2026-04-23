@@ -7,7 +7,8 @@
 
   export let data: PageData;
 
-  $: ({ contacts, artistApps, partnerApps, activity, stats, view } = data);
+  $: ({ contacts, artistApps, partnerApps, stats, view } = data);
+  $: activity = Array.isArray(data.activity) ? data.activity : [];
 
   const ACTIVITY_LABELS: Record<ActivityType, string> = {
     brief_accepted: 'Accepted',
