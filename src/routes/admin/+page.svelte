@@ -3,7 +3,7 @@
   import AdminHeader from '$lib/components/AdminHeader.svelte';
   import { timeAgo } from '$lib/utils/date';
   import type { PageData } from './$types';
-  import type { ActivityRow, ActivityType } from './+page.server';
+  import type { ActivityRow, ActivityType } from '$lib/types/activity';
 
   export let data: PageData;
 

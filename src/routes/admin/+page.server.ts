@@ -1,5 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
+import type { ActivityRow } from '$lib/types/activity';
 
 interface ContactRow {
   id: number;
@@ -41,25 +42,6 @@ interface PartnerAppRow {
 
 type ViewType = 'active' | 'archived' | 'artist-apps' | 'partner-apps';
 
-export type ActivityType =
-  | 'brief_accepted'
-  | 'brief_declined'
-  | 'invoice_submitted'
-  | 'invoice_paid'
-  | 'contact_submitted'
-  | 'artist_applied'
-  | 'partner_applied';
-
-export interface ActivityRow {
-  type: ActivityType;
-  ts: string;
-  actor: string | null;
-  title: string | null;
-  context: string | null;
-  event_id: number | null;
-  brief_id: number | null;
-}
-
 export const load: PageServerLoad = async ({ platform, url }) => {
   const db = platform?.env?.DB;
   if (!db) {
@@ -71,7 +53,7 @@ export const load: PageServerLoad = async ({ platform, url }) => {
     ? rawView as ViewType
     : 'active';
 
-  const [statsResult, artistCount, partnerCount, activityResult] = await Promise.all([
+  const [statsResult, artistCount, partnerCount] = await Promise.all([
     db.prepare(`
       SELECT
         COUNT(*) as total,
@@ -80,8 +62,14 @@ export const load: PageServerLoad = async ({ platform, url }) => {
       FROM contact_submissions
     `).first<{ total: number; contacted: number; archived: number }>(),
     db.prepare('SELECT COUNT(*) as count FROM artist_applications').first<{ count: number }>(),
-    db.prepare('SELECT COUNT(*) as count FROM partner_applications').first<{ count: number }>(),
-    db.prepare(`
+    db.prepare('SELECT COUNT(*) as count FROM partner_applications').first<{ count: number }>()
+  ]);
+
+  // Activity feed — derived from existing timestamps; wrapped defensively so a
+  // bad row or D1 quirk never takes down the dashboard.
+  let activity: ActivityRow[] = [];
+  try {
+    const activityResult = await db.prepare(`
       SELECT type, ts, actor, title, context, event_id, brief_id FROM (
         SELECT 'brief_accepted' AS type, b.accepted_at AS ts,
                a.name AS actor, br.title AS title, e.name AS context,
@@ -130,10 +118,11 @@ export const load: PageServerLoad = async ({ platform, url }) => {
       ) AS activity
       ORDER BY ts DESC
       LIMIT 20
-    `).all<ActivityRow>()
-  ]);
-
-  const activity: ActivityRow[] = activityResult.results ?? [];
+    `).all<ActivityRow>();
+    activity = activityResult.results ?? [];
+  } catch (err) {
+    console.error('admin activity feed query failed:', err);
+  }
 
   let contacts: ContactRow[] = [];
   let artistApps: ArtistAppRow[] = [];
