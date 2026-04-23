@@ -249,7 +249,10 @@
         {/if}
 
         {#if !showDecline}
-          <form method="POST" action="?/accept" use:enhance>
+          <form method="POST" action="?/accept" use:enhance={() => async ({ update }) => {
+            await update();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}>
             <label class="flex items-start gap-3 mb-5 cursor-pointer">
               <input type="checkbox" name="terms_accepted" bind:checked={termsAccepted} class="mt-1 accent-brand-yellow w-4 h-4" />
               <span class="text-sm text-gray-800 leading-relaxed">
