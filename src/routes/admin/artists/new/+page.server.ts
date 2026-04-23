@@ -31,14 +31,24 @@ export const actions: Actions = {
     const internal_notes = form.get('internal_notes')?.toString().trim() || null;
     const specialties = form.getAll('specialties').map((v) => v.toString());
     const specialties_json = specialties.length ? JSON.stringify(specialties) : null;
+    const headshot_url = form.get('headshot_url')?.toString().trim() || null;
+    const studio_url = form.get('studio_url')?.toString().trim() || null;
+    const styleImages = [
+      form.get('style_image_1'),
+      form.get('style_image_2'),
+      form.get('style_image_3')
+    ]
+      .map((v) => (typeof v === 'string' ? v.trim() : ''))
+      .filter(Boolean);
+    const style_images_json = styleImages.length ? JSON.stringify(styleImages) : null;
 
     const result = await db
       .prepare(
-        `INSERT INTO artists (name, email, phone, city, bio, portfolio_url, instagram_handle, specialties_json, internal_notes)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `INSERT INTO artists (name, email, phone, city, bio, portfolio_url, instagram_handle, specialties_json, internal_notes, headshot_url, studio_url, style_images_json)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
          RETURNING id`
       )
-      .bind(name, email, phone, city, bio, portfolio_url, instagram_handle, specialties_json, internal_notes)
+      .bind(name, email, phone, city, bio, portfolio_url, instagram_handle, specialties_json, internal_notes, headshot_url, studio_url, style_images_json)
       .first<{ id: number }>();
 
     throw redirect(303, `/admin/artists/${result?.id ?? ''}`);
