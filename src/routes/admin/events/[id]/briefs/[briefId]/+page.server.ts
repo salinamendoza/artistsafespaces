@@ -97,6 +97,8 @@ export const actions: Actions = {
     const id = parseInt(form.get('id')?.toString() ?? '');
     const invoice_status = form.get('invoice_status')?.toString() ?? 'not_submitted';
     const invoice_notes = form.get('invoice_notes')?.toString().trim() || null;
+    const invoice_url = form.get('invoice_url')?.toString().trim() || null;
+    const payment_link_url = form.get('payment_link_url')?.toString().trim() || null;
     const rate = parseFloat(form.get('rate')?.toString() ?? '0');
     const materials_allowance = parseFloat(form.get('materials_allowance')?.toString() ?? '0');
 
@@ -111,10 +113,12 @@ export const actions: Actions = {
           invoice_status = ?,
           invoice_submitted_at = COALESCE(invoice_submitted_at, ?),
           invoice_paid_at = CASE WHEN ? = 'paid' THEN COALESCE(invoice_paid_at, ?) ELSE NULL END,
-          invoice_notes = ?
+          invoice_notes = ?,
+          invoice_url = ?,
+          payment_link_url = ?
          WHERE id = ?`
       )
-      .bind(rate, materials_allowance, invoice_status, submittedAt, invoice_status, paidAt, invoice_notes, id)
+      .bind(rate, materials_allowance, invoice_status, submittedAt, invoice_status, paidAt, invoice_notes, invoice_url, payment_link_url, id)
       .run();
     return { success: true };
   },
