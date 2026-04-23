@@ -1,61 +1,13 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
   import AdminHeader from '$lib/components/AdminHeader.svelte';
-  import { timeAgo } from '$lib/utils/date';
+  import ActivityList from '$lib/components/ActivityList.svelte';
   import type { PageData } from './$types';
-  import type { ActivityRow, ActivityType } from '$lib/types/activity';
 
   export let data: PageData;
 
   $: ({ contacts, artistApps, partnerApps, stats, view } = data);
   $: activity = Array.isArray(data.activity) ? data.activity : [];
-
-  const ACTIVITY_LABELS: Record<ActivityType, string> = {
-    brief_accepted: 'Accepted',
-    brief_declined: 'Declined',
-    invoice_submitted: 'Invoice',
-    invoice_paid: 'Paid',
-    contact_submitted: 'Contact',
-    artist_applied: 'Artist app',
-    partner_applied: 'Partner app'
-  };
-
-  const ACTIVITY_DOT: Record<ActivityType, string> = {
-    brief_accepted: 'bg-green-600',
-    brief_declined: 'bg-red-500',
-    invoice_submitted: 'bg-brand-yellow',
-    invoice_paid: 'bg-green-700',
-    contact_submitted: 'bg-gray-400',
-    artist_applied: 'bg-gray-400',
-    partner_applied: 'bg-gray-400'
-  };
-
-  function activityHref(a: ActivityRow): string {
-    if (a.event_id && a.brief_id) return `/admin/events/${a.event_id}/briefs/${a.brief_id}`;
-    if (a.type === 'artist_applied') return '/admin?view=artist-apps';
-    if (a.type === 'partner_applied') return '/admin?view=partner-apps';
-    return '/admin';
-  }
-
-  function activityDescription(a: ActivityRow): string {
-    const actor = a.actor ?? 'Someone';
-    switch (a.type) {
-      case 'brief_accepted':
-        return `${actor} accepted ${a.title ?? 'a brief'}${a.context ? ` — ${a.context}` : ''}`;
-      case 'brief_declined':
-        return `${actor} declined ${a.title ?? 'a brief'}${a.context ? ` — ${a.context}` : ''}`;
-      case 'invoice_submitted':
-        return `${actor} submitted invoice for ${a.title ?? 'a brief'}${a.context ? ` — ${a.context}` : ''}`;
-      case 'invoice_paid':
-        return `${actor}'s invoice marked paid — ${a.title ?? ''}${a.context ? ` (${a.context})` : ''}`.trim();
-      case 'contact_submitted':
-        return `${actor} sent a message${a.context ? `: "${a.context}"` : ''}`;
-      case 'artist_applied':
-        return `${actor} applied as artist${a.context ? ` · ${a.context}` : ''}`;
-      case 'partner_applied':
-        return `${actor} applied from ${a.context ?? 'an organization'}`;
-    }
-  }
 
   function exportCsv() {
     const headers = ['ID', 'Name', 'Email', 'Subject', 'Message', 'Created At', 'Contacted', 'Contact Note', 'Archived', 'Archive Note'];
@@ -98,25 +50,13 @@
   <div class="max-w-6xl mx-auto px-6 py-8">
     <!-- Recent activity -->
     <section class="mb-10">
-      <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-3">Recent activity</p>
-      {#if activity.length === 0}
-        <p class="font-mono text-xs text-gray-400 py-2">Nothing yet. Accepted briefs, invoices, and applications will show up here.</p>
-      {:else}
-        <ul class="divide-y divide-gray-100 border-t border-gray-100">
-          {#each activity as a, i (i)}
-            <li>
-              <a href={activityHref(a)} class="flex items-center justify-between gap-4 py-2.5 -mx-2 px-2 hover:bg-gray-50 rounded transition-colors">
-                <div class="flex items-center gap-3 min-w-0 flex-1">
-                  <span class="inline-block w-1.5 h-1.5 rounded-full flex-shrink-0 {ACTIVITY_DOT[a.type]}"></span>
-                  <span class="font-mono text-[10px] uppercase tracking-widest text-gray-500 w-20 flex-shrink-0">{ACTIVITY_LABELS[a.type]}</span>
-                  <span class="text-sm text-gray-800 truncate">{activityDescription(a)}</span>
-                </div>
-                <time class="font-mono text-[10px] text-gray-400 whitespace-nowrap">{timeAgo(a.ts)}</time>
-              </a>
-            </li>
-          {/each}
-        </ul>
-      {/if}
+      <div class="flex items-baseline justify-between mb-3">
+        <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500">Recent activity</p>
+        {#if activity.length > 0}
+          <a href="/admin/activity" class="font-mono text-[10px] uppercase tracking-widest text-gray-500 hover:text-brand-black transition-colors">View all →</a>
+        {/if}
+      </div>
+      <ActivityList {activity} />
     </section>
 
     <!-- Stats -->

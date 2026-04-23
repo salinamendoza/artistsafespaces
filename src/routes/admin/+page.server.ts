@@ -1,6 +1,7 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import type { ActivityRow } from '$lib/types/activity';
+import { loadActivity } from '$lib/server/activity';
 
 interface ContactRow {
   id: number;
@@ -68,98 +69,8 @@ export const load: PageServerLoad = async ({ platform, url, setHeaders }) => {
     db.prepare('SELECT COUNT(*) as count FROM partner_applications').first<{ count: number }>()
   ]);
 
-  // Activity feed — seven simple queries instead of one big UNION ALL.
-  // D1's SDK was silently failing on the UNION form even though the SQL
-  // worked in the D1 Console. Seven small parallel queries are also more
-  // resilient: one bad table doesn't wipe out the whole feed, and each
-  // failure logs independently.
-  const fetchActivity = async <T extends Record<string, unknown>>(
-    sql: string,
-    label: string
-  ): Promise<T[]> => {
-    try {
-      const r = await db.prepare(sql).all<T>();
-      return r.results ?? [];
-    } catch (err) {
-      console.error(`activity query failed (${label}):`, err);
-      return [];
-    }
-  };
-
-  type Raw = {
-    ts: string | null;
-    actor: string | null;
-    title: string | null;
-    context: string | null;
-    event_id: number | null;
-    brief_id: number | null;
-  };
-
-  const [acceptedRows, declinedRows, invSubRows, invPaidRows, contactRows, artistAppRows, partnerAppRows] = await Promise.all([
-    fetchActivity<Raw>(`
-      SELECT b.accepted_at AS ts, a.name AS actor, br.title AS title, e.name AS context, e.id AS event_id, br.id AS brief_id
-      FROM bookings b
-      LEFT JOIN artists a ON a.id = b.artist_id
-      LEFT JOIN briefs br ON br.id = b.brief_id
-      LEFT JOIN events e ON e.id = br.event_id
-      WHERE b.accepted_at IS NOT NULL
-      ORDER BY b.accepted_at DESC LIMIT 20
-    `, 'brief_accepted'),
-    fetchActivity<Raw>(`
-      SELECT b.declined_at AS ts, a.name AS actor, br.title AS title, e.name AS context, e.id AS event_id, br.id AS brief_id
-      FROM bookings b
-      LEFT JOIN artists a ON a.id = b.artist_id
-      LEFT JOIN briefs br ON br.id = b.brief_id
-      LEFT JOIN events e ON e.id = br.event_id
-      WHERE b.declined_at IS NOT NULL
-      ORDER BY b.declined_at DESC LIMIT 20
-    `, 'brief_declined'),
-    fetchActivity<Raw>(`
-      SELECT b.invoice_submitted_at AS ts, a.name AS actor, br.title AS title, e.name AS context, e.id AS event_id, br.id AS brief_id
-      FROM bookings b
-      LEFT JOIN artists a ON a.id = b.artist_id
-      LEFT JOIN briefs br ON br.id = b.brief_id
-      LEFT JOIN events e ON e.id = br.event_id
-      WHERE b.invoice_submitted_at IS NOT NULL
-      ORDER BY b.invoice_submitted_at DESC LIMIT 20
-    `, 'invoice_submitted'),
-    fetchActivity<Raw>(`
-      SELECT b.invoice_paid_at AS ts, a.name AS actor, br.title AS title, e.name AS context, e.id AS event_id, br.id AS brief_id
-      FROM bookings b
-      LEFT JOIN artists a ON a.id = b.artist_id
-      LEFT JOIN briefs br ON br.id = b.brief_id
-      LEFT JOIN events e ON e.id = br.event_id
-      WHERE b.invoice_paid_at IS NOT NULL
-      ORDER BY b.invoice_paid_at DESC LIMIT 20
-    `, 'invoice_paid'),
-    fetchActivity<Raw>(`
-      SELECT created_at AS ts, name AS actor, NULL AS title, subject AS context, NULL AS event_id, NULL AS brief_id
-      FROM contact_submissions ORDER BY created_at DESC LIMIT 20
-    `, 'contact_submitted'),
-    fetchActivity<Raw>(`
-      SELECT created_at AS ts, name AS actor, NULL AS title, medium AS context, NULL AS event_id, NULL AS brief_id
-      FROM artist_applications ORDER BY created_at DESC LIMIT 20
-    `, 'artist_applied'),
-    fetchActivity<Raw>(`
-      SELECT created_at AS ts, contact_name AS actor, NULL AS title, organization_name AS context, NULL AS event_id, NULL AS brief_id
-      FROM partner_applications ORDER BY created_at DESC LIMIT 20
-    `, 'partner_applied')
-  ]);
-
-  const tag = (rows: Raw[], t: ActivityRow['type']): ActivityRow[] =>
-    rows.filter((r) => r.ts).map((r) => ({ type: t, ts: r.ts as string, actor: r.actor, title: r.title, context: r.context, event_id: r.event_id, brief_id: r.brief_id }));
-
-  const activity: ActivityRow[] = [
-    ...tag(acceptedRows, 'brief_accepted'),
-    ...tag(declinedRows, 'brief_declined'),
-    ...tag(invSubRows, 'invoice_submitted'),
-    ...tag(invPaidRows, 'invoice_paid'),
-    ...tag(contactRows, 'contact_submitted'),
-    ...tag(artistAppRows, 'artist_applied'),
-    ...tag(partnerAppRows, 'partner_applied')
-  ]
-    .sort((a, b) => (b.ts > a.ts ? 1 : b.ts < a.ts ? -1 : 0))
-    .slice(0, 50);
+  // Dashboard shows the 5 most-recent items; full list at /admin/activity.
+  const activity: ActivityRow[] = await loadActivity(db, 5);
 
   let contacts: ContactRow[] = [];
   let artistApps: ArtistAppRow[] = [];
