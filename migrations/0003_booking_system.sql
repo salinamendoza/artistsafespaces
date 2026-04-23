@@ -109,7 +109,7 @@ Who the client is and how the work will be seen.
 - **Materials allowance:** (see booking)
 
 ## Contact
-Sam — hello@artistsafespaces.org',
+Sam — salina@artistsafespaces.org',
   '## Terms of Engagement
 
 **Compensation.** The rate and materials allowance shown above are the full compensation for this engagement. Payment is made in full, either in advance or on the day of the event. On client-curated events, the client pays the artist directly. Sam will confirm timing and payment source for each engagement.
@@ -149,7 +149,7 @@ Who''s attending and how the prints fit the event.
 - **Materials allowance:** (see booking)
 
 ## Contact
-Sam — hello@artistsafespaces.org',
+Sam — salina@artistsafespaces.org',
   '## Terms of Engagement
 
 **Compensation.** The rate and materials allowance shown above are the full compensation for this engagement. Payment is made in full, either in advance or on the day of the event. On client-curated events, the client pays the artist directly. Sam will confirm timing and payment source for each engagement.
@@ -190,7 +190,7 @@ Who the community is and what the mural means for them.
 - **Materials allowance:** (see booking)
 
 ## Contact
-Sam — hello@artistsafespaces.org',
+Sam — salina@artistsafespaces.org',
   '## Terms of Engagement
 
 **Compensation.** The rate and materials allowance shown above are the full compensation for this engagement, across all sessions. Payment is made in full, either in advance or at session start. On client-curated events, the client pays the artist directly. Sam will confirm timing and payment source for each engagement.
@@ -229,7 +229,7 @@ Any relevant context about the commissioning party and the intended use.
 - **Materials allowance:** (see booking)
 
 ## Contact
-Sam — hello@artistsafespaces.org',
+Sam — salina@artistsafespaces.org',
   '## Terms of Engagement
 
 **Compensation.** The rate and materials allowance shown above are the full compensation for this commission. Payment is made in full, either in advance or on delivery. On client-curated commissions, the client pays the artist directly. Sam will confirm timing and payment source for each engagement.
@@ -269,7 +269,7 @@ Who will be watching and what the audience is there for.
 - **Materials allowance:** (see booking)
 
 ## Contact
-Sam — hello@artistsafespaces.org',
+Sam — salina@artistsafespaces.org',
   '## Terms of Engagement
 
 **Compensation.** The rate and materials allowance shown above are the full compensation for this engagement. Payment is made in full, either in advance or on the day of the event. On client-curated events, the client pays the artist directly. Sam will confirm timing and payment source for each engagement.
@@ -307,7 +307,7 @@ Who the audience is and what the night feels like.
 - **Rate:** (see booking)
 
 ## Contact
-Sam — hello@artistsafespaces.org',
+Sam — salina@artistsafespaces.org',
   '## Terms of Engagement
 
 **Compensation.** The rate shown above is the full compensation for this engagement. Payment is made in full, either in advance or on the day of the event. On client-curated events, the client pays the artist directly. Sam will confirm timing and payment source for each engagement.
@@ -345,7 +345,7 @@ Who''s in the room and what they came for.
 - **Rate:** (see booking)
 
 ## Contact
-Sam — hello@artistsafespaces.org',
+Sam — salina@artistsafespaces.org',
   '## Terms of Engagement
 
 **Compensation.** The rate shown above is the full compensation for this engagement. Payment is made in full, either in advance or on the day of the event. On client-curated events, the client pays the artist directly. Sam will confirm timing and payment source for each engagement.

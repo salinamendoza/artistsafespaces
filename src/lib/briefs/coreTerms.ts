@@ -16,7 +16,7 @@ export const AS_CORE_TERMS = `
 
 2. **No direct solicitation — ever.** You will not solicit, pitch, accept, or enter into any paid or unpaid work, partnership, referral, introduction, or engagement with this client or any of their parent companies, subsidiaries, affiliates, employees, contractors, agencies, or partners introduced to you through AS. This restriction applies during the engagement and continues afterward with no expiration. All such opportunities — commissions, murals, workshops, exhibitions, consulting, brand deals, speaking, social content, collaborations, licensing, or any other arrangement in any medium — are coordinated exclusively through Artist Safespaces.
 
-3. **Inbound inquiries come back to us.** If the client, their team, or anyone introduced to you via AS contacts you directly about additional work, collaborations, or opportunities, you will promptly refer them to AS at hello@artistsafespaces.org and will not discuss scope, fees, timing, or terms on your own.
+3. **Inbound inquiries come back to us.** If the client, their team, or anyone introduced to you via AS contacts you directly about additional work, collaborations, or opportunities, you will promptly refer them to AS at salina@artistsafespaces.org and will not discuss scope, fees, timing, or terms on your own.
 
 4. **Future work with this client is booked through AS.** Repeat events, new venues, new formats, or any follow-on engagement with this client — whether originated by them, you, a third party, or an agency acting for them — runs through AS. You will not route around AS to the client or any affiliate, regardless of who initiates the conversation.
 
@@ -24,5 +24,5 @@ export const AS_CORE_TERMS = `
 
 6. **Breach.** Breach of these terms is grounds for AS to withhold unpaid compensation on this engagement, remove you from the AS roster, decline future engagements, and pursue any damages resulting from the breach, including the value of work or relationships diverted.
 
-7. **Point of contact.** For anything related to this engagement — questions, scheduling, invoicing, introductions, post-event opportunities — contact us at hello@artistsafespaces.org.
+7. **Point of contact.** For anything related to this engagement — questions, scheduling, invoicing, introductions, post-event opportunities — contact us at salina@artistsafespaces.org.
 `.trim();

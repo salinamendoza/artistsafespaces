@@ -15,13 +15,15 @@ export const actions: Actions = {
     const location = form.get('location')?.toString().trim() || null;
     const status = form.get('status')?.toString().trim() || 'planning';
     const internal_notes = form.get('internal_notes')?.toString().trim() || null;
+    const billing_to = form.get('billing_to')?.toString().trim() || null;
+    const invoice_email = form.get('invoice_email')?.toString().trim() || null;
 
     const result = await db
       .prepare(
-        `INSERT INTO events (name, client_name, event_date, location, status, internal_notes)
-         VALUES (?, ?, ?, ?, ?, ?) RETURNING id`
+        `INSERT INTO events (name, client_name, event_date, location, status, internal_notes, billing_to, invoice_email)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id`
       )
-      .bind(name, client_name, event_date, location, status, internal_notes)
+      .bind(name, client_name, event_date, location, status, internal_notes, billing_to, invoice_email)
       .first<{ id: number }>();
 
     throw redirect(303, `/admin/events/${result?.id ?? ''}`);

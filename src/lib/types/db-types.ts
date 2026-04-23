@@ -23,6 +23,8 @@ export interface Event {
   location: string | null;
   status: 'planning' | 'confirmed' | 'live' | 'wrapped' | 'cancelled';
   internal_notes: string | null;
+  billing_to: string | null;
+  invoice_email: string | null;
   created_at: string;
 }
 

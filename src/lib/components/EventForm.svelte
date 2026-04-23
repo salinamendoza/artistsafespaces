@@ -41,6 +41,21 @@
     </div>
   </div>
 
+  <div class="pt-5 border-t border-gray-200 space-y-4">
+    <div>
+      <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500">Billing</p>
+      <p class="font-mono text-xs text-gray-500 mt-1">Shown on the artist's invoice block once they accept. Both optional — falls back to client name and salina@.</p>
+    </div>
+    <div>
+      <label for="billing_to" class="block font-mono text-xs text-gray-600 mb-1.5">Bill-to block</label>
+      <textarea id="billing_to" name="billing_to" rows="4" placeholder={'IKEA Costa Mesa\n1475 South Coast Dr\nCosta Mesa, CA 92626'} class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black">{event.billing_to ?? ''}</textarea>
+    </div>
+    <div>
+      <label for="invoice_email" class="block font-mono text-xs text-gray-600 mb-1.5">Invoice email</label>
+      <input id="invoice_email" name="invoice_email" type="email" placeholder="ap@client.com" value={event.invoice_email ?? ''} class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black" />
+    </div>
+  </div>
+
   <div>
     <label for="internal_notes" class="block font-mono text-xs text-gray-600 mb-1.5">Internal Notes</label>
     <textarea id="internal_notes" name="internal_notes" rows="4" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-black">{event.internal_notes ?? ''}</textarea>
