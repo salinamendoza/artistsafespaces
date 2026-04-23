@@ -13,9 +13,9 @@
 <div class="space-y-5">
   {#each schema as field}
     <div>
-      <label for={`${namePrefix}${field.key}`} class="block font-mono text-xs text-white/60 mb-1.5">
+      <label for={`${namePrefix}${field.key}`} class="block font-mono text-xs text-gray-600 mb-1.5">
         {field.label}
-        {#if field.required}<span class="text-brand-yellow">*</span>{/if}
+        {#if field.required}<span class="text-red-500">*</span>{/if}
       </label>
 
       {#if field.type === 'textarea'}
@@ -24,7 +24,7 @@
           name={`${namePrefix}${field.key}`}
           rows="3"
           required={field.required}
-          class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm font-mono text-white placeholder:text-white/20 focus:outline-none focus:border-brand-yellow/40"
+          class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-yellow/40"
           value={valueFor(field.key)}
         ></textarea>
       {:else if field.type === 'select'}
@@ -32,12 +32,12 @@
           id={`${namePrefix}${field.key}`}
           name={`${namePrefix}${field.key}`}
           required={field.required}
-          class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm font-mono text-white focus:outline-none focus:border-brand-yellow/40"
+          class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black focus:outline-none focus:border-brand-yellow/40"
           value={valueFor(field.key)}
         >
-          <option value="" class="bg-brand-black">Select…</option>
+          <option value="" class="bg-white">Select…</option>
           {#each field.options ?? [] as opt}
-            <option value={opt} class="bg-brand-black">{opt}</option>
+            <option value={opt} class="bg-white">{opt}</option>
           {/each}
         </select>
       {:else if field.type === 'dimensions'}
@@ -47,7 +47,7 @@
           type="text"
           required={field.required}
           placeholder="e.g. 24 x 36 in"
-          class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm font-mono text-white placeholder:text-white/20 focus:outline-none focus:border-brand-yellow/40"
+          class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-yellow/40"
           value={valueFor(field.key)}
         />
       {:else}
@@ -56,13 +56,13 @@
           name={`${namePrefix}${field.key}`}
           type={field.type === 'number' ? 'number' : field.type === 'date' ? 'date' : 'text'}
           required={field.required}
-          class="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm font-mono text-white placeholder:text-white/20 focus:outline-none focus:border-brand-yellow/40"
+          class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-yellow/40"
           value={valueFor(field.key)}
         />
       {/if}
 
       {#if field.help}
-        <p class="mt-1 font-mono text-[10px] text-white/30">{field.help}</p>
+        <p class="mt-1 font-mono text-[10px] text-gray-400">{field.help}</p>
       {/if}
     </div>
   {/each}

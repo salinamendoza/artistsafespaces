@@ -9,11 +9,11 @@
 
 <svelte:head><title>Edit {data.event.name} | Admin</title></svelte:head>
 
-<div class="min-h-screen bg-brand-black text-white">
+<div class="min-h-screen bg-white text-brand-black">
   <AdminHeader section="events" crumbs={[{ label: data.event.name, href: `/admin/events/${data.event.id}` }, { label: 'edit' }]} />
 
   <div class="max-w-3xl mx-auto px-6 py-8">
-    <h1 class="font-display text-2xl font-bold text-white mb-6">Edit Event</h1>
+    <h1 class="font-display text-2xl font-bold text-brand-black mb-6">Edit Event</h1>
     <EventForm event={data.event} submitLabel="Save Changes" error={form?.error ?? null} />
   </div>
 </div>

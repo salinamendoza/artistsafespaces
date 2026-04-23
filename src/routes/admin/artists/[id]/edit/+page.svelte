@@ -9,11 +9,11 @@
 
 <svelte:head><title>Edit {data.artist.name} | Admin</title></svelte:head>
 
-<div class="min-h-screen bg-brand-black text-white">
+<div class="min-h-screen bg-white text-brand-black">
   <AdminHeader section="artists" crumbs={[{ label: data.artist.name, href: `/admin/artists/${data.artist.id}` }, { label: 'edit' }]} />
 
   <div class="max-w-3xl mx-auto px-6 py-8">
-    <h1 class="font-display text-2xl font-bold text-white mb-6">Edit Artist</h1>
+    <h1 class="font-display text-2xl font-bold text-brand-black mb-6">Edit Artist</h1>
     <ArtistForm artist={data.artist} activationTypes={data.activationTypes} submitLabel="Save Changes" error={form?.error ?? null} />
   </div>
 </div>
