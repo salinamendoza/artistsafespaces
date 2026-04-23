@@ -30,9 +30,19 @@
   }
 
   $: totalDue = (booking.rate ?? 0) + (booking.materials_allowance ?? 0);
-  $: billTo = data.event.client_name ?? 'Artist Safespaces';
+  $: billTo = data.event.billing_to ?? data.event.client_name ?? 'Artist Safespaces';
   $: projectLine = `${brief.title} — ${data.event.name}`;
   $: invoiceReference = `AS-${booking.id}`;
+  $: sendTo = data.event.invoice_email ?? 'salina@artistsafespaces.org';
+
+  $: invoiceRows = [
+    { key: 'billTo', label: 'Bill to', value: billTo },
+    { key: 'project', label: 'Project', value: projectLine },
+    { key: 'amount', label: 'Amount due', value: money(totalDue) },
+    ...(data.event.event_date ? [{ key: 'eventDate', label: 'Event date', value: formatEventDate(data.event.event_date) }] : []),
+    { key: 'reference', label: 'Reference', value: invoiceReference },
+    { key: 'sendTo', label: 'Send invoice to', value: sendTo }
+  ];
 
   let copiedKey: string | null = null;
   function copyValue(key: string, value: string) {
@@ -128,46 +138,43 @@
 
     <!-- Response state -->
     {#if booking.status === 'accepted'}
-      <!-- Accepted confirmation -->
-      <div class="rounded-lg border border-green-500/30 bg-green-500/10 p-6 text-center">
-        <p class="font-display text-2xl font-bold text-green-700 mb-1">Accepted</p>
-        <p class="font-mono text-xs text-green-700/70">on {formatAcceptedDate(booking.accepted_at)}</p>
-      </div>
+      <!-- Accepted status line -->
+      <p class="flex items-center gap-2 font-mono text-xs">
+        <span class="inline-block w-1.5 h-1.5 rounded-full bg-green-600"></span>
+        <span class="uppercase tracking-widest text-green-700 font-medium">Accepted</span>
+        <span class="text-gray-400">·</span>
+        <span class="text-gray-600">{formatAcceptedDate(booking.accepted_at)}</span>
+      </p>
 
-      <!-- Point of contact — protect AS's relationship with the client -->
-      <div class="rounded-lg border border-amber-300 bg-amber-50 p-5">
-        <p class="font-mono text-[10px] uppercase tracking-widest text-amber-800 mb-2">Important — point of contact</p>
+      <!-- Point of contact — editorial callout, no fill -->
+      <div class="border-l-4 border-brand-black pl-5 py-0.5">
+        <p class="font-mono text-[10px] uppercase tracking-widest text-brand-black/70 mb-2">Important — point of contact</p>
         <p class="text-sm text-gray-800 leading-relaxed">
-          <strong>Artist Safespaces is your point of contact for this engagement.</strong>
+          <strong class="text-brand-black">Artist Safespaces is your point of contact for this engagement.</strong>
           We built the relationship with {data.event.client_name ?? 'the client'} and coordinate all communication on our side.
           The client may pay you directly via the link you provide below, but please route all questions, scheduling, follow-ups, and future opportunities through us — never the client directly.
-          Reach out any time at <a href="mailto:hello@artistsafespaces.org" class="underline hover:no-underline">hello@artistsafespaces.org</a>.
+          Reach out any time at <a href="mailto:salina@artistsafespaces.org" class="text-brand-black underline hover:no-underline">salina@artistsafespaces.org</a>.
         </p>
       </div>
 
-      <!-- Copy-paste billing info -->
-      <div class="rounded-lg border border-gray-200 p-6">
-        <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Put this on your invoice</p>
-        <p class="font-mono text-xs text-gray-500 mb-4">Copy anything below and paste straight into your invoice tool.</p>
-        <dl class="space-y-3">
-          {#each [
-            { key: 'billTo', label: 'Bill to', value: billTo },
-            { key: 'project', label: 'Project', value: projectLine },
-            { key: 'amount', label: 'Amount due', value: money(totalDue) },
-            ...(data.event.event_date ? [{ key: 'eventDate', label: 'Event date', value: formatEventDate(data.event.event_date) }] : []),
-            { key: 'reference', label: 'Reference', value: invoiceReference },
-            { key: 'sendTo', label: 'Send invoice to', value: 'salina@artistsafespaces.org' }
-          ] as row}
-            <div class="flex items-center justify-between gap-3 border-b border-gray-100 pb-2 last:border-b-0 last:pb-0">
-              <div class="min-w-0">
+      <!-- Copy-paste billing info — section, not a card -->
+      <section>
+        <div class="border-t border-gray-200 pt-6 mb-2">
+          <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500">Put this on your invoice</p>
+          <p class="font-mono text-xs text-gray-500 mt-1">Copy any row and paste it into your invoice tool.</p>
+        </div>
+        <dl class="divide-y divide-gray-200">
+          {#each invoiceRows as row (row.key)}
+            <div class="flex items-start justify-between gap-4 py-3">
+              <div class="min-w-0 flex-1">
                 <dt class="font-mono text-[10px] uppercase tracking-widest text-gray-500">{row.label}</dt>
-                <dd class="font-mono text-sm text-brand-black truncate">{row.value}</dd>
+                <dd class="font-mono text-sm text-brand-black whitespace-pre-wrap break-words mt-0.5">{row.value}</dd>
               </div>
               <button type="button" on:click={() => copyValue(row.key, row.value)} class="px-2 py-1 bg-brand-yellow text-brand-black font-mono text-[10px] font-bold rounded hover:bg-yellow-300 flex-shrink-0">{copiedKey === row.key ? 'Copied' : 'Copy'}</button>
             </div>
           {/each}
         </dl>
-      </div>
+      </section>
 
       <!-- Invoice + payment submission -->
       <div class="rounded-lg border border-gray-200 p-6">
@@ -274,7 +281,7 @@
 
     <!-- Contact -->
     <div class="pt-6 border-t border-gray-200 text-center">
-      <p class="font-mono text-xs text-gray-500">Questions? Reach out to Sam — <a href="mailto:hello@artistsafespaces.org" class="text-brand-black underline hover:no-underline">hello@artistsafespaces.org</a></p>
+      <p class="font-mono text-xs text-gray-500">Questions? Reach out to Salina — <a href="mailto:salina@artistsafespaces.org" class="text-brand-black underline hover:no-underline">salina@artistsafespaces.org</a></p>
     </div>
   </article>
 </div>
