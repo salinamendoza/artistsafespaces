@@ -4,6 +4,11 @@
 
   export let data: PageData;
   $: ({ artists } = data);
+
+  function money(n: number | null | undefined): string {
+    if (!n) return '—';
+    return '$' + Number(n).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+  }
 </script>
 
 <svelte:head><title>Artists | Admin</title></svelte:head>
@@ -30,6 +35,7 @@
               <th class="px-4 py-3">City</th>
               <th class="px-4 py-3">Email</th>
               <th class="px-4 py-3 text-right">Bookings</th>
+              <th class="px-4 py-3 text-right">Booked</th>
             </tr>
           </thead>
           <tbody>
@@ -43,6 +49,7 @@
                   {#if a.email}<a href={`mailto:${a.email}`} class="hover:text-brand-black">{a.email}</a>{:else}—{/if}
                 </td>
                 <td class="px-4 py-3 text-right text-gray-600">{a.booking_count}</td>
+                <td class="px-4 py-3 text-right text-gray-900 font-medium">{money(a.total_booked)}</td>
               </tr>
             {/each}
           </tbody>
