@@ -6,11 +6,15 @@
   export let data: PageData;
   export let form: ActionData;
 
-  $: ({ event, briefs } = data);
+  $: ({ event, briefs, eventStats } = data);
 
   function formatDate(iso: string | null): string {
     if (!iso) return '—';
     return new Date(iso.length <= 10 ? iso : iso + 'Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  function money(n: number): string {
+    return '$' + n.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
   }
 </script>
 
@@ -51,6 +55,57 @@
       <div class="border border-white/10 rounded-lg p-5">
         <p class="font-mono text-[10px] uppercase tracking-widest text-white/40 mb-2">Internal Notes</p>
         <p class="text-sm text-white/70 whitespace-pre-wrap">{event.internal_notes}</p>
+      </div>
+    {/if}
+
+    <!-- At-a-glance stats -->
+    {#if eventStats.breakdown.length > 0}
+      <div class="grid grid-cols-2 gap-4">
+        <div class="relative group bg-white/5 border border-white/10 rounded-lg px-5 py-4 cursor-default">
+          <p class="font-mono text-3xl font-bold text-white">{eventStats.artistCount}</p>
+          <p class="font-mono text-xs text-white/40 mt-1">artist{eventStats.artistCount === 1 ? '' : 's'} booked</p>
+          <!-- Hover breakdown -->
+          <div class="absolute left-0 top-full mt-2 z-20 w-80 bg-brand-black border border-white/20 rounded-lg p-4 shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity">
+            <p class="font-mono text-[10px] uppercase tracking-widest text-white/40 mb-3">Breakdown</p>
+            <div class="space-y-2">
+              {#each eventStats.breakdown as b}
+                <div class="flex items-center justify-between gap-3">
+                  <div class="min-w-0">
+                    <p class="font-mono text-xs text-white font-bold truncate">{b.artist_name}</p>
+                    <p class="font-mono text-[10px] text-white/40">{b.activation_type_name}</p>
+                  </div>
+                  <div class="text-right flex-shrink-0">
+                    <p class="font-mono text-xs text-white">{money(b.rate)}</p>
+                    {#if b.materials_allowance}
+                      <p class="font-mono text-[10px] text-white/40">+{money(b.materials_allowance)} mat.</p>
+                    {/if}
+                  </div>
+                </div>
+              {/each}
+            </div>
+          </div>
+        </div>
+        <div class="relative group bg-white/5 border border-white/10 rounded-lg px-5 py-4 cursor-default">
+          <p class="font-mono text-3xl font-bold text-brand-yellow">{money(eventStats.totalCost)}</p>
+          <p class="font-mono text-xs text-white/40 mt-1">total cost</p>
+          <!-- Hover breakdown -->
+          <div class="absolute right-0 top-full mt-2 z-20 w-80 bg-brand-black border border-white/20 rounded-lg p-4 shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity">
+            <div class="space-y-2 mb-3">
+              {#each eventStats.breakdown as b}
+                <div class="flex items-center justify-between gap-3">
+                  <p class="font-mono text-xs text-white truncate">{b.artist_name}</p>
+                  <p class="font-mono text-xs text-white/70">{money(b.rate + (b.materials_allowance ?? 0))}</p>
+                </div>
+              {/each}
+            </div>
+            <div class="pt-2 border-t border-white/10 flex justify-between">
+              <p class="font-mono text-[10px] text-white/40">Rates: {money(eventStats.totalRate)}</p>
+              {#if eventStats.totalMaterials > 0}
+                <p class="font-mono text-[10px] text-white/40">Materials: {money(eventStats.totalMaterials)}</p>
+              {/if}
+            </div>
+          </div>
+        </div>
       </div>
     {/if}
 
