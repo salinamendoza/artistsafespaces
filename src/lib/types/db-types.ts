@@ -42,6 +42,7 @@ export interface Brief {
   brief_data_json: string;
   brief_body: string | null;
   terms_markdown: string | null;
+  visual_sheet_slug: string | null;
   status: 'draft' | 'ready' | 'sent';
   created_at: string;
   updated_at: string;

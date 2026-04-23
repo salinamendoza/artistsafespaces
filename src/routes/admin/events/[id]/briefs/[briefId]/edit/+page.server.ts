@@ -60,15 +60,16 @@ export const actions: Actions = {
 
     const brief_body = form.get('brief_body')?.toString() ?? '';
     const terms_markdown = form.get('terms_markdown')?.toString() ?? '';
+    const visual_sheet_slug = form.get('visual_sheet_slug')?.toString().trim() || null;
 
     await db
       .prepare(
         `UPDATE briefs SET
           title = ?, brief_data_json = ?, brief_body = ?, terms_markdown = ?,
-          updated_at = datetime('now')
+          visual_sheet_slug = ?, updated_at = datetime('now')
          WHERE id = ?`
       )
-      .bind(title, JSON.stringify(data), brief_body, terms_markdown, briefId)
+      .bind(title, JSON.stringify(data), brief_body, terms_markdown, visual_sheet_slug, briefId)
       .run();
 
     throw redirect(303, `/admin/events/${eventId}/briefs/${briefId}`);

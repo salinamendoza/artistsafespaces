@@ -5,6 +5,7 @@
   import BriefFieldsView from '$lib/components/BriefFieldsView.svelte';
   import MarkdownView from '$lib/components/MarkdownView.svelte';
   import { parseBriefSchema, parseBriefData } from '$lib/types/brief-schema';
+  import { visualSheetRegistry, hasVisualSheet } from '$lib/briefs/visualSheets';
   import type { PageData, ActionData } from './$types';
 
   export let data: PageData;
@@ -92,6 +93,15 @@
       <div class="border border-gray-200 rounded-lg p-5">
         <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-3">Body</p>
         <MarkdownView source={brief.brief_body} dark={false} />
+      </div>
+    {/if}
+
+    <!-- Visual Sheet -->
+    {#if hasVisualSheet(brief.visual_sheet_slug)}
+      <div class="border border-gray-200 rounded-lg overflow-hidden">
+        {#await visualSheetRegistry[brief.visual_sheet_slug]() then mod}
+          <svelte:component this={mod.default} />
+        {/await}
       </div>
     {/if}
 

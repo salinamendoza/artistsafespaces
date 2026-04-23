@@ -19,6 +19,7 @@ interface LoadedRow {
   br_brief_data_json: string;
   br_brief_body: string | null;
   br_terms_markdown: string | null;
+  br_visual_sheet_slug: string | null;
   // event
   e_name: string;
   e_client_name: string | null;
@@ -45,6 +46,7 @@ export const load: PageServerLoad = async ({ platform, params }) => {
         br.id AS br_id, br.title AS br_title,
         br.brief_data_json AS br_brief_data_json, br.brief_body AS br_brief_body,
         br.terms_markdown AS br_terms_markdown,
+        br.visual_sheet_slug AS br_visual_sheet_slug,
         e.name AS e_name, e.client_name AS e_client_name,
         e.event_date AS e_event_date, e.location AS e_location,
         a.name AS a_name,
@@ -74,7 +76,8 @@ export const load: PageServerLoad = async ({ platform, params }) => {
     brief: {
       title: row.br_title,
       body: row.br_brief_body,
-      terms: row.br_terms_markdown
+      terms: row.br_terms_markdown,
+      visualSheetSlug: row.br_visual_sheet_slug
     },
     briefData: parseBriefData(row.br_brief_data_json),
     schema: parseBriefSchema(row.at_brief_schema_json),

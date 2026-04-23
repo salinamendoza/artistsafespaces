@@ -1,0 +1,3 @@
+<div class="p-8 text-center text-gray-400 font-mono text-sm">
+  Visual sheet component loading...
+</div>
