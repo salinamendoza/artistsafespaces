@@ -6,6 +6,7 @@
   import MarkdownView from '$lib/components/MarkdownView.svelte';
   import { parseBriefSchema, parseBriefData } from '$lib/types/brief-schema';
   import { visualSheetRegistry, hasVisualSheet } from '$lib/briefs/visualSheets';
+  import { AS_CORE_TERMS } from '$lib/briefs/coreTerms';
   import type { PageData, ActionData } from './$types';
 
   export let data: PageData;
@@ -105,15 +106,22 @@
       </div>
     {/if}
 
-    <!-- Terms -->
-    {#if brief.terms_markdown}
-      <details class="border border-gray-200 rounded-lg p-5">
-        <summary class="font-mono text-[10px] uppercase tracking-widest text-gray-500 cursor-pointer">Terms</summary>
-        <div class="mt-3">
-          <MarkdownView source={brief.terms_markdown} dark={false} />
+    <!-- Terms (matches what the artist sees on the public brief) -->
+    <details class="border border-gray-200 rounded-lg p-5">
+      <summary class="font-mono text-[10px] uppercase tracking-widest text-gray-500 cursor-pointer">Terms — exactly what the artist agrees to</summary>
+      <div class="mt-4 space-y-4">
+        <div>
+          <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-2">AS standard terms <span class="text-gray-400">(auto-included on every brief)</span></p>
+          <MarkdownView source={AS_CORE_TERMS} dark={false} />
         </div>
-      </details>
-    {/if}
+        {#if brief.terms_markdown}
+          <div class="pt-4 border-t border-gray-200">
+            <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-2">Brief-specific terms</p>
+            <MarkdownView source={brief.terms_markdown} dark={false} />
+          </div>
+        {/if}
+      </div>
+    </details>
 
     <!-- Bookings -->
     <div>
