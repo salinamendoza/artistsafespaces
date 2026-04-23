@@ -9,6 +9,9 @@ export interface Artist {
   instagram_handle: string | null;
   specialties_json: string | null;
   internal_notes: string | null;
+  headshot_url: string | null;
+  studio_url: string | null;
+  style_images_json: string | null;
   created_at: string;
 }
 
