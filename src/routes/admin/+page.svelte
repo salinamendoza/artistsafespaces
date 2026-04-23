@@ -3,11 +3,12 @@
   import AdminHeader from '$lib/components/AdminHeader.svelte';
   import { timeAgo } from '$lib/utils/date';
   import type { PageData } from './$types';
-  import type { ActivityRow, ActivityType } from './+page.server';
+  import type { ActivityRow, ActivityType } from '$lib/types/activity';
 
   export let data: PageData;
 
-  $: ({ contacts, artistApps, partnerApps, activity, stats, view } = data);
+  $: ({ contacts, artistApps, partnerApps, stats, view } = data);
+  $: activity = Array.isArray(data.activity) ? data.activity : [];
 
   const ACTIVITY_LABELS: Record<ActivityType, string> = {
     brief_accepted: 'Accepted',
