@@ -175,6 +175,24 @@
                 <div class="flex items-end">
                   <button type="submit" class="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-[10px] text-gray-700 hover:border-gray-400 hover:text-brand-black transition-colors">Save</button>
                 </div>
+                <div class="sm:col-span-2">
+                  <label class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Invoice PDF link</label>
+                  <div class="flex gap-2">
+                    <input name="invoice_url" type="url" placeholder="https://drive.google.com/…" value={b.invoice_url ?? ''} class="flex-1 px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black" />
+                    {#if b.invoice_url}
+                      <a href={b.invoice_url} target="_blank" rel="noopener" class="px-2 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-[10px] text-gray-700 hover:border-gray-400 hover:text-brand-black transition-colors self-stretch flex items-center">Open</a>
+                    {/if}
+                  </div>
+                </div>
+                <div class="sm:col-span-2">
+                  <label class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Payment link</label>
+                  <div class="flex gap-2">
+                    <input name="payment_link_url" type="url" placeholder="https://buy.stripe.com/…" value={b.payment_link_url ?? ''} class="flex-1 px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black" />
+                    {#if b.payment_link_url}
+                      <a href={b.payment_link_url} target="_blank" rel="noopener" class="px-2 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-[10px] text-gray-700 hover:border-gray-400 hover:text-brand-black transition-colors self-stretch flex items-center">Open</a>
+                    {/if}
+                  </div>
+                </div>
                 <div class="sm:col-span-4">
                   <input name="invoice_notes" type="text" placeholder="Invoice notes (optional)" value={b.invoice_notes ?? ''} class="w-full px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black" />
                 </div>

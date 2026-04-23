@@ -13,6 +13,12 @@ interface LoadedRow {
   b_accepted_at: string | null;
   b_declined_at: string | null;
   b_declined_reason: string | null;
+  b_invoice_status: 'not_submitted' | 'submitted' | 'paid';
+  b_invoice_submitted_at: string | null;
+  b_invoice_paid_at: string | null;
+  b_invoice_notes: string | null;
+  b_invoice_url: string | null;
+  b_payment_link_url: string | null;
   // brief
   br_id: number;
   br_title: string;
@@ -27,6 +33,7 @@ interface LoadedRow {
   e_location: string | null;
   // artist
   a_name: string;
+  a_email: string | null;
   // activation type
   at_name: string;
   at_brief_schema_json: string;
@@ -43,13 +50,19 @@ export const load: PageServerLoad = async ({ platform, params }) => {
         b.materials_allowance AS b_materials_allowance, b.status AS b_status,
         b.accepted_at AS b_accepted_at, b.declined_at AS b_declined_at,
         b.declined_reason AS b_declined_reason,
+        b.invoice_status AS b_invoice_status,
+        b.invoice_submitted_at AS b_invoice_submitted_at,
+        b.invoice_paid_at AS b_invoice_paid_at,
+        b.invoice_notes AS b_invoice_notes,
+        b.invoice_url AS b_invoice_url,
+        b.payment_link_url AS b_payment_link_url,
         br.id AS br_id, br.title AS br_title,
         br.brief_data_json AS br_brief_data_json, br.brief_body AS br_brief_body,
         br.terms_markdown AS br_terms_markdown,
         br.visual_sheet_slug AS br_visual_sheet_slug,
         e.name AS e_name, e.client_name AS e_client_name,
         e.event_date AS e_event_date, e.location AS e_location,
-        a.name AS a_name,
+        a.name AS a_name, a.email AS a_email,
         at.name AS at_name, at.brief_schema_json AS at_brief_schema_json
       FROM bookings b
       JOIN briefs br ON br.id = b.brief_id
@@ -71,7 +84,13 @@ export const load: PageServerLoad = async ({ platform, params }) => {
       status: row.b_status,
       accepted_at: row.b_accepted_at,
       declined_at: row.b_declined_at,
-      declined_reason: row.b_declined_reason
+      declined_reason: row.b_declined_reason,
+      invoice_status: row.b_invoice_status ?? 'not_submitted',
+      invoice_submitted_at: row.b_invoice_submitted_at,
+      invoice_paid_at: row.b_invoice_paid_at,
+      invoice_notes: row.b_invoice_notes,
+      invoice_url: row.b_invoice_url,
+      payment_link_url: row.b_payment_link_url
     },
     brief: {
       title: row.br_title,
@@ -86,6 +105,10 @@ export const load: PageServerLoad = async ({ platform, params }) => {
       client_name: row.e_client_name,
       event_date: row.e_event_date,
       location: row.e_location
+    },
+    artist: {
+      name: row.a_name,
+      email: row.a_email
     },
     artistName: row.a_name,
     activationTypeName: row.at_name
@@ -139,6 +162,47 @@ export const actions: Actions = {
       .run();
 
     return { accepted: true };
+  },
+
+  submitInvoice: async ({ request, platform, params }) => {
+    const db = platform?.env?.DB;
+    if (!db) return fail(500, { error: 'Database unavailable' });
+
+    const form = await request.formData();
+    const invoice_url = form.get('invoice_url')?.toString().trim() || null;
+    const payment_link_url = form.get('payment_link_url')?.toString().trim() || null;
+    const invoice_notes = form.get('invoice_notes')?.toString().trim() || null;
+
+    if (!invoice_url && !payment_link_url && !invoice_notes) {
+      return fail(400, { error: 'Add at least an invoice link, a payment link, or a note.' });
+    }
+
+    const booking = await db
+      .prepare('SELECT id, status, invoice_submitted_at FROM bookings WHERE share_token = ?')
+      .bind(params.token)
+      .first<{ id: number; status: string; invoice_submitted_at: string | null }>();
+
+    if (!booking) return fail(404, { error: 'Brief not found' });
+    if (booking.status !== 'accepted') {
+      return fail(400, { error: 'Please accept the brief first.' });
+    }
+
+    const submittedAt = booking.invoice_submitted_at ?? nowStamp();
+
+    await db
+      .prepare(
+        `UPDATE bookings SET
+          invoice_url = ?,
+          payment_link_url = ?,
+          invoice_notes = ?,
+          invoice_status = CASE WHEN invoice_status = 'paid' THEN 'paid' ELSE 'submitted' END,
+          invoice_submitted_at = ?
+         WHERE id = ?`
+      )
+      .bind(invoice_url, payment_link_url, invoice_notes, submittedAt, booking.id)
+      .run();
+
+    return { invoiceSubmitted: true };
   },
 
   decline: async ({ request, platform, params }) => {

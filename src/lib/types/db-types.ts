@@ -81,6 +81,8 @@ export interface Booking {
   invoice_submitted_at: string | null;
   invoice_paid_at: string | null;
   invoice_notes: string | null;
+  invoice_url: string | null;
+  payment_link_url: string | null;
   internal_notes: string | null;
   created_at: string;
 }
