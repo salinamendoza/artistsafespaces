@@ -5,7 +5,7 @@
 
   export let data: PageData;
 
-  $: ({ contacts, stats, view } = data);
+  $: ({ contacts, artistApps, partnerApps, stats, view } = data);
 
   function exportCsv() {
     const headers = ['ID', 'Name', 'Email', 'Subject', 'Message', 'Created At', 'Contacted', 'Contact Note', 'Archived', 'Archive Note'];
@@ -75,18 +75,10 @@
     <!-- Tabs + Export -->
     <div class="flex items-center justify-between mb-6">
       <div class="flex gap-1 bg-gray-50 rounded-lg p-1">
-        <a
-          href="/admin"
-          class="px-4 py-2 rounded-md font-mono text-sm transition-colors {view === 'active' ? 'bg-brand-yellow text-brand-black font-bold' : 'text-gray-500 hover:text-brand-black'}"
-        >
-          Active
-        </a>
-        <a
-          href="/admin?view=archived"
-          class="px-4 py-2 rounded-md font-mono text-sm transition-colors {view === 'archived' ? 'bg-brand-yellow text-brand-black font-bold' : 'text-gray-500 hover:text-brand-black'}"
-        >
-          Archived
-        </a>
+        <a href="/admin" class="px-3 py-2 rounded-md font-mono text-xs transition-colors {view === 'active' ? 'bg-brand-yellow text-brand-black font-bold' : 'text-gray-500 hover:text-brand-black'}">Active</a>
+        <a href="/admin?view=archived" class="px-3 py-2 rounded-md font-mono text-xs transition-colors {view === 'archived' ? 'bg-brand-yellow text-brand-black font-bold' : 'text-gray-500 hover:text-brand-black'}">Archived</a>
+        <a href="/admin?view=artist-apps" class="px-3 py-2 rounded-md font-mono text-xs transition-colors {view === 'artist-apps' ? 'bg-brand-yellow text-brand-black font-bold' : 'text-gray-500 hover:text-brand-black'}">Artist Apps</a>
+        <a href="/admin?view=partner-apps" class="px-3 py-2 rounded-md font-mono text-xs transition-colors {view === 'partner-apps' ? 'bg-brand-yellow text-brand-black font-bold' : 'text-gray-500 hover:text-brand-black'}">Partner Apps</a>
       </div>
       <button
         on:click={exportCsv}
@@ -96,8 +88,70 @@
       </button>
     </div>
 
-    <!-- Contact Cards -->
-    {#if contacts.length === 0}
+    <!-- Content based on active tab -->
+    {#if view === 'artist-apps'}
+      {#if artistApps.length === 0}
+        <p class="font-mono text-gray-400 text-sm text-center py-20">No artist applications yet.</p>
+      {:else}
+        <div class="space-y-3">
+          {#each artistApps as app (app.id)}
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-5">
+              <div class="flex items-start justify-between gap-4 mb-2">
+                <div>
+                  <h3 class="font-mono text-brand-black font-bold text-sm">{app.name}</h3>
+                  <a href="mailto:{app.email}" class="font-mono text-xs text-gray-500 hover:text-brand-black">{app.email}</a>
+                </div>
+                <time class="font-mono text-[10px] text-gray-400 whitespace-nowrap">{formatDate(app.created_at)}</time>
+              </div>
+              <div class="grid sm:grid-cols-3 gap-3 mb-3 font-mono text-xs">
+                <div><span class="text-gray-400">Location:</span> <span class="text-gray-700">{app.location}</span></div>
+                <div><span class="text-gray-400">Medium:</span> <span class="text-gray-700">{app.medium}</span></div>
+                {#if app.instagram}<div><span class="text-gray-400">IG:</span> <span class="text-gray-700">{app.instagram}</span></div>{/if}
+              </div>
+              <p class="text-sm text-gray-600 whitespace-pre-wrap">{app.bio}</p>
+              {#if app.interests}
+                <div class="mt-2 flex flex-wrap gap-1">
+                  {#each JSON.parse(app.interests) as interest}
+                    <span class="px-2 py-0.5 bg-gray-100 border border-gray-200 text-gray-600 font-mono text-[10px] rounded-full">{interest}</span>
+                  {/each}
+                </div>
+              {/if}
+              {#if app.website}<p class="mt-2 font-mono text-xs text-gray-500"><a href={app.website} target="_blank" rel="noopener" class="underline hover:text-brand-black">{app.website}</a></p>{/if}
+            </div>
+          {/each}
+        </div>
+      {/if}
+    {:else if view === 'partner-apps'}
+      {#if partnerApps.length === 0}
+        <p class="font-mono text-gray-400 text-sm text-center py-20">No partner applications yet.</p>
+      {:else}
+        <div class="space-y-3">
+          {#each partnerApps as app (app.id)}
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-5">
+              <div class="flex items-start justify-between gap-4 mb-2">
+                <div>
+                  <h3 class="font-mono text-brand-black font-bold text-sm">{app.organization_name}</h3>
+                  <p class="font-mono text-xs text-gray-500">{app.contact_name} · <a href="mailto:{app.email}" class="hover:text-brand-black">{app.email}</a></p>
+                </div>
+                <time class="font-mono text-[10px] text-gray-400 whitespace-nowrap">{formatDate(app.created_at)}</time>
+              </div>
+              <div class="grid sm:grid-cols-3 gap-3 mb-3 font-mono text-xs">
+                <div><span class="text-gray-400">Type:</span> <span class="text-gray-700">{app.org_type}</span></div>
+                {#if app.phone}<div><span class="text-gray-400">Phone:</span> <span class="text-gray-700">{app.phone}</span></div>{/if}
+              </div>
+              {#if app.message}<p class="text-sm text-gray-600 whitespace-pre-wrap">{app.message}</p>{/if}
+              {#if app.interests}
+                <div class="mt-2 flex flex-wrap gap-1">
+                  {#each JSON.parse(app.interests) as interest}
+                    <span class="px-2 py-0.5 bg-gray-100 border border-gray-200 text-gray-600 font-mono text-[10px] rounded-full">{interest}</span>
+                  {/each}
+                </div>
+              {/if}
+            </div>
+          {/each}
+        </div>
+      {/if}
+    {:else if contacts.length === 0}
       <div class="text-center py-20">
         <p class="font-mono text-gray-400 text-sm">
           {view === 'archived' ? 'No archived contacts.' : 'No contacts yet.'}
@@ -113,7 +167,7 @@
                 <div class="flex items-center gap-3 flex-wrap">
                   <h3 class="font-mono text-brand-black font-bold text-sm">{contact.name}</h3>
                   {#if contact.contacted}
-                    <span class="px-2 py-0.5 bg-brand-yellow/10 text-brand-yellow font-mono text-[10px] rounded-full border border-brand-yellow/20">
+                    <span class="px-2 py-0.5 bg-green-50 text-green-700 font-mono text-[10px] rounded-full border border-green-200">
                       contacted
                     </span>
                   {/if}
@@ -152,12 +206,12 @@
                       name="contact_note"
                       placeholder="Note (optional)"
                       value={contact.contact_note ?? ''}
-                      class="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-yellow/30"
+                      class="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black"
                     />
                   </div>
                   <button
                     type="submit"
-                    class="px-3 py-1.5 rounded text-xs font-mono font-bold transition-colors {contact.contacted ? 'bg-brand-yellow/10 text-brand-yellow border border-brand-yellow/20 hover:bg-transparent' : 'bg-gray-50 text-gray-500 border border-gray-200 hover:text-brand-black hover:border-gray-400'}"
+                    class="px-3 py-1.5 rounded text-xs font-mono font-bold transition-colors {contact.contacted ? 'bg-green-50 text-green-700 border border-green-200 hover:bg-white' : 'bg-gray-50 text-gray-500 border border-gray-200 hover:text-brand-black hover:border-gray-400'}"
                   >
                     {contact.contacted ? 'Undo Contact' : 'Mark Contacted'}
                   </button>
