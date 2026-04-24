@@ -23,8 +23,6 @@
     <a href="/admin" class="text-gray-500 hover:text-brand-black font-mono text-xs transition-colors {section === 'contacts' ? 'text-brand-black' : ''}">contacts</a>
     <a href="/admin/events" class="text-gray-500 hover:text-brand-black font-mono text-xs transition-colors {section === 'events' ? 'text-brand-black' : ''}">events</a>
     <a href="/admin/artists" class="text-gray-500 hover:text-brand-black font-mono text-xs transition-colors {section === 'artists' ? 'text-brand-black' : ''}">artists</a>
-    <a href="/admin/campaigns" class="text-gray-500 hover:text-brand-black font-mono text-xs transition-colors {section === 'campaigns' ? 'text-brand-black' : ''}">campaigns</a>
-    <a href="/admin/artist-profiles" class="text-gray-500 hover:text-brand-black font-mono text-xs transition-colors {section === 'artist-profiles' ? 'text-brand-black' : ''}">profiles</a>
     <a href="/admin/giveaway-entries" class="text-gray-500 hover:text-brand-black font-mono text-xs transition-colors {section === 'giveaway-entries' ? 'text-brand-black' : ''}">entries</a>
     <a href="/admin/images" class="text-gray-500 hover:text-brand-black font-mono text-xs transition-colors {section === 'images' ? 'text-brand-black' : ''}">images</a>
     <form method="POST" action="/admin?/logout" use:enhance>

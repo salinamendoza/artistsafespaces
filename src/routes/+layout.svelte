@@ -5,7 +5,9 @@
   import Footer from '$lib/components/Footer.svelte';
 
   $: isStandalone =
-    $page.url.pathname.startsWith('/brief/') || $page.url.pathname.startsWith('/admin');
+    $page.url.pathname.startsWith('/brief/') ||
+    $page.url.pathname.startsWith('/admin') ||
+    $page.url.pathname.startsWith('/g/');
 </script>
 
 <svelte:head>

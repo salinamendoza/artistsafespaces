@@ -15,10 +15,13 @@ export interface EntryRow {
   archived_note: string | null;
   giveaway_id: number;
   giveaway_title: string;
-  campaign_id: number;
-  campaign_title: string;
-  artist_profile_id: number;
-  artist_display_name: string;
+  public_token: string;
+  event_id: number;
+  event_name: string;
+  brief_id: number;
+  brief_title: string;
+  artist_id: number;
+  artist_name: string;
 }
 
 export const load: PageServerLoad = async ({ platform, url, setHeaders }) => {
@@ -28,62 +31,84 @@ export const load: PageServerLoad = async ({ platform, url, setHeaders }) => {
   if (!db) {
     return {
       entries: [] as EntryRow[],
-      campaigns: [] as { id: number; title: string }[],
-      artists: [] as { id: number; display_name: string }[],
-      filter: { campaignId: null, artistId: null, view: 'active' as 'active' | 'archived' }
+      events: [] as { id: number; name: string }[],
+      artists: [] as { id: number; name: string }[],
+      filter: { eventId: null, artistId: null, giveawayId: null, view: 'active' as 'active' | 'archived' }
     };
   }
 
-  const campaignIdParam = url.searchParams.get('campaign');
+  const eventIdParam = url.searchParams.get('event');
   const artistIdParam = url.searchParams.get('artist');
+  const giveawayIdParam = url.searchParams.get('giveaway');
   const viewParam = url.searchParams.get('view') === 'archived' ? 'archived' : 'active';
 
-  const campaignId = campaignIdParam ? Number(campaignIdParam) : null;
+  const eventId = eventIdParam ? Number(eventIdParam) : null;
   const artistId = artistIdParam ? Number(artistIdParam) : null;
+  const giveawayId = giveawayIdParam ? Number(giveawayIdParam) : null;
 
-  // Cascading artist filter: only show artists attached to the chosen campaign
-  const campaignsResult = await db
-    .prepare('SELECT id, title FROM campaigns ORDER BY created_at DESC')
-    .all<{ id: number; title: string }>();
+  const eventsResult = await db
+    .prepare(
+      `SELECT DISTINCT e.id, e.name
+         FROM events e
+         JOIN briefs br ON br.event_id = e.id
+         JOIN bookings b ON b.brief_id = br.id
+         JOIN giveaways g ON g.booking_id = b.id
+        ORDER BY e.event_date DESC, e.name ASC`
+    )
+    .all<{ id: number; name: string }>();
 
-  const artistsResult = campaignId
+  const artistsResult = eventId
     ? await db
         .prepare(
-          `SELECT ap.id, ap.display_name
-             FROM artist_profiles ap
-             JOIN campaign_artists ca ON ca.artist_profile_id = ap.id
-            WHERE ca.campaign_id = ?
-            ORDER BY ap.display_name ASC`
+          `SELECT DISTINCT a.id, a.name
+             FROM artists a
+             JOIN bookings b ON b.artist_id = a.id
+             JOIN briefs br ON br.id = b.brief_id
+             JOIN giveaways g ON g.booking_id = b.id
+            WHERE br.event_id = ?
+            ORDER BY a.name ASC`
         )
-        .bind(campaignId)
-        .all<{ id: number; display_name: string }>()
+        .bind(eventId)
+        .all<{ id: number; name: string }>()
     : await db
-        .prepare('SELECT id, display_name FROM artist_profiles ORDER BY display_name ASC')
-        .all<{ id: number; display_name: string }>();
+        .prepare(
+          `SELECT DISTINCT a.id, a.name
+             FROM artists a
+             JOIN bookings b ON b.artist_id = a.id
+             JOIN giveaways g ON g.booking_id = b.id
+            ORDER BY a.name ASC`
+        )
+        .all<{ id: number; name: string }>();
 
   const where: string[] = ['ge.archived = ?'];
   const binds: (number | string)[] = [viewParam === 'archived' ? 1 : 0];
-  if (campaignId) {
-    where.push('c.id = ?');
-    binds.push(campaignId);
+  if (eventId) {
+    where.push('e.id = ?');
+    binds.push(eventId);
   }
   if (artistId) {
-    where.push('ap.id = ?');
+    where.push('a.id = ?');
     binds.push(artistId);
+  }
+  if (giveawayId) {
+    where.push('g.id = ?');
+    binds.push(giveawayId);
   }
 
   const entriesResult = await db
     .prepare(
       `SELECT ge.id, ge.created_at, ge.name, ge.email, ge.phone, ge.instagram_handle,
               ge.is_winner, ge.contacted_at, ge.contacted_note, ge.archived, ge.archived_note,
-              g.id AS giveaway_id, g.title AS giveaway_title,
-              c.id AS campaign_id, c.title AS campaign_title,
-              ap.id AS artist_profile_id, ap.display_name AS artist_display_name
+              g.id AS giveaway_id, g.title AS giveaway_title, g.public_token AS public_token,
+              e.id AS event_id, e.name AS event_name,
+              br.id AS brief_id, br.title AS brief_title,
+              a.id AS artist_id, a.name AS artist_name
          FROM giveaway_entries ge
          JOIN giveaways g ON g.id = ge.giveaway_id
-         JOIN campaign_artists ca ON ca.id = g.campaign_artist_id
-         JOIN campaigns c ON c.id = ca.campaign_id
-         JOIN artist_profiles ap ON ap.id = ca.artist_profile_id
+         JOIN bookings b ON b.id = g.booking_id
+         JOIN briefs br ON br.id = b.brief_id
+         JOIN events e ON e.id = br.event_id
+         JOIN artists a ON a.id = b.artist_id
         WHERE ${where.join(' AND ')}
         ORDER BY ge.created_at DESC`
     )
@@ -92,9 +117,9 @@ export const load: PageServerLoad = async ({ platform, url, setHeaders }) => {
 
   return {
     entries: entriesResult.results ?? [],
-    campaigns: campaignsResult.results ?? [],
+    events: eventsResult.results ?? [],
     artists: artistsResult.results ?? [],
-    filter: { campaignId, artistId, view: viewParam }
+    filter: { eventId, artistId, giveawayId, view: viewParam }
   };
 };
 
@@ -102,7 +127,6 @@ export const actions: Actions = {
   markContacted: async ({ request, platform }) => {
     const db = platform?.env?.DB;
     if (!db) return fail(500, { error: 'Database unavailable' });
-
     const form = await request.formData();
     const id = Number(form.get('id'));
     const note = form.get('contacted_note')?.toString().trim() || null;
@@ -110,9 +134,7 @@ export const actions: Actions = {
     if (!note) return fail(400, { error: 'Note is required' });
 
     await db
-      .prepare(
-        `UPDATE giveaway_entries SET contacted_at = datetime('now'), contacted_note = ? WHERE id = ?`
-      )
+      .prepare(`UPDATE giveaway_entries SET contacted_at = datetime('now'), contacted_note = ? WHERE id = ?`)
       .bind(note, id)
       .run();
     return { success: true };
@@ -121,62 +143,42 @@ export const actions: Actions = {
   undoContacted: async ({ request, platform }) => {
     const db = platform?.env?.DB;
     if (!db) return fail(500, { error: 'Database unavailable' });
-
     const form = await request.formData();
     const id = Number(form.get('id'));
     if (!id) return fail(400, { error: 'Missing id' });
-
-    await db
-      .prepare('UPDATE giveaway_entries SET contacted_at = NULL, contacted_note = NULL WHERE id = ?')
-      .bind(id)
-      .run();
+    await db.prepare('UPDATE giveaway_entries SET contacted_at = NULL, contacted_note = NULL WHERE id = ?').bind(id).run();
     return { success: true };
   },
 
   toggleWinner: async ({ request, platform }) => {
     const db = platform?.env?.DB;
     if (!db) return fail(500, { error: 'Database unavailable' });
-
     const form = await request.formData();
     const id = Number(form.get('id'));
     if (!id) return fail(400, { error: 'Missing id' });
-
-    await db
-      .prepare('UPDATE giveaway_entries SET is_winner = 1 - is_winner WHERE id = ?')
-      .bind(id)
-      .run();
+    await db.prepare('UPDATE giveaway_entries SET is_winner = 1 - is_winner WHERE id = ?').bind(id).run();
     return { success: true };
   },
 
   archive: async ({ request, platform }) => {
     const db = platform?.env?.DB;
     if (!db) return fail(500, { error: 'Database unavailable' });
-
     const form = await request.formData();
     const id = Number(form.get('id'));
     const note = form.get('archived_note')?.toString().trim();
     if (!id) return fail(400, { error: 'Missing id' });
     if (!note) return fail(400, { error: 'Archive note is required' });
-
-    await db
-      .prepare('UPDATE giveaway_entries SET archived = 1, archived_note = ? WHERE id = ?')
-      .bind(note, id)
-      .run();
+    await db.prepare('UPDATE giveaway_entries SET archived = 1, archived_note = ? WHERE id = ?').bind(note, id).run();
     return { success: true };
   },
 
   unarchive: async ({ request, platform }) => {
     const db = platform?.env?.DB;
     if (!db) return fail(500, { error: 'Database unavailable' });
-
     const form = await request.formData();
     const id = Number(form.get('id'));
     if (!id) return fail(400, { error: 'Missing id' });
-
-    await db
-      .prepare('UPDATE giveaway_entries SET archived = 0, archived_note = NULL WHERE id = ?')
-      .bind(id)
-      .run();
+    await db.prepare('UPDATE giveaway_entries SET archived = 0, archived_note = NULL WHERE id = ?').bind(id).run();
     return { success: true };
   }
 };

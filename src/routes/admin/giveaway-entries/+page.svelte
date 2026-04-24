@@ -7,22 +7,32 @@
 
   export let data: PageData;
 
-  $: ({ entries, campaigns, artists, filter } = data);
+  $: ({ entries, events, artists, filter } = data);
 
   function formatDate(iso: string): string {
     return fmtDate(iso, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) || iso;
   }
 
-  function setFilter(key: 'campaign' | 'artist' | 'view', value: string | null) {
+  function setFilter(key: 'event' | 'artist' | 'view', value: string | null) {
     const url = new URL(window.location.href);
     if (value) url.searchParams.set(key, value);
     else url.searchParams.delete(key);
-    if (key === 'campaign') url.searchParams.delete('artist');
+    if (key === 'event') {
+      url.searchParams.delete('artist');
+      url.searchParams.delete('giveaway');
+    }
+    if (key === 'artist') url.searchParams.delete('giveaway');
+    goto(url.pathname + url.search, { replaceState: true });
+  }
+
+  function clearGiveawayFilter() {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('giveaway');
     goto(url.pathname + url.search, { replaceState: true });
   }
 
   function exportCsv() {
-    const headers = ['Created', 'Name', 'Email', 'Phone', 'Instagram', 'Campaign', 'Artist', 'Giveaway', 'Winner', 'Contacted', 'Contact Note', 'Archived', 'Archive Note'];
+    const headers = ['Created', 'Name', 'Email', 'Phone', 'Instagram', 'Event', 'Brief', 'Artist', 'Giveaway', 'Winner', 'Contacted', 'Contact Note', 'Archived', 'Archive Note'];
     const esc = (v: unknown) => `"${String(v ?? '').replace(/"/g, '""')}"`;
     const rows = entries.map((e) => [
       e.created_at,
@@ -30,8 +40,9 @@
       esc(e.email),
       esc(e.phone),
       esc(e.instagram_handle ?? ''),
-      esc(e.campaign_title),
-      esc(e.artist_display_name),
+      esc(e.event_name),
+      esc(e.brief_title),
+      esc(e.artist_name),
       esc(e.giveaway_title),
       e.is_winner ? '1' : '0',
       e.contacted_at ? '1' : '0',
@@ -66,15 +77,15 @@
 
     <div class="flex flex-wrap items-end gap-4 mb-6 bg-gray-50 border border-gray-200 rounded-lg p-4">
       <div>
-        <label for="f-campaign" class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1.5">Campaign</label>
+        <label for="f-event" class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1.5">Event</label>
         <select
-          id="f-campaign"
-          value={filter.campaignId ?? ''}
-          on:change={(e) => setFilter('campaign', e.currentTarget.value || null)}
+          id="f-event"
+          value={filter.eventId ?? ''}
+          on:change={(e) => setFilter('event', e.currentTarget.value || null)}
           class="px-3 py-2 border border-gray-200 rounded text-sm min-w-[220px]"
         >
-          <option value="">All campaigns</option>
-          {#each campaigns as c (c.id)}<option value={c.id}>{c.title}</option>{/each}
+          <option value="">All events</option>
+          {#each events as ev (ev.id)}<option value={ev.id}>{ev.name}</option>{/each}
         </select>
       </div>
       <div>
@@ -86,9 +97,16 @@
           class="px-3 py-2 border border-gray-200 rounded text-sm min-w-[200px]"
         >
           <option value="">All artists</option>
-          {#each artists as a (a.id)}<option value={a.id}>{a.display_name}</option>{/each}
+          {#each artists as a (a.id)}<option value={a.id}>{a.name}</option>{/each}
         </select>
       </div>
+      {#if filter.giveawayId}
+        <button
+          on:click={clearGiveawayFilter}
+          class="px-3 py-2 bg-brand-yellow text-brand-black font-mono text-xs font-bold rounded"
+          title="Clear giveaway filter"
+        >Giveaway #{filter.giveawayId} ×</button>
+      {/if}
       <div class="flex gap-1 bg-white border border-gray-200 rounded p-1 ml-auto">
         <button
           on:click={() => setFilter('view', null)}
@@ -128,7 +146,7 @@
                   {/if}
                 </div>
                 <p class="font-mono text-[10px] text-gray-400 mt-1">
-                  {e.campaign_title} · {e.artist_display_name} · {e.giveaway_title}
+                  {e.event_name} · {e.artist_name} · {e.giveaway_title}
                 </p>
               </div>
               <time class="font-mono text-[10px] text-gray-400 whitespace-nowrap">{formatDate(e.created_at)}</time>

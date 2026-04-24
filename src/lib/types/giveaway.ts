@@ -1,6 +1,7 @@
 export interface Giveaway {
   id: number;
-  campaign_artist_id: number;
+  booking_id: number;
+  public_token: string;
   title: string;
   description: string | null;
   opens_at: string | null;
