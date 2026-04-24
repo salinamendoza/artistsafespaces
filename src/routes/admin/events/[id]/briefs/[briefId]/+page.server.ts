@@ -3,7 +3,6 @@ import type { PageServerLoad, Actions } from './$types';
 import type { Event, Brief, ActivationType, Artist, Booking } from '$lib/types/db-types';
 import type { Giveaway } from '$lib/types/giveaway';
 import { generateShareToken } from '$lib/server/tokens';
-import { toSvgString } from '$lib/server/qr';
 
 interface BookingWithArtist extends Booking {
   artist_name: string;
@@ -14,7 +13,6 @@ export interface BookingWithGiveaway extends BookingWithArtist {
   giveaway: Giveaway | null;
   giveaway_entry_count: number;
   giveaway_url: string | null;
-  giveaway_qr_svg: string | null;
 }
 
 // datetime-local → D1-style 'YYYY-MM-DD HH:MM:SS'
@@ -88,13 +86,11 @@ export const load: PageServerLoad = async ({ platform, params, url }) => {
     const g = giveawayMap.get(b.id) ?? null;
     const entry_count = entryCountMap.get(b.id) ?? 0;
     const giveaway_url = g ? `${url.origin}/g/${g.public_token}` : null;
-    const giveaway_qr_svg = giveaway_url ? toSvgString(giveaway_url) : null;
     return {
       ...b,
       giveaway: g,
       giveaway_entry_count: entry_count,
-      giveaway_url,
-      giveaway_qr_svg
+      giveaway_url
     };
   });
 
