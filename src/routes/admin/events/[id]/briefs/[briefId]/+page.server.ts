@@ -1,14 +1,31 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import type { Event, Brief, ActivationType, Artist, Booking } from '$lib/types/db-types';
+import type { Giveaway } from '$lib/types/giveaway';
 import { generateShareToken } from '$lib/server/tokens';
+import { toSvgString } from '$lib/server/qr';
 
 interface BookingWithArtist extends Booking {
   artist_name: string;
   artist_email: string | null;
 }
 
-export const load: PageServerLoad = async ({ platform, params }) => {
+export interface BookingWithGiveaway extends BookingWithArtist {
+  giveaway: Giveaway | null;
+  giveaway_entry_count: number;
+  giveaway_url: string | null;
+  giveaway_qr_svg: string | null;
+}
+
+// datetime-local → D1-style 'YYYY-MM-DD HH:MM:SS'
+function normalizeDatetime(v: string | undefined): string | null {
+  const s = (v ?? '').trim();
+  if (!s) return null;
+  const cleaned = s.replace('T', ' ');
+  return cleaned.length === 16 ? `${cleaned}:00` : cleaned;
+}
+
+export const load: PageServerLoad = async ({ platform, params, url }) => {
   const db = platform?.env?.DB;
   if (!db) throw error(500, 'Database unavailable');
 
@@ -23,7 +40,7 @@ export const load: PageServerLoad = async ({ platform, params }) => {
   if (!event) throw error(404, 'Event not found');
   if (!brief) throw error(404, 'Brief not found');
 
-  const [activationType, bookings, artists] = await Promise.all([
+  const [activationType, bookingsResult, artists] = await Promise.all([
     db.prepare('SELECT * FROM activation_types WHERE id = ?').bind(brief.activation_type_id).first<ActivationType>(),
     db
       .prepare(`
@@ -38,11 +55,54 @@ export const load: PageServerLoad = async ({ platform, params }) => {
     db.prepare('SELECT id, name FROM artists ORDER BY name ASC').all<Pick<Artist, 'id' | 'name'>>()
   ]);
 
+  const rawBookings = bookingsResult.results ?? [];
+  const bookingIds = rawBookings.map((b) => b.id);
+
+  // Giveaways only exist on live-muralist bookings by policy, but the query
+  // doesn't need that gate — giveaways are inserted/updated through this page.
+  const giveawayMap = new Map<number, Giveaway>();
+  const entryCountMap = new Map<number, number>();
+  if (bookingIds.length > 0) {
+    const placeholders = bookingIds.map(() => '?').join(',');
+    const [gRes, eRes] = await Promise.all([
+      db
+        .prepare(`SELECT * FROM giveaways WHERE booking_id IN (${placeholders})`)
+        .bind(...bookingIds)
+        .all<Giveaway>(),
+      db
+        .prepare(
+          `SELECT g.booking_id AS booking_id, COUNT(ge.id) AS n
+             FROM giveaways g
+             LEFT JOIN giveaway_entries ge ON ge.giveaway_id = g.id AND ge.archived = 0
+            WHERE g.booking_id IN (${placeholders})
+            GROUP BY g.booking_id`
+        )
+        .bind(...bookingIds)
+        .all<{ booking_id: number; n: number }>()
+    ]);
+    for (const g of gRes.results ?? []) giveawayMap.set(g.booking_id, g);
+    for (const row of eRes.results ?? []) entryCountMap.set(row.booking_id, row.n);
+  }
+
+  const bookings: BookingWithGiveaway[] = rawBookings.map((b) => {
+    const g = giveawayMap.get(b.id) ?? null;
+    const entry_count = entryCountMap.get(b.id) ?? 0;
+    const giveaway_url = g ? `${url.origin}/g/${g.public_token}` : null;
+    const giveaway_qr_svg = giveaway_url ? toSvgString(giveaway_url) : null;
+    return {
+      ...b,
+      giveaway: g,
+      giveaway_entry_count: entry_count,
+      giveaway_url,
+      giveaway_qr_svg
+    };
+  });
+
   return {
     event,
     brief,
     activationType,
-    bookings: bookings.results ?? [],
+    bookings,
     artists: artists.results ?? []
   };
 };
@@ -165,5 +225,71 @@ export const actions: Actions = {
     }
     await db.prepare('DELETE FROM briefs WHERE id = ?').bind(briefId).run();
     throw redirect(303, `/admin/events/${eventId}`);
+  },
+
+  createGiveaway: async ({ request, platform }) => {
+    const db = platform?.env?.DB;
+    if (!db) return fail(500, { error: 'Database unavailable' });
+
+    const form = await request.formData();
+    const booking_id = parseInt(form.get('booking_id')?.toString() ?? '');
+    const title = form.get('title')?.toString().trim() || 'Win a custom mural';
+    const description = form.get('description')?.toString().trim() || null;
+    const opens_at = normalizeDatetime(form.get('opens_at')?.toString());
+    const closes_at = normalizeDatetime(form.get('closes_at')?.toString());
+    if (!booking_id) return fail(400, { error: 'Missing booking' });
+
+    const public_token = generateShareToken();
+
+    try {
+      await db
+        .prepare(
+          `INSERT INTO giveaways (booking_id, public_token, title, description, opens_at, closes_at)
+           VALUES (?, ?, ?, ?, ?, ?)`
+        )
+        .bind(booking_id, public_token, title, description, opens_at, closes_at)
+        .run();
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      if (/UNIQUE/i.test(msg)) return fail(400, { error: 'Giveaway already exists for this booking.' });
+      return fail(500, { error: 'Could not create giveaway.' });
+    }
+    return { success: true };
+  },
+
+  updateGiveaway: async ({ request, platform }) => {
+    const db = platform?.env?.DB;
+    if (!db) return fail(500, { error: 'Database unavailable' });
+
+    const form = await request.formData();
+    const id = parseInt(form.get('giveaway_id')?.toString() ?? '');
+    const title = form.get('title')?.toString().trim();
+    if (!id || !title) return fail(400, { error: 'Title is required' });
+
+    const description = form.get('description')?.toString().trim() || null;
+    const opens_at = normalizeDatetime(form.get('opens_at')?.toString());
+    const closes_at = normalizeDatetime(form.get('closes_at')?.toString());
+    const is_active = form.get('is_active') ? 1 : 0;
+
+    await db
+      .prepare(
+        `UPDATE giveaways SET title = ?, description = ?, opens_at = ?, closes_at = ?, is_active = ?
+          WHERE id = ?`
+      )
+      .bind(title, description, opens_at, closes_at, is_active, id)
+      .run();
+    return { success: true };
+  },
+
+  deleteGiveaway: async ({ request, platform }) => {
+    const db = platform?.env?.DB;
+    if (!db) return fail(500, { error: 'Database unavailable' });
+
+    const form = await request.formData();
+    const id = parseInt(form.get('giveaway_id')?.toString() ?? '');
+    if (!id) return fail(400, { error: 'Missing id' });
+
+    await db.prepare('DELETE FROM giveaways WHERE id = ?').bind(id).run();
+    return { success: true };
   }
 };

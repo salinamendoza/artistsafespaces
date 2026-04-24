@@ -27,9 +27,37 @@
     setTimeout(() => (copied = null), 1500);
   }
 
+  let giveawayCopied: number | null = null;
+  function copyGiveawayLink(id: number, link: string) {
+    navigator.clipboard.writeText(link);
+    giveawayCopied = id;
+    setTimeout(() => (giveawayCopied = null), 1500);
+  }
+
+  function downloadQr(svg: string, filename: string) {
+    const blob = new Blob([svg], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function toDatetimeLocal(iso: string | null): string {
+    if (!iso) return '';
+    return iso.replace(' ', 'T').slice(0, 16);
+  }
+
+  function slugifyForFile(s: string): string {
+    return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) || 'giveaway';
+  }
+
   function formatDate(iso: string | null): string {
     return fmtDate(iso, { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }) || '—';
   }
+
+  $: isLiveMuralist = data.activationType?.slug === 'live-muralist';
 </script>
 
 <svelte:head><title>{brief.title} | Admin</title></svelte:head>
@@ -250,6 +278,105 @@
                   <button type="submit" class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-[10px] text-gray-700 hover:border-gray-400 hover:text-brand-black transition-colors self-start">Save</button>
                 </div>
               </form>
+
+              <!-- Giveaway (live-muralist only) -->
+              {#if isLiveMuralist}
+                <div class="mt-5 pt-5 border-t border-gray-100">
+                  {#if b.giveaway && b.giveaway_url && b.giveaway_qr_svg}
+                    {@const g = b.giveaway}
+                    {@const gUrl = b.giveaway_url}
+                    {@const gSvg = b.giveaway_qr_svg}
+                    <div class="flex items-baseline justify-between mb-3">
+                      <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500">
+                        Public giveaway
+                        {#if g.is_active}
+                          <span class="ml-2 px-2 py-0.5 rounded-full bg-brand-yellow text-brand-black font-bold">active</span>
+                        {:else}
+                          <span class="ml-2 px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">paused</span>
+                        {/if}
+                      </p>
+                      <a href={`/admin/giveaway-entries?giveaway=${g.id}`} class="font-mono text-[10px] text-gray-500 hover:text-brand-black">{b.giveaway_entry_count} entries →</a>
+                    </div>
+
+                    <div class="grid sm:grid-cols-[1fr_auto] gap-4 items-start">
+                      <div class="space-y-3">
+                        <div class="bg-brand-yellow/5 border border-brand-yellow/20 rounded p-3">
+                          <p class="font-mono text-[10px] uppercase tracking-widest text-brand-black mb-1">Public URL — print this in the QR</p>
+                          <div class="flex items-center gap-2">
+                            <code class="flex-1 font-mono text-xs text-gray-900 truncate">{gUrl}</code>
+                            <a href={gUrl} target="_blank" rel="noopener" class="px-2 py-1 bg-white border border-gray-200 font-mono text-[10px] text-gray-700 rounded hover:text-brand-black">Open</a>
+                            <button type="button" on:click={() => copyGiveawayLink(g.id, gUrl)} class="px-2 py-1 bg-brand-yellow text-brand-black font-mono text-[10px] font-bold rounded hover:bg-yellow-300">
+                              {giveawayCopied === g.id ? 'Copied' : 'Copy'}
+                            </button>
+                          </div>
+                        </div>
+
+                        <form method="POST" action="?/updateGiveaway" use:enhance class="space-y-3">
+                          <input type="hidden" name="giveaway_id" value={g.id} />
+                          <div>
+                            <label class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Giveaway title</label>
+                            <input name="title" value={g.title} required class="w-full px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono focus:outline-none focus:border-brand-black" />
+                          </div>
+                          <div>
+                            <label class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Description — shown to entrants</label>
+                            <textarea name="description" rows="2" class="w-full px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono focus:outline-none focus:border-brand-black">{g.description ?? ''}</textarea>
+                          </div>
+                          <div class="grid sm:grid-cols-2 gap-3">
+                            <div>
+                              <label class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Opens (optional)</label>
+                              <input type="datetime-local" name="opens_at" value={toDatetimeLocal(g.opens_at)} class="w-full px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono focus:outline-none focus:border-brand-black" />
+                            </div>
+                            <div>
+                              <label class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Closes (optional)</label>
+                              <input type="datetime-local" name="closes_at" value={toDatetimeLocal(g.closes_at)} class="w-full px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono focus:outline-none focus:border-brand-black" />
+                            </div>
+                          </div>
+                          <label class="flex items-center gap-2 font-mono text-xs text-gray-600">
+                            <input type="checkbox" name="is_active" checked={!!g.is_active} class="w-4 h-4" />
+                            Active — form accepts entries on the public page
+                          </label>
+                          <div class="flex gap-2">
+                            <button type="submit" class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-[10px] text-gray-700 hover:border-gray-400 hover:text-brand-black">Save</button>
+                          </div>
+                        </form>
+
+                        <form method="POST" action="?/deleteGiveaway" use:enhance>
+                          <input type="hidden" name="giveaway_id" value={g.id} />
+                          <button type="submit" class="px-3 py-1.5 font-mono text-[10px] text-gray-400 hover:text-red-500 transition-colors">Delete giveaway (archives entries too)</button>
+                        </form>
+                      </div>
+
+                      <div class="flex flex-col items-center gap-2">
+                        <div class="w-40 h-40 bg-white border border-gray-200 rounded p-2">
+                          {@html gSvg}
+                        </div>
+                        <button
+                          type="button"
+                          on:click={() => downloadQr(gSvg, `giveaway-${slugifyForFile(b.artist_name)}-qr.svg`)}
+                          class="px-2 py-1 bg-gray-50 border border-gray-200 font-mono text-[10px] text-gray-700 rounded hover:border-gray-400 hover:text-brand-black"
+                        >Download QR</button>
+                      </div>
+                    </div>
+                  {:else}
+                    <form method="POST" action="?/createGiveaway" use:enhance class="border border-dashed border-gray-300 rounded p-3">
+                      <input type="hidden" name="booking_id" value={b.id} />
+                      <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-3">
+                        Start a public giveaway for this artist's mural
+                      </p>
+                      <div class="grid sm:grid-cols-[1fr_auto] gap-2 items-end">
+                        <div>
+                          <label class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Giveaway title</label>
+                          <input name="title" value="Win a custom mural" class="w-full px-2 py-1.5 bg-white border border-gray-200 rounded text-xs font-mono focus:outline-none focus:border-brand-black" />
+                        </div>
+                        <button type="submit" class="px-3 py-1.5 bg-brand-yellow text-brand-black font-mono text-[10px] font-bold rounded hover:bg-yellow-300">Start giveaway</button>
+                      </div>
+                      <p class="mt-2 font-mono text-[10px] text-gray-400">
+                        Generates an unguessable public URL + QR code. Only people at the event who scan the sign can enter.
+                      </p>
+                    </form>
+                  {/if}
+                </div>
+              {/if}
             </div>
           {/each}
         </div>
