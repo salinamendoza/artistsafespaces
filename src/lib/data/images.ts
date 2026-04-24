@@ -1,7 +1,3 @@
-// Image paths served from Cloudflare R2 via /api/images/
-// Upload images at /admin/images, then reference them here.
-// Fallback to /images/ (static) if R2 isn't set up yet.
-
 const CDN = '/api/images';
 
 export const images = {

@@ -69,17 +69,17 @@
   <div class="space-y-4 border-t border-gray-200 pt-5">
     <div>
       <p class="block font-mono text-xs text-gray-600 mb-1">Images</p>
-      <p class="font-mono text-[10px] text-gray-500">Upload via <a href="/admin/images" class="underline hover:text-brand-black">/admin/images</a>, then paste the <code class="text-gray-700">/api/images/&hellip;</code> path below.</p>
+      <p class="font-mono text-[10px] text-gray-500">WebP-compress, commit to <code class="text-gray-700">static/images/</code>, then paste the <code class="text-gray-700">/images/&hellip;</code> path below. Browse at <a href="/admin/images" class="underline hover:text-brand-black">/admin/images</a>.</p>
     </div>
 
     <div class="grid sm:grid-cols-2 gap-4">
       <div>
         <label for="headshot_url" class="block font-mono text-xs text-gray-600 mb-1.5">Headshot URL</label>
-        <input id="headshot_url" name="headshot_url" type="text" placeholder="/api/images/artists/name-headshot.jpg" value={artist.headshot_url ?? ''} class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black" />
+        <input id="headshot_url" name="headshot_url" type="text" placeholder="/images/headshots/artist/name-headshot.webp" value={artist.headshot_url ?? ''} class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black" />
       </div>
       <div>
         <label for="studio_url" class="block font-mono text-xs text-gray-600 mb-1.5">Studio / Gallery Shot URL <span class="text-gray-400">(optional)</span></label>
-        <input id="studio_url" name="studio_url" type="text" placeholder="/api/images/artists/name-studio.jpg" value={artist.studio_url ?? ''} class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black" />
+        <input id="studio_url" name="studio_url" type="text" placeholder="/images/studios/name-studio.webp" value={artist.studio_url ?? ''} class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-sm font-mono text-brand-black placeholder:text-gray-400 focus:outline-none focus:border-brand-black" />
       </div>
     </div>
 
