@@ -1,6 +1,7 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
   import { page } from '$app/stores';
+  import { onMount } from 'svelte';
   import AdminHeader from '$lib/components/AdminHeader.svelte';
   import BriefFieldsView from '$lib/components/BriefFieldsView.svelte';
   import MarkdownView from '$lib/components/MarkdownView.svelte';
@@ -9,6 +10,53 @@
   import { AS_CORE_TERMS } from '$lib/briefs/coreTerms';
   import { formatDate as fmtDate } from '$lib/utils/date';
   import type { PageData, ActionData } from './$types';
+
+  // QR codes are rendered client-side in this admin-only page. qrcode-generator
+  // is loaded once from jsDelivr (cached by the browser); the giveaway URL
+  // stays local — only the library is fetched, not the data.
+  const QR_CDN = 'https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js';
+
+  type QrFn = (typeNumber: number, level: 'L' | 'M' | 'Q' | 'H') => {
+    addData(data: string): void;
+    make(): void;
+    getModuleCount(): number;
+    isDark(r: number, c: number): boolean;
+  };
+
+  let qrcodeReady = false;
+
+  function renderQr(url: string): string {
+    const qrcode = (window as unknown as { qrcode?: QrFn }).qrcode;
+    if (!qrcode) return '';
+    const qr = qrcode(0, 'M');
+    qr.addData(url);
+    qr.make();
+    const count = qr.getModuleCount();
+    const cell = 8;
+    const margin = cell * 2;
+    const size = count * cell + margin * 2;
+    let rects = '';
+    for (let r = 0; r < count; r++) {
+      for (let c = 0; c < count; c++) {
+        if (qr.isDark(r, c)) {
+          rects += `<rect x="${margin + c * cell}" y="${margin + r * cell}" width="${cell}" height="${cell}"/>`;
+        }
+      }
+    }
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="100%" height="100%" shape-rendering="crispEdges"><rect width="${size}" height="${size}" fill="#ffffff"/><g fill="#1a1a1a">${rects}</g></svg>`;
+  }
+
+  onMount(() => {
+    if ((window as unknown as { qrcode?: QrFn }).qrcode) {
+      qrcodeReady = true;
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = QR_CDN;
+    script.async = true;
+    script.onload = () => { qrcodeReady = true; };
+    document.head.appendChild(script);
+  });
 
   export let data: PageData;
   export let form: ActionData;
@@ -282,10 +330,10 @@
               <!-- Giveaway (live-muralist only) -->
               {#if isLiveMuralist}
                 <div class="mt-5 pt-5 border-t border-gray-100">
-                  {#if b.giveaway && b.giveaway_url && b.giveaway_qr_svg}
+                  {#if b.giveaway && b.giveaway_url}
                     {@const g = b.giveaway}
                     {@const gUrl = b.giveaway_url}
-                    {@const gSvg = b.giveaway_qr_svg}
+                    {@const gSvg = qrcodeReady ? renderQr(gUrl) : ''}
                     <div class="flex items-baseline justify-between mb-3">
                       <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500">
                         Public giveaway
@@ -347,13 +395,18 @@
                       </div>
 
                       <div class="flex flex-col items-center gap-2">
-                        <div class="w-40 h-40 bg-white border border-gray-200 rounded p-2">
-                          {@html gSvg}
+                        <div class="w-40 h-40 bg-white border border-gray-200 rounded p-2 flex items-center justify-center">
+                          {#if gSvg}
+                            {@html gSvg}
+                          {:else}
+                            <span class="font-mono text-[10px] text-gray-400">Generating QR…</span>
+                          {/if}
                         </div>
                         <button
                           type="button"
-                          on:click={() => downloadQr(gSvg, `giveaway-${slugifyForFile(b.artist_name)}-qr.svg`)}
-                          class="px-2 py-1 bg-gray-50 border border-gray-200 font-mono text-[10px] text-gray-700 rounded hover:border-gray-400 hover:text-brand-black"
+                          disabled={!gSvg}
+                          on:click={() => gSvg && downloadQr(gSvg, `giveaway-${slugifyForFile(b.artist_name)}-qr.svg`)}
+                          class="px-2 py-1 bg-gray-50 border border-gray-200 font-mono text-[10px] text-gray-700 rounded hover:border-gray-400 hover:text-brand-black disabled:opacity-50"
                         >Download QR</button>
                       </div>
                     </div>
