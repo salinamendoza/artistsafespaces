@@ -105,7 +105,6 @@
     return fmtDate(iso, { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }) || '—';
   }
 
-  $: isLiveMuralist = data.activationType?.slug === 'live-muralist';
 </script>
 
 <svelte:head><title>{brief.title} | Admin</title></svelte:head>
@@ -327,10 +326,9 @@
                 </div>
               </form>
 
-              <!-- Giveaway (live-muralist only) -->
-              {#if isLiveMuralist}
-                <div class="mt-5 pt-5 border-t border-gray-100">
-                  {#if b.giveaway && b.giveaway_url}
+              <!-- Giveaway — opt-in per booking -->
+              <div class="mt-5 pt-5 border-t border-gray-100">
+                {#if b.giveaway && b.giveaway_url}
                     {@const g = b.giveaway}
                     {@const gUrl = b.giveaway_url}
                     {@const gSvg = qrcodeReady ? renderQr(gUrl) : ''}
@@ -428,8 +426,7 @@
                       </p>
                     </form>
                   {/if}
-                </div>
-              {/if}
+              </div>
             </div>
           {/each}
         </div>
