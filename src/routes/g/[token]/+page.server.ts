@@ -8,6 +8,7 @@ export interface GiveawayView {
   artist_name: string;
   artist_bio: string | null;
   artist_instagram: string | null;
+  artist_headshot_url: string | null;
   event_name: string;
   event_date: string | null;
   event_location: string | null;
@@ -25,6 +26,7 @@ export const load: PageServerLoad = async ({ params, platform, setHeaders }) => 
       `SELECT g.id, g.booking_id, g.public_token, g.title, g.description,
               g.opens_at, g.closes_at, g.is_active, g.created_at,
               a.name AS artist_name, a.bio AS artist_bio, a.instagram_handle AS artist_instagram,
+              a.headshot_url AS artist_headshot_url,
               e.name AS event_name, e.event_date AS event_date, e.location AS event_location,
               at.name AS activation_type_name
          FROM giveaways g
@@ -49,6 +51,7 @@ export const load: PageServerLoad = async ({ params, platform, setHeaders }) => 
       artist_name: string;
       artist_bio: string | null;
       artist_instagram: string | null;
+      artist_headshot_url: string | null;
       event_name: string;
       event_date: string | null;
       event_location: string | null;
@@ -72,6 +75,7 @@ export const load: PageServerLoad = async ({ params, platform, setHeaders }) => 
     artist_name: row.artist_name,
     artist_bio: row.artist_bio,
     artist_instagram: row.artist_instagram,
+    artist_headshot_url: row.artist_headshot_url,
     event_name: row.event_name,
     event_date: row.event_date,
     event_location: row.event_location,
