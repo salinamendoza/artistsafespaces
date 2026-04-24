@@ -10,6 +10,29 @@
 
   let folder = '';
   let dragOver = false;
+  let fileInputEl: HTMLInputElement;
+  let selectedFiles: File[] = [];
+  let uploading = false;
+
+  function onFilesPicked(list: FileList | null) {
+    selectedFiles = list ? Array.from(list) : [];
+  }
+
+  function clearSelection() {
+    selectedFiles = [];
+    if (fileInputEl) fileInputEl.value = '';
+  }
+
+  function onDrop(e: DragEvent) {
+    dragOver = false;
+    if (!e.dataTransfer?.files?.length) return;
+    if (fileInputEl) {
+      const dt = new DataTransfer();
+      for (const f of e.dataTransfer.files) dt.items.add(f);
+      fileInputEl.files = dt.files;
+    }
+    onFilesPicked(e.dataTransfer.files);
+  }
 
   function formatSize(bytes: number): string {
     if (bytes < 1024) return bytes + ' B';
@@ -39,7 +62,14 @@
       method="POST"
       action="?/upload"
       enctype="multipart/form-data"
-      use:enhance
+      use:enhance={() => {
+        uploading = true;
+        return async ({ update, result }) => {
+          await update({ reset: false });
+          uploading = false;
+          if (result.type === 'success') clearSelection();
+        };
+      }}
       class="mb-10 border border-gray-200 rounded-lg p-6"
     >
       <h2 class="font-mono text-sm font-bold text-brand-black mb-4">Upload Images</h2>
@@ -64,29 +94,57 @@
           {dragOver ? 'border-brand-yellow bg-brand-yellow/5' : 'border-gray-200 hover:border-gray-300'}"
         on:dragover|preventDefault={() => dragOver = true}
         on:dragleave={() => dragOver = false}
-        on:drop|preventDefault={(e) => { dragOver = false; }}
+        on:drop|preventDefault={onDrop}
       >
-        <input type="file" name="files" accept="image/*" multiple class="hidden" />
-        <p class="font-mono text-sm text-gray-500">
-          Click to select or drag images here
-        </p>
-        <p class="font-mono text-[10px] text-gray-300 mt-1">
-          WebP, JPG, PNG, GIF, AVIF — max 10 MB each
-        </p>
+        <input
+          bind:this={fileInputEl}
+          type="file"
+          name="files"
+          accept="image/*"
+          multiple
+          class="hidden"
+          on:change={(e) => onFilesPicked(e.currentTarget.files)}
+        />
+        {#if selectedFiles.length === 0}
+          <p class="font-mono text-sm text-gray-500">Click to select or drag images here</p>
+          <p class="font-mono text-[10px] text-gray-300 mt-1">
+            WebP, JPG, PNG, GIF, AVIF — max 10 MB each
+          </p>
+        {:else}
+          <p class="font-mono text-xs text-gray-700 font-bold mb-2">
+            {selectedFiles.length} file{selectedFiles.length === 1 ? '' : 's'} ready to upload
+          </p>
+          <ul class="space-y-1">
+            {#each selectedFiles as f (f.name + f.size)}
+              <li class="font-mono text-[11px] text-gray-500 truncate">{f.name} <span class="text-gray-300">· {formatSize(f.size)}</span></li>
+            {/each}
+          </ul>
+          <p class="font-mono text-[10px] text-gray-400 mt-3">Click again to swap files</p>
+        {/if}
       </label>
 
-      <button
-        type="submit"
-        class="mt-4 px-5 py-2 bg-brand-yellow text-brand-black font-mono text-sm font-bold rounded-lg hover:bg-brand-yellow/90 transition-colors"
-      >
-        Upload
-      </button>
+      <div class="flex items-center gap-3 mt-4">
+        <button
+          type="submit"
+          disabled={uploading || selectedFiles.length === 0}
+          class="px-5 py-2 bg-brand-yellow text-brand-black font-mono text-sm font-bold rounded-lg hover:bg-brand-yellow/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          {uploading ? 'Uploading…' : selectedFiles.length > 1 ? `Upload ${selectedFiles.length} files` : 'Upload'}
+        </button>
+        {#if selectedFiles.length > 0 && !uploading}
+          <button
+            type="button"
+            on:click={clearSelection}
+            class="px-3 py-2 font-mono text-xs text-gray-500 hover:text-brand-black"
+          >Clear</button>
+        {/if}
+      </div>
 
       {#if form?.error}
-        <p class="mt-3 font-mono text-xs text-red-400">{form.error}</p>
+        <p class="mt-3 font-mono text-xs text-red-500">{form.error}</p>
       {/if}
       {#if form?.success}
-        <p class="mt-3 font-mono text-xs text-green-400">Uploaded successfully!</p>
+        <p class="mt-3 font-mono text-xs text-green-600">Uploaded {form.uploaded?.length ?? ''} file{(form.uploaded?.length ?? 0) === 1 ? '' : 's'}. Scroll down to copy the path.</p>
       {/if}
     </form>
 
@@ -120,7 +178,7 @@
                   <!-- Copy path button -->
                   <button
                     type="button"
-                    class="absolute top-1 left-1 px-1.5 py-0.5 bg-black/60 rounded text-[10px] font-mono text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity"
+                    class="absolute top-1 left-1 px-2 py-0.5 bg-brand-yellow text-brand-black font-bold rounded text-[10px] font-mono opacity-0 group-hover:opacity-100 transition-opacity"
                     on:click={() => navigator.clipboard.writeText(`/api/images/${img.key}`)}
                   >
                     copy path
