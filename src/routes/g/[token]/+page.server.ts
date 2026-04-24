@@ -81,12 +81,6 @@ export const load: PageServerLoad = async ({ params, platform, setHeaders }) => 
   return { view };
 };
 
-function withinWindow(g: Giveaway, nowIso: string): boolean {
-  if (g.opens_at && nowIso < g.opens_at) return false;
-  if (g.closes_at && nowIso > g.closes_at) return false;
-  return true;
-}
-
 export const actions: Actions = {
   enter: async ({ params, request, platform }) => {
     const db = platform?.env?.DB;
@@ -97,11 +91,6 @@ export const actions: Actions = {
       .bind(params.token)
       .first<Giveaway>();
     if (!giveaway) return fail(404, { error: 'This giveaway isn’t open.' });
-
-    const nowIso = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    if (!withinWindow(giveaway, nowIso)) {
-      return fail(400, { error: 'This giveaway isn’t open right now.' });
-    }
 
     const form = await request.formData();
     const result = validateEntry({

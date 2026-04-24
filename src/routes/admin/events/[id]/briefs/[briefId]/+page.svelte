@@ -92,10 +92,6 @@
     URL.revokeObjectURL(url);
   }
 
-  function toDatetimeLocal(iso: string | null): string {
-    if (!iso) return '';
-    return iso.replace(' ', 'T').slice(0, 16);
-  }
 
   function slugifyForFile(s: string): string {
     return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) || 'giveaway';
@@ -366,16 +362,6 @@
                           <div>
                             <label class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Description — shown to entrants</label>
                             <textarea name="description" rows="2" class="w-full px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono focus:outline-none focus:border-brand-black">{g.description ?? ''}</textarea>
-                          </div>
-                          <div class="grid sm:grid-cols-2 gap-3">
-                            <div>
-                              <label class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Opens (optional)</label>
-                              <input type="datetime-local" name="opens_at" value={toDatetimeLocal(g.opens_at)} class="w-full px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono focus:outline-none focus:border-brand-black" />
-                            </div>
-                            <div>
-                              <label class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Closes (optional)</label>
-                              <input type="datetime-local" name="closes_at" value={toDatetimeLocal(g.closes_at)} class="w-full px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono focus:outline-none focus:border-brand-black" />
-                            </div>
                           </div>
                           <label class="flex items-center gap-2 font-mono text-xs text-gray-600">
                             <input type="checkbox" name="is_active" checked={!!g.is_active} class="w-4 h-4" />

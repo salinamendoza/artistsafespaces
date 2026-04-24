@@ -15,14 +15,6 @@ export interface BookingWithGiveaway extends BookingWithArtist {
   giveaway_url: string | null;
 }
 
-// datetime-local → D1-style 'YYYY-MM-DD HH:MM:SS'
-function normalizeDatetime(v: string | undefined): string | null {
-  const s = (v ?? '').trim();
-  if (!s) return null;
-  const cleaned = s.replace('T', ' ');
-  return cleaned.length === 16 ? `${cleaned}:00` : cleaned;
-}
-
 export const load: PageServerLoad = async ({ platform, params, url }) => {
   const db = platform?.env?.DB;
   if (!db) throw error(500, 'Database unavailable');
@@ -231,8 +223,6 @@ export const actions: Actions = {
     const booking_id = parseInt(form.get('booking_id')?.toString() ?? '');
     const title = form.get('title')?.toString().trim() || 'Win a custom mural';
     const description = form.get('description')?.toString().trim() || null;
-    const opens_at = normalizeDatetime(form.get('opens_at')?.toString());
-    const closes_at = normalizeDatetime(form.get('closes_at')?.toString());
     if (!booking_id) return fail(400, { error: 'Missing booking' });
 
     const public_token = generateShareToken();
@@ -240,10 +230,10 @@ export const actions: Actions = {
     try {
       await db
         .prepare(
-          `INSERT INTO giveaways (booking_id, public_token, title, description, opens_at, closes_at)
-           VALUES (?, ?, ?, ?, ?, ?)`
+          `INSERT INTO giveaways (booking_id, public_token, title, description)
+           VALUES (?, ?, ?, ?)`
         )
-        .bind(booking_id, public_token, title, description, opens_at, closes_at)
+        .bind(booking_id, public_token, title, description)
         .run();
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
@@ -263,16 +253,13 @@ export const actions: Actions = {
     if (!id || !title) return fail(400, { error: 'Title is required' });
 
     const description = form.get('description')?.toString().trim() || null;
-    const opens_at = normalizeDatetime(form.get('opens_at')?.toString());
-    const closes_at = normalizeDatetime(form.get('closes_at')?.toString());
     const is_active = form.get('is_active') ? 1 : 0;
 
     await db
       .prepare(
-        `UPDATE giveaways SET title = ?, description = ?, opens_at = ?, closes_at = ?, is_active = ?
-          WHERE id = ?`
+        `UPDATE giveaways SET title = ?, description = ?, is_active = ? WHERE id = ?`
       )
-      .bind(title, description, opens_at, closes_at, is_active, id)
+      .bind(title, description, is_active, id)
       .run();
     return { success: true };
   },
