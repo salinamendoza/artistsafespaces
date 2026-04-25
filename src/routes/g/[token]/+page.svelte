@@ -46,7 +46,7 @@
           <img
             src={view.artist_headshot_url}
             alt={view.artist_name}
-            class="w-24 h-24 rounded-full object-cover mb-8"
+            class="w-full aspect-square object-cover max-w-sm mb-8"
           />
         {/if}
 
