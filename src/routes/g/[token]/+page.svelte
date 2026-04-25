@@ -67,21 +67,17 @@
           >@{view.artist_instagram}</a>
         {/if}
 
-        {#if view.theme}
+        {#if giveaway.description}
           <div class="mt-10">
             <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-2">Theme</p>
-            <p class="text-base md:text-lg text-gray-700 leading-relaxed whitespace-pre-wrap">{view.theme}</p>
+            <p class="text-base md:text-lg text-gray-700 leading-relaxed whitespace-pre-wrap">{giveaway.description}</p>
           </div>
         {/if}
       </div>
 
       <!-- Right column: giveaway -->
-      <div class="mt-12 md:mt-0">
-        <h2 class="font-display text-4xl md:text-5xl font-bold leading-tight mb-4">{giveaway.title}</h2>
-
-        {#if giveaway.description}
-          <p class="text-base text-gray-700 leading-relaxed mb-8 whitespace-pre-wrap">{giveaway.description}</p>
-        {/if}
+      <div class="mt-12 md:mt-0 md:pt-32">
+        <h2 class="font-display text-4xl md:text-5xl font-bold leading-tight mb-8">{giveaway.title}</h2>
 
         {#if form && 'success' in form && form.success}
           <div class="py-4">
