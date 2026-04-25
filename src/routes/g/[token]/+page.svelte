@@ -46,7 +46,7 @@
           <img
             src={view.artist_headshot_url}
             alt={view.artist_name}
-            class="w-full aspect-square object-cover max-w-sm mb-8"
+            class="w-full aspect-square object-cover max-w-[280px] mb-8"
           />
         {/if}
 
@@ -76,7 +76,7 @@
       </div>
 
       <!-- Right column: giveaway -->
-      <div class="mt-12 md:mt-0 md:pt-32">
+      <div class="mt-12 md:mt-0 md:pt-24">
         <h2 class="font-display text-4xl md:text-5xl font-bold leading-tight mb-8">{giveaway.title}</h2>
 
         {#if form && 'success' in form && form.success}
