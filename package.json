@@ -3,12 +3,14 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "predev": "node scripts/build-image-manifest.js",
     "dev": "vite dev",
-    "build": "vite build",
+    "build": "node scripts/build-image-manifest.js && vite build",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-    "scan": "node scripts/scan.js"
+    "scan": "node scripts/scan.js",
+    "images:scan": "node scripts/build-image-manifest.js"
   },
   "devDependencies": {
     "@sveltejs/adapter-cloudflare": "^4.0.0",
