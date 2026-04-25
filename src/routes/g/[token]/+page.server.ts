@@ -2,6 +2,7 @@ import { error, fail } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import type { Giveaway } from '$lib/types/giveaway';
 import { validateEntry } from '$lib/server/giveaway-validation';
+import { parseBriefData } from '$lib/types/brief-schema';
 
 export interface GiveawayView {
   giveaway: Giveaway;
@@ -13,6 +14,7 @@ export interface GiveawayView {
   event_date: string | null;
   event_location: string | null;
   activation_type_name: string;
+  theme: string | null;
 }
 
 export const load: PageServerLoad = async ({ params, platform, setHeaders }) => {
@@ -28,7 +30,8 @@ export const load: PageServerLoad = async ({ params, platform, setHeaders }) => 
               a.name AS artist_name, a.bio AS artist_bio, a.instagram_handle AS artist_instagram,
               a.headshot_url AS artist_headshot_url,
               e.name AS event_name, e.event_date AS event_date, e.location AS event_location,
-              at.name AS activation_type_name
+              at.name AS activation_type_name,
+              br.brief_data_json AS brief_data_json
          FROM giveaways g
          JOIN bookings b ON b.id = g.booking_id
          JOIN artists a ON a.id = b.artist_id
@@ -56,9 +59,13 @@ export const load: PageServerLoad = async ({ params, platform, setHeaders }) => 
       event_date: string | null;
       event_location: string | null;
       activation_type_name: string;
+      brief_data_json: string;
     }>();
 
   if (!row) throw error(404, 'Not found');
+
+  const briefData = parseBriefData(row.brief_data_json);
+  const themeRaw = briefData.theme?.trim();
 
   const view: GiveawayView = {
     giveaway: {
@@ -79,7 +86,8 @@ export const load: PageServerLoad = async ({ params, platform, setHeaders }) => 
     event_name: row.event_name,
     event_date: row.event_date,
     event_location: row.event_location,
-    activation_type_name: row.activation_type_name
+    activation_type_name: row.activation_type_name,
+    theme: themeRaw ? themeRaw : null
   };
 
   return { view };
