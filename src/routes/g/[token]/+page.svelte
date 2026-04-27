@@ -38,26 +38,20 @@
 </svelte:head>
 
 <div class="bg-white text-brand-black min-h-screen">
-  <div class="max-w-5xl mx-auto px-6 py-14 md:py-20">
-    <div class="grid grid-cols-1 md:grid-cols-2 md:gap-12 lg:gap-16">
-      <!-- Left column: artist -->
-      <div>
-        {#if view.artist_headshot_url}
-          <img
-            src={view.artist_headshot_url}
-            alt={view.artist_name}
-            class="w-full aspect-square object-cover max-w-[280px] mb-8"
-          />
-        {/if}
+  <div class="max-w-3xl mx-auto px-6 py-8 md:py-12">
+    <!-- Hero: image left, identity right -->
+    <div class="flex gap-5 md:gap-8 items-start">
+      {#if view.artist_headshot_url}
+        <img
+          src={view.artist_headshot_url}
+          alt={view.artist_name}
+          class="w-32 h-32 md:w-44 md:h-44 object-cover flex-shrink-0"
+        />
+      {/if}
 
-        <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-3">{eyebrow()}</p>
-
-        <h1 class="font-display text-5xl md:text-6xl font-bold leading-[0.95] mb-5">{view.artist_name}</h1>
-
-        {#if view.artist_bio}
-          <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-5">{view.artist_bio}</p>
-        {/if}
-
+      <div class="flex-1 min-w-0">
+        <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-2">{eyebrow()}</p>
+        <h1 class="font-display text-3xl md:text-5xl font-bold leading-[0.95] mb-3">{view.artist_name}</h1>
         {#if view.artist_instagram}
           <a
             href={`https://instagram.com/${view.artist_instagram}`}
@@ -66,78 +60,85 @@
             class="inline-block font-mono text-xs text-brand-black border-b border-brand-black pb-0.5 hover:border-transparent"
           >@{view.artist_instagram}</a>
         {/if}
+      </div>
+    </div>
 
-        {#if giveaway.description}
-          <div class="mt-10">
-            <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-2">Theme</p>
-            <p class="text-base md:text-lg text-gray-700 leading-relaxed whitespace-pre-wrap">{giveaway.description}</p>
-          </div>
-        {/if}
+    {#if view.artist_bio}
+      <p class="mt-5 text-sm md:text-base text-gray-700 leading-relaxed">{view.artist_bio}</p>
+    {/if}
+
+    {#if giveaway.description}
+      <div class="mt-5">
+        <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1.5">Theme</p>
+        <p class="text-sm md:text-base text-gray-700 leading-relaxed whitespace-pre-wrap">{giveaway.description}</p>
+      </div>
+    {/if}
+
+    <!-- Form section: clearly below the fold -->
+    <div class="mt-10 pt-8 border-t border-gray-200">
+      <div class="flex items-baseline justify-between mb-6 gap-4">
+        <h2 class="font-display text-2xl md:text-3xl font-bold leading-tight">{giveaway.title}</h2>
+        <span aria-hidden="true" class="font-mono text-[10px] uppercase tracking-widest text-gray-500 flex-shrink-0">Enter ↓</span>
       </div>
 
-      <!-- Right column: giveaway -->
-      <div class="mt-12 md:mt-0 md:pt-24">
-        <h2 class="font-display text-4xl md:text-5xl font-bold leading-tight mb-8">{giveaway.title}</h2>
-
-        {#if form && 'success' in form && form.success}
-          <div class="py-4">
-            <p class="font-display text-3xl font-bold mb-2">You’re in.</p>
-            <p class="font-mono text-sm text-gray-500">We’ll reach out if you win.</p>
+      {#if form && 'success' in form && form.success}
+        <div class="py-4">
+          <p class="font-display text-3xl font-bold mb-2">You’re in.</p>
+          <p class="font-mono text-sm text-gray-500">We’ll reach out if you win.</p>
+        </div>
+      {:else}
+        <form
+          method="POST"
+          action="?/enter"
+          class="space-y-5"
+          use:enhance={() => {
+            submitting = true;
+            return async ({ update }) => {
+              await update({ reset: false });
+              submitting = false;
+            };
+          }}
+        >
+          <div>
+            <label for="ge-name" class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1.5">Name</label>
+            <input id="ge-name" type="text" name="name" required autocomplete="name" class="w-full px-0 py-2 bg-transparent border-0 border-b border-gray-300 focus:outline-none focus:border-brand-black text-brand-black" />
+            {#if fieldErrors.name}<p class="mt-1 font-mono text-[11px] text-red-500">{fieldErrors.name}</p>{/if}
           </div>
-        {:else}
-          <form
-            method="POST"
-            action="?/enter"
-            class="space-y-5"
-            use:enhance={() => {
-              submitting = true;
-              return async ({ update }) => {
-                await update({ reset: false });
-                submitting = false;
-              };
-            }}
-          >
-            <div>
-              <label for="ge-name" class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1.5">Name</label>
-              <input id="ge-name" type="text" name="name" required autocomplete="name" class="w-full px-0 py-2 bg-transparent border-0 border-b border-gray-300 focus:outline-none focus:border-brand-black text-brand-black" />
-              {#if fieldErrors.name}<p class="mt-1 font-mono text-[11px] text-red-500">{fieldErrors.name}</p>{/if}
+
+          <div>
+            <label for="ge-email" class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1.5">Email</label>
+            <input id="ge-email" type="email" name="email" required autocomplete="email" class="w-full px-0 py-2 bg-transparent border-0 border-b border-gray-300 focus:outline-none focus:border-brand-black text-brand-black" />
+            {#if fieldErrors.email}<p class="mt-1 font-mono text-[11px] text-red-500">{fieldErrors.email}</p>{/if}
+          </div>
+
+          <div>
+            <label for="ge-phone" class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1.5">Phone</label>
+            <input id="ge-phone" type="tel" name="phone" required autocomplete="tel" class="w-full px-0 py-2 bg-transparent border-0 border-b border-gray-300 focus:outline-none focus:border-brand-black text-brand-black" />
+            {#if fieldErrors.phone}<p class="mt-1 font-mono text-[11px] text-red-500">{fieldErrors.phone}</p>{/if}
+          </div>
+
+          <div>
+            <label for="ge-ig" class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1.5">Instagram (optional)</label>
+            <div class="flex items-baseline border-b border-gray-300 focus-within:border-brand-black">
+              <span class="font-mono text-sm text-gray-400 pb-2">@</span>
+              <input id="ge-ig" type="text" name="instagram_handle" autocomplete="off" class="flex-1 pl-1 pr-0 py-2 bg-transparent border-0 focus:outline-none text-brand-black" />
             </div>
+            {#if fieldErrors.instagram_handle}<p class="mt-1 font-mono text-[11px] text-red-500">{fieldErrors.instagram_handle}</p>{/if}
+          </div>
 
-            <div>
-              <label for="ge-email" class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1.5">Email</label>
-              <input id="ge-email" type="email" name="email" required autocomplete="email" class="w-full px-0 py-2 bg-transparent border-0 border-b border-gray-300 focus:outline-none focus:border-brand-black text-brand-black" />
-              {#if fieldErrors.email}<p class="mt-1 font-mono text-[11px] text-red-500">{fieldErrors.email}</p>{/if}
-            </div>
+          {#if generalError}<p class="font-mono text-xs text-red-500">{generalError}</p>{/if}
 
-            <div>
-              <label for="ge-phone" class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1.5">Phone</label>
-              <input id="ge-phone" type="tel" name="phone" required autocomplete="tel" class="w-full px-0 py-2 bg-transparent border-0 border-b border-gray-300 focus:outline-none focus:border-brand-black text-brand-black" />
-              {#if fieldErrors.phone}<p class="mt-1 font-mono text-[11px] text-red-500">{fieldErrors.phone}</p>{/if}
-            </div>
+          <button
+            type="submit"
+            disabled={submitting}
+            class="w-full py-4 bg-brand-yellow text-brand-black font-mono text-sm font-bold uppercase tracking-widest rounded hover:opacity-90 transition-opacity disabled:opacity-50"
+          >{submitting ? 'Entering…' : 'Enter'}</button>
 
-            <div>
-              <label for="ge-ig" class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1.5">Instagram (optional)</label>
-              <div class="flex items-baseline border-b border-gray-300 focus-within:border-brand-black">
-                <span class="font-mono text-sm text-gray-400 pb-2">@</span>
-                <input id="ge-ig" type="text" name="instagram_handle" autocomplete="off" class="flex-1 pl-1 pr-0 py-2 bg-transparent border-0 focus:outline-none text-brand-black" />
-              </div>
-              {#if fieldErrors.instagram_handle}<p class="mt-1 font-mono text-[11px] text-red-500">{fieldErrors.instagram_handle}</p>{/if}
-            </div>
-
-            {#if generalError}<p class="font-mono text-xs text-red-500">{generalError}</p>{/if}
-
-            <button
-              type="submit"
-              disabled={submitting}
-              class="w-full py-4 bg-brand-yellow text-brand-black font-mono text-sm font-bold uppercase tracking-widest rounded hover:opacity-90 transition-opacity disabled:opacity-50"
-            >{submitting ? 'Entering…' : 'Enter'}</button>
-
-            <p class="font-mono text-[11px] text-gray-400 text-center pt-2">
-              We’ll only contact you about this giveaway. No list-sharing.
-            </p>
-          </form>
-        {/if}
-      </div>
+          <p class="font-mono text-[11px] text-gray-400 text-center pt-2">
+            We’ll only contact you about this giveaway. No list-sharing.
+          </p>
+        </form>
+      {/if}
     </div>
   </div>
 </div>
