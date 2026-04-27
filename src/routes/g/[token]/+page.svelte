@@ -50,7 +50,7 @@
       {/if}
 
       <div class="flex-1 min-w-0">
-        <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-2">{eyebrow()}</p>
+        <p class="font-mono text-xs md:text-sm uppercase tracking-widest text-gray-600 mb-3 leading-snug">{eyebrow()}</p>
         <h1 class="font-display text-3xl md:text-5xl font-bold leading-[0.95] mb-3">{view.artist_name}</h1>
         {#if view.artist_instagram}
           <a
@@ -63,15 +63,15 @@
       </div>
     </div>
 
-    {#if view.artist_bio}
-      <p class="mt-5 text-sm md:text-base text-gray-700 leading-relaxed">{view.artist_bio}</p>
+    {#if giveaway.description}
+      <div class="mt-6">
+        <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1.5">Theme</p>
+        <p class="text-base md:text-lg text-brand-black leading-relaxed whitespace-pre-wrap">{giveaway.description}</p>
+      </div>
     {/if}
 
-    {#if giveaway.description}
-      <div class="mt-5">
-        <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1.5">Theme</p>
-        <p class="text-sm md:text-base text-gray-700 leading-relaxed whitespace-pre-wrap">{giveaway.description}</p>
-      </div>
+    {#if view.artist_bio}
+      <p class="mt-5 text-sm md:text-base text-gray-700 leading-relaxed">{view.artist_bio}</p>
     {/if}
 
     <!-- Form section: clearly below the fold -->
