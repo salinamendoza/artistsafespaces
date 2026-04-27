@@ -50,8 +50,8 @@
       {/if}
 
       <div class="flex-1 min-w-0">
-        <p class="font-mono text-xs md:text-sm uppercase tracking-widest text-gray-600 mb-3 leading-snug">{eyebrow()}</p>
         <h1 class="font-display text-3xl md:text-5xl font-bold leading-[0.95] mb-3">{view.artist_name}</h1>
+        <p class="font-mono text-xs md:text-sm uppercase tracking-widest text-gray-600 mb-3 leading-snug">{eyebrow()}</p>
         {#if view.artist_instagram}
           <a
             href={`https://instagram.com/${view.artist_instagram}`}
