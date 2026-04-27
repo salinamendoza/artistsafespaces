@@ -1,11 +1,11 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
+  import { invalidateAll } from '$app/navigation';
   import AdminHeader from '$lib/components/AdminHeader.svelte';
   import type { PageData } from './$types';
 
   export let data: PageData;
-
-  $: ({ images } = data);
+  $: ({ images, r2Available } = data);
 
   const FOLDERS = [
     'headshots/artist',
@@ -21,21 +21,24 @@
     'art-therapy'
   ];
 
-  type Converted = {
+  type Job = {
+    id: string;
     originalName: string;
     originalSize: number;
     webpName: string;
     webpSize: number;
     blobUrl: string;
+    key: string;
+    status: 'converting' | 'uploading' | 'done' | 'error';
+    error?: string;
   };
 
   let folder = 'headshots/artist';
   let quality = 82;
   let maxDim = 2400;
-  let converting = 0;
-  let converted: Converted[] = [];
+  let jobs: Job[] = [];
   let dragOver = false;
-  let convertError: string | null = null;
+  let copiedKey: string | null = null;
 
   function formatSize(bytes: number): string {
     if (bytes < 1024) return bytes + ' B';
@@ -45,62 +48,78 @@
 
   function safeName(filename: string): string {
     const base = filename.replace(/\.[^.]+$/, '');
-    const slug = base
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '');
+    const slug = base.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
     return (slug || 'image') + '.webp';
   }
 
-  async function convertOne(file: File): Promise<Converted> {
-    const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
+  function uniqueId(): string {
+    return Math.random().toString(36).slice(2, 10);
+  }
 
-    let { width, height } = bitmap;
-    if (maxDim > 0) {
-      const longest = Math.max(width, height);
-      if (longest > maxDim) {
-        const ratio = maxDim / longest;
+  function patchJob(id: string, patch: Partial<Job>) {
+    jobs = jobs.map((j) => (j.id === id ? { ...j, ...patch } : j));
+  }
+
+  async function processFile(file: File) {
+    const id = uniqueId();
+    const webpName = safeName(file.name);
+    const job: Job = {
+      id,
+      originalName: file.name,
+      originalSize: file.size,
+      webpName,
+      webpSize: 0,
+      blobUrl: '',
+      key: `${folder}/${webpName}`,
+      status: 'converting'
+    };
+    jobs = [...jobs, job];
+
+    try {
+      const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
+      let { width, height } = bitmap;
+      if (maxDim > 0 && Math.max(width, height) > maxDim) {
+        const ratio = maxDim / Math.max(width, height);
         width = Math.round(width * ratio);
         height = Math.round(height * ratio);
       }
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) throw new Error('Canvas 2D context unavailable');
+      ctx.drawImage(bitmap, 0, 0, width, height);
+      bitmap.close();
+      const blob = await new Promise<Blob | null>((res) =>
+        canvas.toBlob(res, 'image/webp', quality / 100)
+      );
+      if (!blob) throw new Error('Browser refused to encode WebP');
+
+      const blobUrl = URL.createObjectURL(blob);
+      patchJob(id, { webpSize: blob.size, blobUrl, status: 'uploading' });
+
+      const fd = new FormData();
+      fd.append('kind', 'upload');
+      fd.append('key', job.key);
+      fd.append('file', blob, webpName);
+
+      const res = await fetch('/admin/images/api', { method: 'POST', body: fd });
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text.slice(0, 200) || `HTTP ${res.status}`);
+      }
+
+      patchJob(id, { status: 'done' });
+      await invalidateAll();
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      patchJob(id, { status: 'error', error: msg });
     }
-
-    const canvas = document.createElement('canvas');
-    canvas.width = width;
-    canvas.height = height;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) throw new Error('Canvas 2D context unavailable');
-    ctx.drawImage(bitmap, 0, 0, width, height);
-    bitmap.close();
-
-    const blob = await new Promise<Blob | null>((resolve) =>
-      canvas.toBlob(resolve, 'image/webp', quality / 100)
-    );
-    if (!blob) throw new Error('Browser refused to encode WebP');
-
-    return {
-      originalName: file.name,
-      originalSize: file.size,
-      webpName: safeName(file.name),
-      webpSize: blob.size,
-      blobUrl: URL.createObjectURL(blob)
-    };
   }
 
-  async function handleFiles(files: FileList | File[]) {
-    convertError = null;
-    const list = Array.from(files);
-    for (const file of list) {
-      converting++;
-      try {
-        const result = await convertOne(file);
-        converted = [...converted, result];
-      } catch (e) {
-        const msg = e instanceof Error ? e.message : String(e);
-        convertError = `Couldn’t convert ${file.name}: ${msg}`;
-      } finally {
-        converting--;
-      }
+  function handleFiles(files: FileList | File[]) {
+    for (const file of Array.from(files)) {
+      processFile(file);
     }
   }
 
@@ -115,14 +134,32 @@
     if (e.dataTransfer?.files?.length) handleFiles(e.dataTransfer.files);
   }
 
-  function clearConverted() {
-    converted.forEach((c) => URL.revokeObjectURL(c.blobUrl));
-    converted = [];
-    convertError = null;
+  function clearJobs() {
+    jobs.forEach((j) => j.blobUrl && URL.revokeObjectURL(j.blobUrl));
+    jobs = [];
+  }
+
+  async function deleteImage(key: string) {
+    if (!confirm(`Delete ${key}? This can't be undone.`)) return;
+    const fd = new FormData();
+    fd.append('kind', 'delete');
+    fd.append('key', key);
+    const res = await fetch('/admin/images/api', { method: 'POST', body: fd });
+    if (res.ok) await invalidateAll();
+    else alert(`Delete failed: HTTP ${res.status}`);
+  }
+
+  function copyPath(key: string) {
+    const path = `/api/images/${key}`;
+    navigator.clipboard.writeText(path);
+    copiedKey = key;
+    setTimeout(() => {
+      if (copiedKey === key) copiedKey = null;
+    }, 1500);
   }
 
   onDestroy(() => {
-    converted.forEach((c) => URL.revokeObjectURL(c.blobUrl));
+    jobs.forEach((j) => j.blobUrl && URL.revokeObjectURL(j.blobUrl));
   });
 
   $: grouped = images.reduce<Record<string, typeof images>>((acc, img) => {
@@ -141,24 +178,28 @@
   <AdminHeader section="images" />
 
   <div class="max-w-4xl mx-auto px-6 py-8">
-    <!-- Converter -->
+    {#if !r2Available}
+      <p class="mb-6 font-mono text-xs text-red-600">Image storage (R2) is not bound in this environment. Uploads will fail.</p>
+    {/if}
+
+    <!-- Upload + convert -->
     <section class="mb-12">
-      <h2 class="font-mono text-sm font-bold text-brand-black mb-2">Convert to WebP</h2>
+      <h2 class="font-mono text-sm font-bold text-brand-black mb-2">Upload image</h2>
       <p class="font-mono text-[11px] text-gray-500 leading-relaxed mb-5">
-        Drop any image — it’s converted in your browser, nothing is uploaded.
-        Download the .webp, drop it into <code class="text-gray-700">static/images/&lt;folder&gt;/</code>,
-        commit, push.
+        Drop any image — it’s converted to WebP in your browser, then uploaded.
+        Available immediately at <code class="text-gray-700">/api/images/&lt;folder&gt;/&lt;name&gt;.webp</code>.
+        No commit, no deploy.
       </p>
 
       <div class="flex flex-wrap gap-4 mb-4">
         <div>
-          <label for="cv-folder" class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Target folder</label>
+          <label for="cv-folder" class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Folder</label>
           <select
             id="cv-folder"
             bind:value={folder}
             class="font-mono text-xs border border-gray-300 rounded px-2 py-1.5 bg-white"
           >
-            {#each FOLDERS as f}<option value={f}>static/images/{f}/</option>{/each}
+            {#each FOLDERS as f}<option value={f}>{f}</option>{/each}
           </select>
         </div>
         <div>
@@ -191,61 +232,67 @@
         on:drop|preventDefault={onDrop}
       >
         <input type="file" accept="image/*" multiple class="hidden" on:change={onPick} />
-        <p class="font-mono text-xs text-gray-600">
-          {#if converting > 0}
-            Converting {converting}…
-          {:else}
-            Drop images here, or click to pick
-          {/if}
-        </p>
+        <p class="font-mono text-xs text-gray-600">Drop images here, or click to pick</p>
       </label>
 
-      {#if convertError}
-        <p class="mt-3 font-mono text-[11px] text-red-500">{convertError}</p>
-      {/if}
-
-      {#if converted.length > 0}
+      {#if jobs.length > 0}
         <div class="mt-5 space-y-2">
-          {#each converted as c (c.blobUrl)}
+          {#each jobs as job (job.id)}
             <div class="flex items-center gap-3 border border-gray-200 rounded p-2">
-              <img src={c.blobUrl} alt={c.webpName} class="w-14 h-14 object-cover rounded flex-shrink-0" />
+              {#if job.blobUrl}
+                <img src={job.blobUrl} alt={job.webpName} class="w-14 h-14 object-cover rounded flex-shrink-0" />
+              {:else}
+                <div class="w-14 h-14 bg-gray-100 rounded flex-shrink-0"></div>
+              {/if}
               <div class="flex-1 min-w-0">
-                <p class="font-mono text-[11px] text-brand-black truncate">{c.webpName}</p>
-                <p class="font-mono text-[10px] text-gray-500">
-                  {formatSize(c.originalSize)} → {formatSize(c.webpSize)}
-                  {#if c.webpSize < c.originalSize}
-                    <span class="text-gray-400">({Math.round((1 - c.webpSize / c.originalSize) * 100)}% smaller)</span>
-                  {/if}
-                </p>
-                <p class="font-mono text-[10px] text-gray-400 truncate">static/images/{folder}/{c.webpName}</p>
+                <p class="font-mono text-[11px] text-brand-black truncate">{job.webpName}</p>
+                {#if job.webpSize > 0}
+                  <p class="font-mono text-[10px] text-gray-500">
+                    {formatSize(job.originalSize)} → {formatSize(job.webpSize)}
+                    {#if job.webpSize < job.originalSize}
+                      <span class="text-gray-400">({Math.round((1 - job.webpSize / job.originalSize) * 100)}% smaller)</span>
+                    {/if}
+                  </p>
+                {/if}
+                <p class="font-mono text-[10px] text-gray-400 truncate">/api/images/{job.key}</p>
               </div>
-              <a
-                href={c.blobUrl}
-                download={c.webpName}
-                class="px-3 py-1.5 bg-brand-yellow text-brand-black font-mono text-[11px] font-bold uppercase tracking-widest rounded hover:opacity-90"
-              >Download</a>
+              <div class="flex-shrink-0">
+                {#if job.status === 'converting'}
+                  <span class="font-mono text-[10px] uppercase tracking-widest text-gray-500">Converting…</span>
+                {:else if job.status === 'uploading'}
+                  <span class="font-mono text-[10px] uppercase tracking-widest text-gray-500">Uploading…</span>
+                {:else if job.status === 'done'}
+                  <button
+                    type="button"
+                    on:click={() => copyPath(job.key)}
+                    class="px-3 py-1.5 bg-brand-yellow text-brand-black font-mono text-[11px] font-bold uppercase tracking-widest rounded hover:opacity-90"
+                  >{copiedKey === job.key ? 'Copied' : 'Copy URL'}</button>
+                {:else if job.status === 'error'}
+                  <span class="font-mono text-[10px] text-red-500">{job.error}</span>
+                {/if}
+              </div>
             </div>
           {/each}
           <button
             type="button"
-            on:click={clearConverted}
+            on:click={clearJobs}
             class="font-mono text-[11px] text-gray-500 underline hover:text-brand-black mt-1"
           >clear list</button>
         </div>
       {/if}
     </section>
 
-    <!-- Existing images -->
+    <!-- Stored -->
     <section>
       <h2 class="font-mono text-sm font-bold text-brand-black mb-2">
         Stored Images <span class="text-gray-400 font-normal">({images.length})</span>
       </h2>
       <p class="font-mono text-[11px] text-gray-500 leading-relaxed mb-6">
-        Already in <code class="text-gray-700">static/images/</code>. Click a file to copy its path.
+        Live from R2. Click an image to copy its URL.
       </p>
 
       {#if images.length === 0}
-        <p class="font-mono text-xs text-gray-400 py-10 text-center">No images yet.</p>
+        <p class="font-mono text-xs text-gray-400 py-10 text-center">No images yet — upload one above.</p>
       {:else}
         {#each Object.entries(grouped) as [folderName, folderImages]}
           <div class="mb-6">
@@ -254,7 +301,7 @@
               {#each folderImages as img (img.key)}
                 <div class="group relative bg-gray-50 border border-gray-200 rounded-lg overflow-hidden">
                   <img
-                    src="/images/{img.key}"
+                    src="/api/images/{img.key}"
                     alt={img.key}
                     class="w-full aspect-square object-cover"
                     loading="lazy"
@@ -266,10 +313,13 @@
                   <button
                     type="button"
                     class="absolute top-1 left-1 px-2 py-0.5 bg-brand-yellow text-brand-black font-bold rounded text-[10px] font-mono opacity-0 group-hover:opacity-100 transition-opacity"
-                    on:click={() => navigator.clipboard.writeText(`/images/${img.key}`)}
-                  >
-                    copy path
-                  </button>
+                    on:click={() => copyPath(img.key)}
+                  >{copiedKey === img.key ? 'copied' : 'copy URL'}</button>
+                  <button
+                    type="button"
+                    class="absolute top-1 right-1 px-2 py-0.5 bg-white text-red-600 border border-red-200 font-bold rounded text-[10px] font-mono opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-50"
+                    on:click={() => deleteImage(img.key)}
+                  >delete</button>
                 </div>
               {/each}
             </div>
