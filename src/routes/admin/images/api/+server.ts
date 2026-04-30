@@ -41,12 +41,22 @@ export const POST: RequestHandler = async ({ request, platform }) => {
     const type = file.type || 'application/octet-stream';
     if (!ALLOWED_TYPES.has(type)) throw error(400, `Unsupported type: ${type}`);
 
-    await r2Put(env!, key, await file.arrayBuffer(), type);
+    try {
+      await r2Put(env!, key, await file.arrayBuffer(), type);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      throw error(500, msg);
+    }
     return json({ ok: true, key });
   }
 
   if (kind === 'delete') {
-    await r2Delete(env!, key);
+    try {
+      await r2Delete(env!, key);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      throw error(500, msg);
+    }
     return json({ ok: true });
   }
 
