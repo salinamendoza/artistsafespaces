@@ -118,7 +118,7 @@ export const actions: Actions = {
         )
         .bind(ip)
         .first<{ count: number }>();
-      if ((rate?.count ?? 0) >= 5) {
+      if ((rate?.count ?? 0) >= 200) {
         return fail(429, { error: 'Too many entries from this network. Try again in an hour.' });
       }
     }
