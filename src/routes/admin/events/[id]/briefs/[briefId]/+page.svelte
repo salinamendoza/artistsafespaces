@@ -353,7 +353,14 @@
                           </div>
                         </div>
 
-                        <form method="POST" action="?/updateGiveaway" use:enhance class="space-y-3">
+                        <form
+                          method="POST"
+                          action="?/updateGiveaway"
+                          use:enhance={() => async ({ update }) => {
+                            await update({ reset: false });
+                          }}
+                          class="space-y-3"
+                        >
                           <input type="hidden" name="giveaway_id" value={g.id} />
                           <div>
                             <label class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Giveaway title</label>
