@@ -179,7 +179,11 @@
 
   <div class="max-w-4xl mx-auto px-6 py-8">
     {#if !r2Available}
-      <p class="mb-6 font-mono text-xs text-red-600">Image storage (R2) is not bound in this environment. Uploads will fail.</p>
+      <div class="mb-6 p-3 border border-red-200 bg-red-50 rounded">
+        <p class="font-mono text-xs text-red-700 leading-relaxed">
+          R2 credentials missing. Set <code>R2_ACCOUNT_ID</code>, <code>R2_ACCESS_KEY_ID</code>, <code>R2_SECRET_ACCESS_KEY</code>, <code>R2_BUCKET</code> in Cloudflare Pages → Settings → Environment variables → Production, then redeploy.
+        </p>
+      </div>
     {/if}
 
     <!-- Upload + convert -->
