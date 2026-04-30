@@ -360,8 +360,8 @@
                             <input name="title" value={g.title} required class="w-full px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono focus:outline-none focus:border-brand-black" />
                           </div>
                           <div>
-                            <label class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Theme / concept — shown publicly below the artist bio</label>
-                            <textarea name="description" rows="4" placeholder="A short blurb about what this mural will be — the theme, the direction, what makes it worth winning." class="w-full px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono focus:outline-none focus:border-brand-black">{g.description ?? ''}</textarea>
+                            <label class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Before you enter — shown publicly below the artist bio</label>
+                            <textarea name="description" rows="4" placeholder="Pickup terms, eligibility, anything entrants should know before submitting." class="w-full px-2 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-mono focus:outline-none focus:border-brand-black">{g.description ?? ''}</textarea>
                           </div>
                           <label class="flex items-center gap-2 font-mono text-xs text-gray-600">
                             <input type="checkbox" name="is_active" checked={!!g.is_active} class="w-4 h-4" />

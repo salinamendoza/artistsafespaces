@@ -65,7 +65,7 @@
 
     {#if giveaway.description}
       <div class="mt-6">
-        <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1.5">Theme</p>
+        <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1.5">Before you enter</p>
         <p class="text-base md:text-lg text-brand-black leading-relaxed whitespace-pre-wrap">{giveaway.description}</p>
       </div>
     {/if}
