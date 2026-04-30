@@ -16,7 +16,9 @@ export interface GiveawayView {
 }
 
 export const load: PageServerLoad = async ({ params, platform, setHeaders }) => {
-  setHeaders({ 'cache-control': 'no-store' });
+  setHeaders({
+    'cache-control': 'public, max-age=0, s-maxage=60, stale-while-revalidate=300'
+  });
 
   const db = platform?.env?.DB;
   if (!db) throw error(500, 'Database unavailable');
@@ -116,7 +118,7 @@ export const actions: Actions = {
         )
         .bind(ip)
         .first<{ count: number }>();
-      if ((rate?.count ?? 0) >= 5) {
+      if ((rate?.count ?? 0) >= 200) {
         return fail(429, { error: 'Too many entries from this network. Try again in an hour.' });
       }
     }
