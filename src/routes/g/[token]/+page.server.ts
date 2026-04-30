@@ -16,7 +16,9 @@ export interface GiveawayView {
 }
 
 export const load: PageServerLoad = async ({ params, platform, setHeaders }) => {
-  setHeaders({ 'cache-control': 'no-store' });
+  setHeaders({
+    'cache-control': 'public, max-age=0, s-maxage=60, stale-while-revalidate=300'
+  });
 
   const db = platform?.env?.DB;
   if (!db) throw error(500, 'Database unavailable');
