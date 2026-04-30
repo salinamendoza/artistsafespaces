@@ -1,5 +1,6 @@
 import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
+import { getR2Creds, r2Put, r2Delete } from '$lib/server/r2';
 
 const MAX_SIZE = 10 * 1024 * 1024;
 const ALLOWED_TYPES = new Set([
@@ -18,8 +19,13 @@ function badKey(key: string): boolean {
 }
 
 export const POST: RequestHandler = async ({ request, platform }) => {
-  const bucket = platform?.env?.IMAGES;
-  if (!bucket) throw error(500, 'Image storage not configured');
+  const env = platform?.env as Record<string, unknown> | undefined;
+  if (!getR2Creds(env)) {
+    throw error(
+      500,
+      'R2 credentials not configured (set R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET in Pages env vars)'
+    );
+  }
 
   const form = await request.formData();
   const kind = form.get('kind')?.toString();
@@ -35,14 +41,12 @@ export const POST: RequestHandler = async ({ request, platform }) => {
     const type = file.type || 'application/octet-stream';
     if (!ALLOWED_TYPES.has(type)) throw error(400, `Unsupported type: ${type}`);
 
-    await bucket.put(key, await file.arrayBuffer(), {
-      httpMetadata: { contentType: type }
-    });
+    await r2Put(env!, key, await file.arrayBuffer(), type);
     return json({ ok: true, key });
   }
 
   if (kind === 'delete') {
-    await bucket.delete(key);
+    await r2Delete(env!, key);
     return json({ ok: true });
   }
 
