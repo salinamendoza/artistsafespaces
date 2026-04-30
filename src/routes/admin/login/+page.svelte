@@ -1,5 +1,6 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
+  import { enhanceNoReset } from '$lib/utils/enhance';
   import type { ActionData } from './$types';
 
   export let form: ActionData;
@@ -19,7 +20,7 @@
       </div>
     {/if}
 
-    <form method="POST" use:enhance class="space-y-4">
+    <form method="POST" use:enhance={enhanceNoReset} class="space-y-4">
       <input
         type="password"
         name="password"

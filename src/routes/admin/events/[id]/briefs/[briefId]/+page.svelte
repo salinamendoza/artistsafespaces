@@ -1,5 +1,6 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
+  import { enhanceNoReset } from '$lib/utils/enhance';
   import { page } from '$app/stores';
   import { onMount } from 'svelte';
   import AdminHeader from '$lib/components/AdminHeader.svelte';
@@ -130,7 +131,7 @@
       </div>
       <div class="flex gap-2">
         <a href={`/admin/events/${event.id}/briefs/${brief.id}/edit`} class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-700 hover:border-gray-400 hover:text-brand-black transition-colors">Edit Brief</a>
-        <form method="POST" action="?/deleteBrief" use:enhance>
+        <form method="POST" action="?/deleteBrief" use:enhance={enhanceNoReset}>
           <button type="submit" class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-500 hover:text-red-400 hover:border-red-400/30 transition-colors">Delete</button>
         </form>
       </div>
@@ -144,7 +145,7 @@
     <div class="flex items-center gap-2 font-mono text-xs">
       <span class="text-gray-500">Set status:</span>
       {#each ['draft', 'ready', 'sent'] as s}
-        <form method="POST" action="?/markBriefStatus" use:enhance>
+        <form method="POST" action="?/markBriefStatus" use:enhance={enhanceNoReset}>
           <input type="hidden" name="status" value={s} />
           <button type="submit" class="px-3 py-1 rounded border transition-colors
             {brief.status === s ? 'bg-brand-yellow text-brand-black border-brand-yellow font-bold' : 'bg-gray-50 border-gray-200 text-gray-600 hover:text-brand-black'}">{s}</button>
@@ -233,7 +234,7 @@
               </div>
 
               <!-- Compensation + invoice form -->
-              <form method="POST" action="?/updateBookingPayment" use:enhance class="grid sm:grid-cols-4 gap-3 mb-3">
+              <form method="POST" action="?/updateBookingPayment" use:enhance={enhanceNoReset} class="grid sm:grid-cols-4 gap-3 mb-3">
                 <input type="hidden" name="id" value={b.id} />
                 <div>
                   <label class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Rate ($)</label>
@@ -288,14 +289,14 @@
               <div class="flex flex-wrap items-center gap-2 pt-3 border-t border-gray-100">
                 <span class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mr-2">Status:</span>
                 {#each ['invited', 'accepted', 'declined', 'completed', 'cancelled'] as s}
-                  <form method="POST" action="?/updateBookingStatus" use:enhance>
+                  <form method="POST" action="?/updateBookingStatus" use:enhance={enhanceNoReset}>
                     <input type="hidden" name="id" value={b.id} />
                     <input type="hidden" name="status" value={s} />
                     <button type="submit" class="px-2 py-1 rounded border font-mono text-[10px] transition-colors
                       {b.status === s ? 'bg-brand-yellow text-brand-black border-brand-yellow font-bold' : 'bg-gray-50 border-gray-200 text-gray-500 hover:text-brand-black'}">{s}</button>
                   </form>
                 {/each}
-                <form method="POST" action="?/deleteBooking" use:enhance class="ml-auto">
+                <form method="POST" action="?/deleteBooking" use:enhance={enhanceNoReset} class="ml-auto">
                   <input type="hidden" name="id" value={b.id} />
                   <button type="submit" class="px-2 py-1 font-mono text-[10px] text-gray-400 hover:text-red-400 transition-colors">Remove</button>
                 </form>
@@ -313,7 +314,7 @@
               {/if}
 
               <!-- Internal notes -->
-              <form method="POST" action="?/updateBookingNotes" use:enhance class="mt-3 pt-3 border-t border-gray-100">
+              <form method="POST" action="?/updateBookingNotes" use:enhance={enhanceNoReset} class="mt-3 pt-3 border-t border-gray-100">
                 <input type="hidden" name="id" value={b.id} />
                 <label class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Internal Notes</label>
                 <div class="flex gap-2">
@@ -353,7 +354,7 @@
                           </div>
                         </div>
 
-                        <form method="POST" action="?/updateGiveaway" use:enhance class="space-y-3">
+                        <form method="POST" action="?/updateGiveaway" use:enhance={enhanceNoReset} class="space-y-3">
                           <input type="hidden" name="giveaway_id" value={g.id} />
                           <div>
                             <label class="block font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-1">Giveaway title</label>
@@ -372,7 +373,7 @@
                           </div>
                         </form>
 
-                        <form method="POST" action="?/deleteGiveaway" use:enhance>
+                        <form method="POST" action="?/deleteGiveaway" use:enhance={enhanceNoReset}>
                           <input type="hidden" name="giveaway_id" value={g.id} />
                           <button type="submit" class="px-3 py-1.5 font-mono text-[10px] text-gray-400 hover:text-red-500 transition-colors">Delete giveaway (archives entries too)</button>
                         </form>
@@ -395,7 +396,7 @@
                       </div>
                     </div>
                   {:else}
-                    <form method="POST" action="?/createGiveaway" use:enhance class="border border-dashed border-gray-300 rounded p-3">
+                    <form method="POST" action="?/createGiveaway" use:enhance={enhanceNoReset} class="border border-dashed border-gray-300 rounded p-3">
                       <input type="hidden" name="booking_id" value={b.id} />
                       <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-3">
                         Start a public giveaway for this artist's mural
@@ -420,7 +421,7 @@
 
       <!-- Book an artist -->
       {#if unbookedArtists.length}
-        <form method="POST" action="?/addBooking" use:enhance class="border border-dashed border-gray-300 rounded-lg p-5">
+        <form method="POST" action="?/addBooking" use:enhance={enhanceNoReset} class="border border-dashed border-gray-300 rounded-lg p-5">
           <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-4">Book an artist</p>
           <div class="grid sm:grid-cols-4 gap-3">
             <div class="sm:col-span-2">

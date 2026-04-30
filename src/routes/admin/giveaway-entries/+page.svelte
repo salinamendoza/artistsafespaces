@@ -1,5 +1,6 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
+  import { enhanceNoReset } from '$lib/utils/enhance';
   import { goto } from '$app/navigation';
   import AdminHeader from '$lib/components/AdminHeader.svelte';
   import { formatDate as fmtDate } from '$lib/utils/date';
@@ -161,7 +162,7 @@
 
             <div class="flex items-end flex-wrap gap-3 mt-4 pt-4 border-t border-gray-100">
               {#if !e.archived}
-                <form method="POST" action="?/toggleWinner" use:enhance>
+                <form method="POST" action="?/toggleWinner" use:enhance={enhanceNoReset}>
                   <input type="hidden" name="id" value={e.id} />
                   <button type="submit" class="px-3 py-1.5 rounded text-xs font-mono font-bold transition-colors {e.is_winner ? 'bg-brand-yellow text-brand-black border border-yellow-400' : 'bg-white text-gray-500 border border-gray-200 hover:text-brand-black'}">
                     {e.is_winner ? 'Unset Winner' : 'Mark Winner'}
@@ -169,25 +170,25 @@
                 </form>
 
                 {#if e.contacted_at}
-                  <form method="POST" action="?/undoContacted" use:enhance>
+                  <form method="POST" action="?/undoContacted" use:enhance={enhanceNoReset}>
                     <input type="hidden" name="id" value={e.id} />
                     <button type="submit" class="px-3 py-1.5 bg-green-50 text-green-700 border border-green-200 font-mono text-xs font-bold rounded hover:bg-white">Undo Contact</button>
                   </form>
                 {:else}
-                  <form method="POST" action="?/markContacted" use:enhance class="flex items-end gap-2 flex-1 min-w-[220px]">
+                  <form method="POST" action="?/markContacted" use:enhance={enhanceNoReset} class="flex items-end gap-2 flex-1 min-w-[220px]">
                     <input type="hidden" name="id" value={e.id} />
                     <input type="text" name="contacted_note" placeholder="Note (required)" required class="flex-1 px-3 py-1.5 bg-white border border-gray-200 rounded text-xs font-mono focus:outline-none focus:border-brand-black" />
                     <button type="submit" class="px-3 py-1.5 bg-white text-gray-500 border border-gray-200 font-mono text-xs font-bold rounded hover:text-brand-black hover:border-gray-400">Mark Contacted</button>
                   </form>
                 {/if}
 
-                <form method="POST" action="?/archive" use:enhance class="flex items-end gap-2">
+                <form method="POST" action="?/archive" use:enhance={enhanceNoReset} class="flex items-end gap-2">
                   <input type="hidden" name="id" value={e.id} />
                   <input type="text" name="archived_note" placeholder="Reason (required)" required class="w-40 px-3 py-1.5 bg-white border border-gray-200 rounded text-xs font-mono focus:outline-none focus:border-red-400/30" />
                   <button type="submit" class="px-3 py-1.5 bg-white border border-gray-200 font-mono text-xs text-gray-400 rounded hover:text-red-500 hover:border-red-400/30">Archive</button>
                 </form>
               {:else}
-                <form method="POST" action="?/unarchive" use:enhance>
+                <form method="POST" action="?/unarchive" use:enhance={enhanceNoReset}>
                   <input type="hidden" name="id" value={e.id} />
                   <button type="submit" class="px-3 py-1.5 bg-white border border-gray-200 font-mono text-xs text-gray-500 rounded hover:text-brand-black hover:border-gray-400">Unarchive</button>
                 </form>
