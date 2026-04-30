@@ -1,5 +1,6 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
+  import { enhanceNoReset } from '$lib/utils/enhance';
   import AdminHeader from '$lib/components/AdminHeader.svelte';
   import { formatDate as fmtDate } from '$lib/utils/date';
   import type { PageData, ActionData } from './$types';
@@ -47,7 +48,7 @@
       </div>
       <div class="flex gap-2">
         <a href={`/admin/events/${event.id}/edit`} class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-700 hover:border-gray-400 hover:text-brand-black transition-colors">Edit</a>
-        <form method="POST" action="?/delete" use:enhance>
+        <form method="POST" action="?/delete" use:enhance={enhanceNoReset}>
           <button type="submit" class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-500 hover:text-red-400 hover:border-red-400/30 transition-colors">Delete</button>
         </form>
       </div>
@@ -173,7 +174,7 @@
                 </div>
                 <div class="flex gap-2 flex-shrink-0">
                   <a href={`/admin/events/${event.id}/partners/${p.id}/edit`} class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-700 hover:border-gray-400 hover:text-brand-black transition-colors">Edit</a>
-                  <form method="POST" action="?/deletePartner" use:enhance>
+                  <form method="POST" action="?/deletePartner" use:enhance={enhanceNoReset}>
                     <input type="hidden" name="partnerId" value={p.id} />
                     <button type="submit" class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-500 hover:text-red-400 hover:border-red-400/30 transition-colors">Delete</button>
                   </form>

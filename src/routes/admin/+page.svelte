@@ -1,5 +1,6 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
+  import { enhanceNoReset } from '$lib/utils/enhance';
   import AdminHeader from '$lib/components/AdminHeader.svelte';
   import ActivityList from '$lib/components/ActivityList.svelte';
   import type { PageData } from './$types';
@@ -210,7 +211,7 @@
             <div class="flex items-end gap-3 mt-4 pt-4 border-t border-gray-100">
               {#if !contact.archived}
                 <!-- Mark Contacted -->
-                <form method="POST" action="?/markContacted" use:enhance class="flex items-end gap-2 flex-1">
+                <form method="POST" action="?/markContacted" use:enhance={enhanceNoReset} class="flex items-end gap-2 flex-1">
                   <input type="hidden" name="id" value={contact.id} />
                   <input type="hidden" name="contacted" value={contact.contacted} />
                   <div class="flex-1 max-w-xs">
@@ -231,7 +232,7 @@
                 </form>
 
                 <!-- Archive -->
-                <form method="POST" action="?/archive" use:enhance class="flex items-end gap-2">
+                <form method="POST" action="?/archive" use:enhance={enhanceNoReset} class="flex items-end gap-2">
                   <input type="hidden" name="id" value={contact.id} />
                   <div>
                     <input
@@ -251,7 +252,7 @@
                 </form>
               {:else}
                 <!-- Unarchive -->
-                <form method="POST" action="?/unarchive" use:enhance>
+                <form method="POST" action="?/unarchive" use:enhance={enhanceNoReset}>
                   <input type="hidden" name="id" value={contact.id} />
                   <button
                     type="submit"

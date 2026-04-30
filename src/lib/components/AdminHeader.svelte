@@ -1,5 +1,6 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
+  import { enhanceNoReset } from '$lib/utils/enhance';
 
   export let section: string;
   export let crumbs: { label: string; href?: string }[] = [];
@@ -25,7 +26,7 @@
     <a href="/admin/artists" class="text-gray-500 hover:text-brand-black font-mono text-xs transition-colors {section === 'artists' ? 'text-brand-black' : ''}">artists</a>
     <a href="/admin/giveaway-entries" class="text-gray-500 hover:text-brand-black font-mono text-xs transition-colors {section === 'giveaway-entries' ? 'text-brand-black' : ''}">entries</a>
     <a href="/admin/images" class="text-gray-500 hover:text-brand-black font-mono text-xs transition-colors {section === 'images' ? 'text-brand-black' : ''}">images</a>
-    <form method="POST" action="/admin?/logout" use:enhance>
+    <form method="POST" action="/admin?/logout" use:enhance={enhanceNoReset}>
       <button type="submit" class="text-gray-500 hover:text-brand-black font-mono text-xs transition-colors">logout</button>
     </form>
   </nav>
