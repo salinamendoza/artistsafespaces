@@ -2,7 +2,9 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { getR2Creds, r2List } from '$lib/server/r2';
 
-export const GET: RequestHandler = async ({ platform, url }) => {
+export const GET: RequestHandler = async ({ platform, url, setHeaders }) => {
+  setHeaders({ 'cache-control': 'no-store' });
+
   const env = (platform?.env ?? {}) as Record<string, unknown>;
   const keys = Object.keys(env).sort();
   const has = (k: string) => typeof env[k] === 'string' && (env[k] as string).length > 0;
