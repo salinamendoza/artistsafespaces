@@ -73,11 +73,13 @@ export async function r2Get(env: Env, key: string): Promise<Response | null> {
 }
 
 export async function r2List(env: Env, maxKeys = 1000): Promise<R2ListItem[]> {
-  const creds = getR2Creds(env);
-  if (!creds) return [];
+  const creds = requireCreds(env);
   const query = `list-type=2&max-keys=${maxKeys}`;
   const res = await signedFetch(creds, 'GET', '', query);
-  if (!res.ok) return [];
+  if (!res.ok) {
+    const text = await safeBody(res);
+    throw new Error(`R2 LIST ${res.status}: ${text}`);
+  }
   const xml = await res.text();
   return parseListResult(xml);
 }
