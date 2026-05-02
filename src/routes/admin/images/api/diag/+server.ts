@@ -12,6 +12,8 @@ export const GET: RequestHandler = async ({ platform, url, setHeaders }) => {
   const base = {
     has_platform: !!platform,
     env_keys: keys,
+    deploy_commit: (env.CF_PAGES_COMMIT_SHA as string | undefined)?.slice(0, 7) ?? null,
+    deploy_branch: (env.CF_PAGES_BRANCH as string | undefined) ?? null,
     DB_binding: typeof env.DB,
     IMAGES_binding: typeof env.IMAGES,
     R2_ACCOUNT_ID: has('R2_ACCOUNT_ID'),
