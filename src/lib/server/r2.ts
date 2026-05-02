@@ -24,10 +24,15 @@ export interface R2Creds {
 
 export function getR2Creds(env: Env | undefined): R2Creds | null {
   if (!env) return null;
-  const accountId = env.R2_ACCOUNT_ID as string | undefined;
-  const accessKeyId = env.R2_ACCESS_KEY_ID as string | undefined;
-  const secretAccessKey = env.R2_SECRET_ACCESS_KEY as string | undefined;
-  const bucket = env.R2_BUCKET as string | undefined;
+  const clean = (v: unknown): string | undefined => {
+    if (typeof v !== 'string') return undefined;
+    const t = v.trim().replace(/^\/+|\/+$/g, '');
+    return t.length > 0 ? t : undefined;
+  };
+  const accountId = clean(env.R2_ACCOUNT_ID);
+  const accessKeyId = clean(env.R2_ACCESS_KEY_ID);
+  const secretAccessKey = clean(env.R2_SECRET_ACCESS_KEY);
+  const bucket = clean(env.R2_BUCKET);
   if (!accountId || !accessKeyId || !secretAccessKey || !bucket) return null;
   return { accountId, accessKeyId, secretAccessKey, bucket };
 }
