@@ -8,6 +8,16 @@ export const GET: RequestHandler = async ({ platform, url, setHeaders }) => {
   const env = (platform?.env ?? {}) as Record<string, unknown>;
   const keys = Object.keys(env).sort();
   const has = (k: string) => typeof env[k] === 'string' && (env[k] as string).length > 0;
+  const peek = (k: string) => {
+    const v = env[k];
+    if (typeof v !== 'string' || v.length === 0) return null;
+    return {
+      length: v.length,
+      head: v.slice(0, 6),
+      tail: v.slice(-4),
+      has_whitespace: /\s/.test(v)
+    };
+  };
 
   const base = {
     has_platform: !!platform,
@@ -16,9 +26,9 @@ export const GET: RequestHandler = async ({ platform, url, setHeaders }) => {
     deploy_branch: (env.CF_PAGES_BRANCH as string | undefined) ?? null,
     DB_binding: typeof env.DB,
     IMAGES_binding: typeof env.IMAGES,
-    R2_ACCOUNT_ID: has('R2_ACCOUNT_ID'),
-    R2_ACCESS_KEY_ID: has('R2_ACCESS_KEY_ID'),
-    R2_SECRET_ACCESS_KEY: has('R2_SECRET_ACCESS_KEY'),
+    R2_ACCOUNT_ID: peek('R2_ACCOUNT_ID'),
+    R2_ACCESS_KEY_ID: peek('R2_ACCESS_KEY_ID'),
+    R2_SECRET_ACCESS_KEY: peek('R2_SECRET_ACCESS_KEY'),
     R2_BUCKET: has('R2_BUCKET') ? (env.R2_BUCKET as string) : false,
     ADMIN_SECRET: has('ADMIN_SECRET')
   };
