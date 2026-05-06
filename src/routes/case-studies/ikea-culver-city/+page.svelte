@@ -106,12 +106,20 @@
     <p class="text-lg text-brand-black leading-relaxed max-w-3xl mb-10">
       Same line, same opening, same attendees. Different cultural residue. 500 logo totes end up in storage closets. <strong>601 pieces of original art by working artists end up framed on living room walls.</strong>
     </p>
-    <img
-      src="/api/images/events/designs.webp"
-      alt="Attendees inside IKEA Culver City holding prints by Upendo"
-      class="w-full rounded-lg"
-      loading="lazy"
-    />
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <img
+        src="/api/images/events/designs.webp"
+        alt="Attendees inside IKEA Culver City holding prints by Upendo"
+        class="w-full aspect-[4/5] object-cover rounded-lg"
+        loading="lazy"
+      />
+      <img
+        src="/api/images/events/designs2.webp"
+        alt="Attendees inside IKEA Culver City with prints by Upendo"
+        class="w-full aspect-[4/5] object-cover rounded-lg"
+        loading="lazy"
+      />
+    </div>
   </section>
 
   <!-- What we made -->
