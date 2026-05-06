@@ -1,7 +1,9 @@
 <script lang="ts">
   import Button from '$lib/components/Button.svelte';
   import SectionHeader from '$lib/components/SectionHeader.svelte';
-  import { organizationTypes, partnershipInterests } from '$lib/data/site';
+  import { organizationTypes, partnershipInterests, caseStudies } from '$lib/data/site';
+
+  const featuredCaseStudy = caseStudies[0];
 
   let formData = {
     organizationName: '',
@@ -69,6 +71,50 @@
     </div>
   </div>
 </section>
+
+<!-- Recent work -->
+{#if featuredCaseStudy}
+  <section class="pb-16 md:pb-24">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="font-mono text-[11px] uppercase tracking-widest text-gray-500 mb-4 text-center">Recent work</p>
+      <a href={featuredCaseStudy.href} class="group block border border-gray-200 rounded-2xl overflow-hidden hover:border-brand-black transition-colors">
+        <div class="grid sm:grid-cols-[1fr_1.2fr] gap-0">
+          <div class="overflow-hidden bg-gray-100">
+            <img
+              src={featuredCaseStudy.coverImage}
+              alt={featuredCaseStudy.coverAlt}
+              class="w-full h-full object-cover aspect-[4/3] sm:aspect-auto sm:min-h-[220px] group-hover:scale-[1.02] transition-transform duration-300"
+              loading="lazy"
+            />
+          </div>
+          <div class="p-6 md:p-8 flex flex-col justify-between">
+            <div>
+              <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-2">{featuredCaseStudy.eyebrow}</p>
+              <h3 class="font-display text-xl md:text-2xl font-bold leading-tight mb-3 group-hover:underline underline-offset-4 decoration-2">
+                {featuredCaseStudy.title}
+              </h3>
+              <p class="text-sm text-gray-600 leading-relaxed mb-4">{featuredCaseStudy.summary}</p>
+            </div>
+            <div class="grid grid-cols-3 gap-3 border-t border-gray-200 pt-4">
+              {#each featuredCaseStudy.stats as stat}
+                <div>
+                  <p class="font-display text-xl md:text-2xl font-bold leading-none mb-1">{stat.value}</p>
+                  <p class="font-mono text-[9px] uppercase tracking-widest text-gray-500 leading-snug">{stat.label}</p>
+                </div>
+              {/each}
+            </div>
+          </div>
+        </div>
+      </a>
+      <div class="text-center mt-6">
+        <a
+          href="/case-studies"
+          class="font-mono text-[11px] uppercase tracking-widest text-brand-black border-b border-brand-black hover:border-transparent pb-0.5"
+        >See all case studies →</a>
+      </div>
+    </div>
+  </section>
+{/if}
 
 <!-- Partner Form -->
 <section class="pb-20 md:pb-32">

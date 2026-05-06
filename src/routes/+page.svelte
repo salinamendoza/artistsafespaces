@@ -2,10 +2,11 @@
   import Button from '$lib/components/Button.svelte';
   import SectionHeader from '$lib/components/SectionHeader.svelte';
   import StatCard from '$lib/components/StatCard.svelte';
-  import { stats, artTherapyThemes } from '$lib/data/site';
+  import { stats, artTherapyThemes, caseStudies } from '$lib/data/site';
   import { images, heroImages } from '$lib/data/images';
 
   const currentTheme = artTherapyThemes.find(t => t.current);
+  const featuredCaseStudy = caseStudies[0];
 </script>
 
 <svelte:head>
@@ -152,6 +153,58 @@
     </div>
   </div>
 </section>
+
+<!-- Featured Case Study -->
+{#if featuredCaseStudy}
+  <section class="py-20 md:py-32 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mb-12">
+        <SectionHeader
+          eyebrow="Recent Work"
+          title="Case Studies"
+        />
+        <p class="mt-6 text-lg text-gray-600 leading-relaxed">
+          The numbers, the partners, the day. How Artist Safespaces shows up for retail openings, civic activations, and cultural moments.
+        </p>
+      </div>
+
+      <a href={featuredCaseStudy.href} class="group block">
+        <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          <div class="overflow-hidden rounded-2xl">
+            <img
+              src={featuredCaseStudy.coverImage}
+              alt={featuredCaseStudy.coverAlt}
+              class="w-full aspect-[4/3] object-cover group-hover:scale-[1.02] transition-transform duration-300"
+              loading="lazy"
+            />
+          </div>
+          <div>
+            <p class="font-mono text-[11px] uppercase tracking-widest text-gray-500 mb-4">{featuredCaseStudy.eyebrow}</p>
+            <h3 class="font-display text-3xl md:text-4xl font-bold leading-tight mb-5 group-hover:underline underline-offset-4 decoration-2">
+              {featuredCaseStudy.title}
+            </h3>
+            <p class="text-lg text-gray-600 leading-relaxed mb-8">{featuredCaseStudy.summary}</p>
+            <div class="grid grid-cols-3 gap-4 border-t border-gray-200 pt-6">
+              {#each featuredCaseStudy.stats as stat}
+                <div>
+                  <p class="font-display text-3xl md:text-4xl font-bold leading-none mb-1">{stat.value}</p>
+                  <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 leading-snug">{stat.label}</p>
+                </div>
+              {/each}
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <div class="mt-10 text-center">
+        <a
+          href="/case-studies"
+          class="font-mono text-[11px] uppercase tracking-widest text-brand-black border-b border-brand-black hover:border-transparent pb-0.5"
+        >See all case studies →</a>
+      </div>
+    </div>
+  </section>
+{/if}
 
 <!-- CTA Section -->
 <section class="py-20 md:py-32 bg-brand-black">

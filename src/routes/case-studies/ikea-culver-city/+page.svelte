@@ -250,9 +250,9 @@
         Artist Safespaces is taking the IKEA Culver City model — franchise-budget, community-rooted, no-extraction, freebies as cultural artifacts instead of branded merch — to other retail openings, civic activations, and cultural moments that want to leave a real footprint.
       </p>
       <a
-        href="/contact"
+        href="/partners/apply"
         class="inline-block px-6 py-3 bg-brand-yellow text-brand-black font-mono text-sm font-bold uppercase tracking-widest rounded hover:opacity-90"
-      >Get in touch</a>
+      >Partner With Us</a>
     </div>
   </section>
 </article>
