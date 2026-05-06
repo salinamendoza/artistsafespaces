@@ -114,7 +114,37 @@ export const navLinks = [
   { href: '/art-parks', label: 'Art Parks' },
   { href: '/art-therapy', label: 'Art Therapy' },
   { href: '/artists', label: 'Artists' },
+  { href: '/case-studies', label: 'Case Studies' },
   { href: '/about', label: 'About' }
+];
+
+export interface CaseStudy {
+  slug: string;
+  href: string;
+  eyebrow: string;
+  title: string;
+  summary: string;
+  coverImage: string;
+  coverAlt: string;
+  stats: { value: string; label: string }[];
+}
+
+export const caseStudies: CaseStudy[] = [
+  {
+    slug: 'ikea-culver-city',
+    href: '/case-studies/ikea-culver-city',
+    eyebrow: 'IKEA · Culver City · 2026',
+    title: 'How a franchise turned its grand opening into 601 new art collectors.',
+    summary:
+      "100 live screen-printed shirts, 500 archival prints, one original mural. 12.5% of grand opening budget — roughly 2–4× industry average. Lines from 3 AM to close. No emails harvested.",
+    coverImage: '/api/images/events/as-hero-images.webp',
+    coverAlt: 'IKEA Culver City Grand Opening',
+    stats: [
+      { value: '601', label: 'New art collectors' },
+      { value: '12.5%', label: 'Of opening budget' },
+      { value: '3 AM', label: 'Lines started' }
+    ]
+  }
 ];
 
 export const footerLinks = {
