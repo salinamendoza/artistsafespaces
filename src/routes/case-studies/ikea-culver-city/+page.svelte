@@ -205,7 +205,7 @@
   <section class="px-6 py-14 md:py-20 max-w-3xl mx-auto">
     <p class="font-mono text-[11px] uppercase tracking-widest text-gray-500 mb-3">What Artist Safespaces does</p>
     <p class="text-lg text-brand-black leading-relaxed">
-      Artist Safespaces curates and operates. We don't print the shirts; we book the press team. We don't paint the mural; we book the muralist. We don't run the IKEA opening; we run the <em>art program at</em> the IKEA opening — assembling the right specialists, designing the on-site flow, owning the infrastructure that makes it measurable, and making sure the brand sees one coherent activation instead of five disconnected vendors.
+      Artist Safespaces curates and operates. We don't paint the mural — we book the muralist. We don't run the IKEA opening — we run the <em>art program at</em> the IKEA opening: assembling the right specialists, designing the on-site flow, and owning the infrastructure that makes it measurable. The brand sees one coherent activation instead of five disconnected vendors.
     </p>
   </section>
 
@@ -216,7 +216,7 @@
       <li><span class="font-mono text-[11px] uppercase tracking-widest text-gray-500">Mural · </span>Daniel Toledo (<a href="https://instagram.com/mister_toledo" target="_blank" rel="noopener" class="border-b border-brand-black hover:border-transparent">@mister_toledo</a>), assisted by Abby Aceves (<a href="https://instagram.com/abby_aceves" target="_blank" rel="noopener" class="border-b border-brand-black hover:border-transparent">@abby_aceves</a>)</li>
       <li><span class="font-mono text-[11px] uppercase tracking-widest text-gray-500">Shirt artwork · </span><a href="https://instagram.com/upendo_" target="_blank" rel="noopener" class="border-b border-brand-black hover:border-transparent">@upendo_</a></li>
       <li><span class="font-mono text-[11px] uppercase tracking-widest text-gray-500">Live screen printing · </span>Ivan and the team at <a href="https://theapparelstudio.com" target="_blank" rel="noopener" class="border-b border-brand-black hover:border-transparent">The Apparel Studio</a></li>
-      <li><span class="font-mono text-[11px] uppercase tracking-widest text-gray-500">IKEA Culver City partner · </span>Vanessa Pasillas</li>
+      <li><span class="font-mono text-[11px] uppercase tracking-widest text-gray-500">IKEA · </span>Culver City × Burbank × Costa Mesa teams collaborated on the activation. Artist Safespaces came in via Costa Mesa.</li>
       <li><span class="font-mono text-[11px] uppercase tracking-widest text-gray-500">Curation, infrastructure, and operations · </span>Artist Safespaces</li>
     </ul>
   </section>
@@ -247,7 +247,7 @@
         Booking conversations.
       </h2>
       <p class="text-lg leading-relaxed mb-8">
-        Artist Safespaces is taking the IKEA Culver City model — franchise-budget, community-rooted, no-extraction, freebies as cultural artifacts instead of branded merch — to other retail openings, civic activations, and cultural moments that want to leave a real footprint.
+        The IKEA Culver City activation is a polished version of a model Artist Safespaces has been running for three years at our annual Art Therapy festival. The mechanics travel — local artists who show up with professionalism, freebies as original art instead of branded merch, owned infrastructure that makes the day measurable. Any city, any grand opening, any cultural moment.
       </p>
       <a
         href="/partners/apply"
