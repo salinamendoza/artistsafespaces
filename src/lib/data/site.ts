@@ -126,10 +126,11 @@ export interface CaseStudy {
   summary: string;
   coverImage: string;
   coverAlt: string;
+  publishedAt: string; // ISO date — used to sort newest-first across the site
   stats: { value: string; label: string }[];
 }
 
-export const caseStudies: CaseStudy[] = [
+const allCaseStudies: CaseStudy[] = [
   {
     slug: 'ikea-culver-city',
     href: '/case-studies/ikea-culver-city',
@@ -139,6 +140,7 @@ export const caseStudies: CaseStudy[] = [
       "100 live screen-printed shirts, 500 archival prints, one original mural. 12.5% of grand opening budget — roughly 2–4× industry average. Lines from 3 AM to close. No emails harvested.",
     coverImage: '/api/images/events/as-hero-images.webp',
     coverAlt: 'IKEA Culver City Grand Opening',
+    publishedAt: '2026-05-02',
     stats: [
       { value: '601', label: 'New art collectors' },
       { value: '12.5%', label: 'Of opening budget' },
@@ -146,6 +148,11 @@ export const caseStudies: CaseStudy[] = [
     ]
   }
 ];
+
+// Always exported newest-first so caseStudies[0] is the most recent.
+export const caseStudies: CaseStudy[] = [...allCaseStudies].sort((a, b) =>
+  b.publishedAt.localeCompare(a.publishedAt)
+);
 
 export const footerLinks = {
   programs: [
