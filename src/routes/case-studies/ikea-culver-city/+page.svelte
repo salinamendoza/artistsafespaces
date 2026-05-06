@@ -24,10 +24,42 @@
   ];
 
   const url = 'https://artistsafespaces.org/case-studies/ikea-culver-city';
-  const title = 'IKEA Culver City Grand Opening | Case Study | Artist Safespaces';
+  const headline = 'How IKEA Spent 12.5% of a Grand Opening on Art';
+  const title = `${headline} | Artist Safespaces`;
   const description =
-    '601 new art collectors in a single day. 12.5% of grand opening budget on art programming — roughly 2–4× the industry average. How Artist Safespaces ran the IKEA Culver City Grand Opening, with no email harvesting and no list resale.';
+    "IKEA spent 12.5% of its Culver City grand opening budget on art programming — 2–4× industry average — and put 601 original works in attendees' hands in one day. No email harvesting, no list resale. Here's how it ran.";
   const ogImage = 'https://artistsafespaces.org/api/images/events/as-hero-images.webp';
+  const ogImageAlt =
+    'IKEA Culver City Grand Opening — Daniel Toledo painting the live mural in front of the Helms Bakery building';
+  const publishedAt = '2026-05-02T00:00:00-07:00';
+  const logoUrl = 'https://artistsafespaces.org/logo-icon.png';
+
+  const jsonLd = JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline,
+    description,
+    image: ogImage,
+    datePublished: publishedAt,
+    dateModified: publishedAt,
+    author: {
+      '@type': 'Organization',
+      name: 'Artist Safespaces',
+      url: 'https://artistsafespaces.org'
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Artist Safespaces',
+      logo: {
+        '@type': 'ImageObject',
+        url: logoUrl
+      }
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': url
+    }
+  });
 </script>
 
 <svelte:head>
@@ -38,21 +70,29 @@
   <!-- Open Graph -->
   <meta property="og:type" content="article" />
   <meta property="og:url" content={url} />
-  <meta property="og:title" content="How a franchise turned its grand opening into 601 new art collectors" />
+  <meta property="og:title" content={headline} />
   <meta property="og:description" content={description} />
   <meta property="og:image" content={ogImage} />
   <meta property="og:image:width" content="2400" />
   <meta property="og:image:height" content="1350" />
+  <meta property="og:image:alt" content={ogImageAlt} />
   <meta property="og:site_name" content="Artist Safespaces" />
-  <meta property="article:published_time" content="2026-05-02" />
+
+  <!-- Article-specific -->
+  <meta property="article:published_time" content={publishedAt} />
+  <meta property="article:author" content="Artist Safespaces" />
   <meta property="article:section" content="Case Studies" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:url" content={url} />
-  <meta name="twitter:title" content="How a franchise turned its grand opening into 601 new art collectors" />
+  <meta name="twitter:title" content={headline} />
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={ogImage} />
+  <meta name="twitter:image:alt" content={ogImageAlt} />
+
+  <!-- JSON-LD: Article schema -->
+  {@html `<script type="application/ld+json">${jsonLd}</script>`}
 </svelte:head>
 
 <article class="bg-white text-brand-black">
