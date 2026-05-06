@@ -1,13 +1,36 @@
+<script context="module" lang="ts">
+  export const prerender = true;
+</script>
+
 <script lang="ts">
   import { caseStudies } from '$lib/data/site';
+
+  const url = 'https://artistsafespaces.org/case-studies';
+  const title = 'Case Studies | Artist Safespaces';
+  const description =
+    'How Artist Safespaces builds art programming for retail openings, civic activations, and cultural moments — with real numbers and no email harvesting.';
+  const ogImage = caseStudies[0]?.coverImage
+    ? `https://artistsafespaces.org${caseStudies[0].coverImage}`
+    : 'https://artistsafespaces.org/api/images/events/as-hero-images.webp';
 </script>
 
 <svelte:head>
-  <title>Case Studies | Artist Safespaces</title>
-  <meta
-    name="description"
-    content="How Artist Safespaces builds art programming for retail openings, civic activations, and cultural moments."
-  />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={url} />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={url} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:site_name" content="Artist Safespaces" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content={url} />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
 </svelte:head>
 
 <section class="bg-white text-brand-black">

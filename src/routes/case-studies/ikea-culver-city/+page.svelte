@@ -1,3 +1,7 @@
+<script context="module" lang="ts">
+  export const prerender = true;
+</script>
+
 <script lang="ts">
   const press = [
     {
@@ -18,14 +22,37 @@
       url: 'https://www.yahoo.com/news/articles/ikea-store-opens-culver-city-211259093.html'
     }
   ];
+
+  const url = 'https://artistsafespaces.org/case-studies/ikea-culver-city';
+  const title = 'IKEA Culver City Grand Opening | Case Study | Artist Safespaces';
+  const description =
+    '601 new art collectors in a single day. 12.5% of grand opening budget on art programming — roughly 2–4× the industry average. How Artist Safespaces ran the IKEA Culver City Grand Opening, with no email harvesting and no list resale.';
+  const ogImage = 'https://artistsafespaces.org/api/images/events/as-hero-images.webp';
 </script>
 
 <svelte:head>
-  <title>IKEA Culver City Grand Opening | Case Study | Artist Safespaces</title>
-  <meta
-    name="description"
-    content="How a franchise budget put 601 pieces of original art in 601 new collectors' hands at IKEA's first LA city-format store opening."
-  />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={url} />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content={url} />
+  <meta property="og:title" content="How a franchise turned its grand opening into 601 new art collectors" />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="2400" />
+  <meta property="og:image:height" content="1350" />
+  <meta property="og:site_name" content="Artist Safespaces" />
+  <meta property="article:published_time" content="2026-05-02" />
+  <meta property="article:section" content="Case Studies" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content={url} />
+  <meta name="twitter:title" content="How a franchise turned its grand opening into 601 new art collectors" />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
 </svelte:head>
 
 <article class="bg-white text-brand-black">
@@ -38,7 +65,7 @@
       How a franchise turned its grand opening into 601 new art collectors.
     </h1>
     <p class="font-display text-xl md:text-2xl text-gray-700 leading-snug max-w-3xl">
-      Without harvesting a single email for resale.
+      Without harvesting a single email for resale
     </p>
   </header>
 
