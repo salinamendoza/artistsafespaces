@@ -216,7 +216,7 @@
       <li><span class="font-mono text-[11px] uppercase tracking-widest text-gray-500">Mural · </span>Daniel Toledo (<a href="https://instagram.com/mister_toledo" target="_blank" rel="noopener" class="border-b border-brand-black hover:border-transparent">@mister_toledo</a>), assisted by Abby Aceves (<a href="https://instagram.com/abby_aceves" target="_blank" rel="noopener" class="border-b border-brand-black hover:border-transparent">@abby_aceves</a>)</li>
       <li><span class="font-mono text-[11px] uppercase tracking-widest text-gray-500">Shirt artwork · </span><a href="https://instagram.com/upendo_" target="_blank" rel="noopener" class="border-b border-brand-black hover:border-transparent">@upendo_</a></li>
       <li><span class="font-mono text-[11px] uppercase tracking-widest text-gray-500">Live screen printing · </span>Ivan and the team at <a href="https://theapparelstudio.com" target="_blank" rel="noopener" class="border-b border-brand-black hover:border-transparent">The Apparel Studio</a></li>
-      <li><span class="font-mono text-[11px] uppercase tracking-widest text-gray-500">IKEA Culver City partner · </span>Vanessa Pasillas (<a href="https://instagram.com/vanessa_mj_pasillas" target="_blank" rel="noopener" class="border-b border-brand-black hover:border-transparent">@vanessa_mj_pasillas</a>)</li>
+      <li><span class="font-mono text-[11px] uppercase tracking-widest text-gray-500">IKEA Culver City partner · </span>Vanessa Pasillas</li>
       <li><span class="font-mono text-[11px] uppercase tracking-widest text-gray-500">Curation, infrastructure, and operations · </span>Artist Safespaces</li>
     </ul>
   </section>
