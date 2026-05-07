@@ -24,8 +24,8 @@
   ];
 
   const url = 'https://artistsafespaces.org/case-studies/ikea-culver-city';
-  const headline = 'How IKEA Spent 12.5% of a Grand Opening on Art';
-  const title = `${headline} | Artist Safespaces`;
+  const headline = 'How a franchise turned its grand opening into 601 new art collectors';
+  const title = `${headline} — Artist Safespaces`;
   const description =
     "IKEA spent 12.5% of its Culver City grand opening budget on art programming — 2–4× industry average — and put 601 original works in attendees' hands in one day. No email harvesting, no list resale. Here's how it ran.";
   const ogImage = 'https://artistsafespaces.org/api/images/events/as-hero-images.webp';
@@ -102,10 +102,10 @@
       Case Study · IKEA Culver City Grand Opening · 2026
     </p>
     <h1 class="font-display text-4xl md:text-6xl lg:text-7xl font-bold leading-[0.95] mb-6">
-      How a franchise turned its grand opening into 601 new art collectors.
+      How a franchise turned its grand opening into 601 new art collectors
     </h1>
     <p class="font-display text-xl md:text-2xl text-gray-700 leading-snug max-w-3xl">
-      Without harvesting a single email for resale
+      Without harvesting a single email
     </p>
   </header>
 
