@@ -160,10 +160,10 @@
   <section class="px-6 py-14 md:py-20 max-w-5xl mx-auto">
     <p class="font-mono text-[11px] uppercase tracking-widest text-gray-500 mb-3">What attendees took home</p>
     <h2 class="font-display text-3xl md:text-5xl font-bold leading-tight mb-6 max-w-3xl">
-      Original art, not branded merch.
+      Original art, added to the freebie program.
     </h2>
     <p class="text-lg text-brand-black leading-relaxed max-w-3xl mb-10">
-      Every grand opening has a freebie strategy. Most franchises hand out a logo tote, a mug, a coupon. The Culver City franchise made theirs <strong>original art</strong>, and let attendees choose:
+      Every grand opening has a freebie program. The Culver City franchise added an <strong>original art layer</strong> to theirs, with a real choice mechanic for attendees:
     </p>
     <ul class="space-y-4 text-lg text-brand-black leading-relaxed mb-10 max-w-3xl">
       <li><strong>Walk in and pick one.</strong> A live screen-printed shirt <em>or</em> an archival, museum-quality print. First-come-first-serve, one per person. 100 shirts. 500 prints.</li>
@@ -171,7 +171,7 @@
       <li><strong>Want both a shirt and a print?</strong> Get back in line. People did.</li>
     </ul>
     <p class="text-lg text-brand-black leading-relaxed max-w-3xl mb-10">
-      Same line, same opening, same attendees. Different cultural residue. 500 logo totes end up in storage closets. <strong>601 pieces of original art by working artists end up framed on living room walls.</strong>
+      Same line, same opening, same attendees. <strong>601 pieces of original art by working artists, now living in Culver City homes.</strong>
     </p>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <img
@@ -260,10 +260,10 @@
         12.5% of opening spend went to art. Industry average is 3–8%.
       </h2>
       <p class="text-lg leading-relaxed mb-5">
-        Roughly 2–4× the industry average, on a franchise budget that's materially tighter than corporate. The thesis: spending the freebie budget on original art instead of branded merch builds first-year customer loyalty in ways a larger ad buy can't.
+        Roughly 2–4× the industry average, on a franchise budget that's materially tighter than corporate. The thesis: an original art layer in the freebie program builds first-year customer loyalty in ways a larger ad buy can't.
       </p>
       <p class="text-lg leading-relaxed font-bold">
-        601 pieces of original art in 601 Culver City homes. Lines from 3 AM to close. A community walking away with a real cultural artifact instead of a logo tote. That's the evidence.
+        601 pieces of original art in 601 Culver City homes. Lines from 3 AM to close. A community walking away with a real cultural artifact from their neighborhood opening. That's the evidence.
       </p>
     </div>
   </section>
@@ -314,7 +314,7 @@
         Booking conversations.
       </h2>
       <p class="text-lg leading-relaxed mb-8">
-        The IKEA Culver City activation is a polished version of a model Artist Safespaces has been running for three years at our annual Art Therapy festival. The mechanics travel: local artists who show up with professionalism, freebies as original art instead of branded merch, owned infrastructure that makes the day measurable. Any city, any grand opening, any cultural moment.
+        The IKEA Culver City activation is a polished version of a model Artist Safespaces has been running for three years at our annual Art Therapy festival. The mechanics travel: local artists who show up with professionalism, original art layered into the freebie program, owned infrastructure that makes the day measurable. Any city, any grand opening, any cultural moment.
       </p>
       <a
         href="/partners/apply"
