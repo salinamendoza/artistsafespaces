@@ -137,7 +137,7 @@ const allCaseStudies: CaseStudy[] = [
     eyebrow: 'IKEA · Culver City · 2026',
     title: 'How a franchise turned its grand opening into 601 new art collectors.',
     summary:
-      "100 live screen-printed shirts, 500 archival prints, one original mural. 12.5% of grand opening budget — roughly 2–4× industry average. Lines from 3 AM to close. No emails harvested.",
+      "100 live screen-printed shirts, 500 archival prints, one original mural. 12.5% of grand opening budget (roughly 2–4× industry average). Lines from 3 AM to close. No emails harvested.",
     coverImage: '/api/images/events/as-hero-images.webp',
     coverAlt: 'IKEA Culver City Grand Opening',
     publishedAt: '2026-05-02',

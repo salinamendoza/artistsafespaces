@@ -8,7 +8,7 @@
   const url = 'https://artistsafespaces.org/case-studies';
   const title = 'Case Studies | Artist Safespaces';
   const description =
-    'How Artist Safespaces builds art programming for retail openings, civic activations, and cultural moments — with real numbers and no email harvesting.';
+    'How Artist Safespaces builds art programming for retail openings, civic activations, and cultural moments. Real numbers, no email harvesting.';
   const ogImage = caseStudies[0]?.coverImage
     ? `https://artistsafespaces.org${caseStudies[0].coverImage}`
     : 'https://artistsafespaces.org/api/images/events/as-hero-images.webp';
@@ -40,7 +40,7 @@
       Real numbers from real activations.
     </h1>
     <p class="font-display text-lg md:text-xl text-gray-700 leading-snug max-w-2xl">
-      How franchise budgets, civic openings, and cultural events become permanent community footprints — not marketing lists.
+      How franchise budgets, civic openings, and cultural events become permanent community footprints, not marketing lists.
     </p>
   </div>
 
@@ -92,7 +92,7 @@
         Have an opening, anniversary, or cultural moment coming up?
       </h2>
       <p class="text-lg leading-relaxed mb-8 text-gray-300">
-        We design art programming that leaves a real footprint — not a marketing list.
+        We design art programming that leaves a real footprint, not a marketing list.
       </p>
       <a
         href="/partners/apply"

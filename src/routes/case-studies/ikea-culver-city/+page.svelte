@@ -25,12 +25,12 @@
 
   const url = 'https://artistsafespaces.org/case-studies/ikea-culver-city';
   const headline = 'How a franchise turned its grand opening into 601 new art collectors';
-  const title = `${headline} — Artist Safespaces`;
+  const title = `${headline} | Artist Safespaces`;
   const description =
-    "IKEA spent 12.5% of its Culver City grand opening budget on art programming — 2–4× industry average — and put 601 original works in attendees' hands in one day. No email harvesting, no list resale. Here's how it ran.";
+    "IKEA spent 12.5% of its Culver City grand opening budget on art programming (2–4× industry average) and put 601 original works in attendees' hands in one day. No email harvesting, no list resale. Here's how it ran.";
   const ogImage = 'https://artistsafespaces.org/api/images/events/as-hero-images.webp';
   const ogImageAlt =
-    'IKEA Culver City Grand Opening — Daniel Toledo painting the live mural in front of the Helms Bakery building';
+    'IKEA Culver City Grand Opening: Daniel Toledo painting the live mural in front of the Helms Bakery building';
   const publishedAt = '2026-05-02T00:00:00-07:00';
   const logoUrl = 'https://artistsafespaces.org/logo-icon.png';
 
@@ -123,7 +123,7 @@
     <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-y-10 gap-x-10">
       <div>
         <p class="font-display text-5xl md:text-6xl font-bold leading-none mb-2">601</p>
-        <p class="font-mono text-[11px] uppercase tracking-widest text-gray-500 leading-relaxed">New art collectors — anyone who walked away with a piece</p>
+        <p class="font-mono text-[11px] uppercase tracking-widest text-gray-500 leading-relaxed">New art collectors: anyone who walked away with a piece</p>
       </div>
       <div>
         <p class="font-display text-5xl md:text-6xl font-bold leading-none mb-2">12.5%</p>
@@ -152,7 +152,7 @@
   <section class="px-6 py-10 md:py-14 max-w-3xl mx-auto">
     <p class="font-mono text-[11px] uppercase tracking-widest text-gray-500 mb-3">The setup</p>
     <p class="text-lg md:text-xl text-brand-black leading-relaxed">
-      IKEA opened its first Los Angeles city-format store at the historic 1931 Helms Bakery building in Culver City. The franchise wanted the neighborhood to walk away saying <em>"that store belongs to this neighborhood now"</em> — and committed an unusual share of opening spend to art programming to do it. Artist Safespaces ran it end-to-end: artist curation, asset commissioning, on-site experience design, and the digital infrastructure tying it all together.
+      IKEA opened its first Los Angeles city-format store at the historic 1931 Helms Bakery building in Culver City. The franchise wanted the neighborhood to walk away saying <em>"that store belongs to this neighborhood now"</em>. To make that happen, they committed an unusual share of opening spend to art programming. Artist Safespaces ran it end-to-end: artist curation, asset commissioning, on-site experience design, and the digital infrastructure tying it all together.
     </p>
   </section>
 
@@ -166,8 +166,8 @@
       Every grand opening has a freebie strategy. Most franchises hand out a logo tote, a mug, a coupon. The Culver City franchise made theirs <strong>original art</strong>, and let attendees choose:
     </p>
     <ul class="space-y-4 text-lg text-brand-black leading-relaxed mb-10 max-w-3xl">
-      <li><strong>Walk in and pick one</strong> — a live screen-printed shirt <em>or</em> an archival, museum-quality print. First-come-first-serve, one per person. 100 shirts. 500 prints.</li>
-      <li><strong>Plus</strong> — every attendee could enter the giveaway for the original mural painted live on-site that day.</li>
+      <li><strong>Walk in and pick one.</strong> A live screen-printed shirt <em>or</em> an archival, museum-quality print. First-come-first-serve, one per person. 100 shirts. 500 prints.</li>
+      <li><strong>Plus,</strong> every attendee could enter the giveaway for the original mural painted live on-site that day.</li>
       <li><strong>Want both a shirt and a print?</strong> Get back in line. People did.</li>
     </ul>
     <p class="text-lg text-brand-black leading-relaxed max-w-3xl mb-10">
@@ -201,8 +201,8 @@
           Daniel Toledo (<a href="https://instagram.com/mister_toledo" target="_blank" rel="noopener" class="border-b border-brand-black hover:border-transparent">@mister_toledo</a>) painted on-site through the day, drawing on the Helms District's art-deco and bakery heritage. The finished piece was raffled to one entrant who picked it up the following Sunday.
         </p>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <img src="/api/images/events/muralprogress1.webp" alt="Mural in progress — early stage" class="w-full aspect-square object-cover rounded-lg" loading="lazy" />
-          <img src="/api/images/events/muralprogress2.webp" alt="Mural in progress — later stage" class="w-full aspect-square object-cover rounded-lg" loading="lazy" />
+          <img src="/api/images/events/muralprogress1.webp" alt="Mural in progress, early stage" class="w-full aspect-square object-cover rounded-lg" loading="lazy" />
+          <img src="/api/images/events/muralprogress2.webp" alt="Mural in progress, later stage" class="w-full aspect-square object-cover rounded-lg" loading="lazy" />
         </div>
       </div>
 
@@ -217,7 +217,7 @@
       <div>
         <h3 class="font-display text-2xl md:text-3xl font-bold mb-3">Custom digital infrastructure</h3>
         <p class="text-base md:text-lg text-brand-black leading-relaxed max-w-3xl">
-          Bespoke giveaway page, QR-coded entry across asset packaging and signage, edge-cached pages tuned for press traffic, and a real-time admin dashboard for randomized winner selection — all running on infrastructure the franchise owns.
+          Bespoke giveaway page, QR-coded entry across asset packaging and signage, edge-cached pages tuned for press traffic, and a real-time admin dashboard for randomized winner selection. All running on infrastructure the franchise owns.
         </p>
       </div>
     </div>
@@ -231,7 +231,7 @@
       Attendees started lining up at 3 AM. By the time doors opened, the queue stretched the length of the Helms District. The first-500 freebies moved faster than anyone planned for; the prints ran out early, and visitors who'd already received a shirt rejoined the line for a print.
     </p>
     <p class="text-lg text-brand-black leading-relaxed">
-      Two live activations ran in parallel — Toledo painting, The Apparel Studio printing — through the entire day. The lines did not break from open to close.
+      Two live activations ran in parallel through the entire day: Toledo painting, The Apparel Studio printing. The lines did not break from open to close.
     </p>
   </section>
 
@@ -242,13 +242,13 @@
       Honest, respectful, transparent.
     </h2>
     <p class="text-lg text-brand-black leading-relaxed mb-5">
-      Most experiential marketing exists to convert attendees into leads. Eventbrite RSVPs, Google Forms, Mailchimp pipelines — every interaction designed to extract a contact for ongoing marketing.
+      Most experiential marketing exists to convert attendees into leads. Eventbrite RSVPs, Google Forms, Mailchimp pipelines. Every interaction designed to extract a contact for ongoing marketing.
     </p>
     <p class="text-lg text-brand-black leading-relaxed mb-5">
       We don't operate that way. <strong>Entry data is collected for the giveaway, used for the giveaway, and deleted after the giveaway concludes.</strong> No list-sharing with partners. No CRM hand-off. No "let's keep them warm for next quarter."
     </p>
     <p class="text-lg text-brand-black leading-relaxed">
-      Consumers can tell the difference. An art experience that respects the audience builds the kind of brand trust paid media cannot buy. When attendees know their email isn't going to a marketing pipeline, they engage authentically — and the activation reads as genuine community programming instead of a lead funnel in costume.
+      Consumers can tell the difference. An art experience that respects the audience builds the kind of brand trust paid media cannot buy. When attendees know their email isn't going to a marketing pipeline, they engage authentically, and the activation reads as genuine community programming instead of a lead funnel in costume.
     </p>
   </section>
 
@@ -263,7 +263,7 @@
         Roughly 2–4× the industry average, on a franchise budget that's materially tighter than corporate. The thesis: spending the freebie budget on original art instead of branded merch builds first-year customer loyalty in ways a larger ad buy can't.
       </p>
       <p class="text-lg leading-relaxed font-bold">
-        601 pieces of original art in 601 Culver City homes — lines from 3 AM to close — and a community walking away with a real cultural artifact instead of a logo tote — is the evidence.
+        601 pieces of original art in 601 Culver City homes. Lines from 3 AM to close. A community walking away with a real cultural artifact instead of a logo tote. That's the evidence.
       </p>
     </div>
   </section>
@@ -272,7 +272,7 @@
   <section class="px-6 py-14 md:py-20 max-w-3xl mx-auto">
     <p class="font-mono text-[11px] uppercase tracking-widest text-gray-500 mb-3">What Artist Safespaces does</p>
     <p class="text-lg text-brand-black leading-relaxed">
-      Artist Safespaces curates and operates. We don't paint the mural — we book the muralist. We don't run the IKEA opening — we run the <em>art program at</em> the IKEA opening: assembling the right specialists, designing the on-site flow, and owning the infrastructure that makes it measurable. The brand sees one coherent activation instead of five disconnected vendors.
+      Artist Safespaces curates and operates. We don't paint the mural; we book the muralist. We don't run the IKEA opening; we run the <em>art program at</em> the IKEA opening: assembling the right specialists, designing the on-site flow, and owning the infrastructure that makes it measurable. The brand sees one coherent activation instead of five disconnected vendors.
     </p>
   </section>
 
@@ -300,7 +300,7 @@
             rel="noopener"
             class="inline-block border-b border-brand-black hover:border-transparent text-base text-brand-black"
           >{p.name}</a>
-          {#if p.note}<span class="font-mono text-[11px] text-gray-500 ml-2">— {p.note}</span>{/if}
+          {#if p.note}<span class="font-mono text-[11px] text-gray-500 ml-2">· {p.note}</span>{/if}
         </li>
       {/each}
     </ul>
@@ -314,7 +314,7 @@
         Booking conversations.
       </h2>
       <p class="text-lg leading-relaxed mb-8">
-        The IKEA Culver City activation is a polished version of a model Artist Safespaces has been running for three years at our annual Art Therapy festival. The mechanics travel — local artists who show up with professionalism, freebies as original art instead of branded merch, owned infrastructure that makes the day measurable. Any city, any grand opening, any cultural moment.
+        The IKEA Culver City activation is a polished version of a model Artist Safespaces has been running for three years at our annual Art Therapy festival. The mechanics travel: local artists who show up with professionalism, freebies as original art instead of branded merch, owned infrastructure that makes the day measurable. Any city, any grand opening, any cultural moment.
       </p>
       <a
         href="/partners/apply"
