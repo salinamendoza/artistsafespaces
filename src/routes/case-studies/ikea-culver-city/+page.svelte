@@ -102,7 +102,7 @@
       Case Study · IKEA Culver City Grand Opening · 2026
     </p>
     <h1 class="font-display text-4xl md:text-6xl lg:text-7xl font-bold leading-[0.95] mb-6">
-      How a franchise turned its grand opening into 601 new art collectors.
+      How a franchise turned its grand opening into 601 new art collectors
     </h1>
     <p class="font-display text-xl md:text-2xl text-gray-700 leading-snug max-w-3xl">
       Without harvesting a single email
