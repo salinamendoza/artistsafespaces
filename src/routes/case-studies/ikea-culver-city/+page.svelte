@@ -24,7 +24,7 @@
   ];
 
   const url = 'https://artistsafespaces.org/case-studies/ikea-culver-city';
-  const headline = 'How IKEA Spent 12.5% of a Grand Opening on Art';
+  const headline = '601 New Art Collectors at the IKEA Culver City Grand Opening';
   const title = `${headline} | Artist Safespaces`;
   const description =
     "IKEA spent 12.5% of its Culver City grand opening budget on art programming — 2–4× industry average — and put 601 original works in attendees' hands in one day. No email harvesting, no list resale. Here's how it ran.";
