@@ -259,10 +259,17 @@
       {:else}
         <ul class="border border-gray-200 rounded-lg divide-y divide-gray-100">
           {#each rsvps as r}
-            <li class="px-4 py-3 flex items-center justify-between gap-4">
-              <div class="min-w-0">
+            <li class="px-4 py-3 flex items-start justify-between gap-4">
+              <div class="min-w-0 flex-1">
                 <p class="text-sm font-medium">{r.name}</p>
                 <p class="font-mono text-xs text-gray-500">{r.email}</p>
+                {#if r.interests.length > 0}
+                  <div class="mt-1.5 flex flex-wrap gap-1">
+                    {#each r.interests as t}
+                      <span class="inline-block px-2 py-0.5 rounded-full border border-gray-200 bg-gray-50 font-mono text-[9px] uppercase tracking-widest text-gray-600">{t}</span>
+                    {/each}
+                  </div>
+                {/if}
               </div>
               <p class="font-mono text-[10px] text-gray-400 whitespace-nowrap">{formatDate(r.created_at)}</p>
             </li>
