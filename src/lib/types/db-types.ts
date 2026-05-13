@@ -25,6 +25,45 @@ export interface Event {
   internal_notes: string | null;
   billing_to: string | null;
   invoice_email: string | null;
+  share_token: string | null;
+  share_expires_at: string | null;
+  created_at: string;
+}
+
+export interface Zone {
+  id: number;
+  event_id: number;
+  name: string;
+  description: string | null;
+  display_order: number;
+  created_at: string;
+}
+
+export interface Activity {
+  id: number;
+  event_id: number;
+  zone_id: number | null;
+  title: string;
+  start_time: string;
+  end_time: string | null;
+  notes: string | null;
+  display_order: number;
+  created_at: string;
+}
+
+export type TaskStatus = 'open' | 'blocked' | 'done';
+
+export interface Task {
+  id: number;
+  event_id: number;
+  zone_id: number | null;
+  activity_id: number | null;
+  title: string;
+  owner: string | null;
+  status: TaskStatus;
+  due_date: string | null;
+  notes: string | null;
+  display_order: number;
   created_at: string;
 }
 

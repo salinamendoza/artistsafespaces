@@ -1,0 +1,35 @@
+-- Event hub — Phase 3: enforce uniqueness on events.share_token.
+--
+-- DO NOT RUN until Phase 2 verification queries A–D all pass on the target
+-- database. Creating this index against a column with NULLs or duplicates
+-- will fail; with NULLs allowed it succeeds (SQLite treats NULLs as distinct
+-- in UNIQUE indexes), but we want zero NULLs before this point so that the
+-- application's "every event has a token" invariant holds from here forward.
+
+CREATE UNIQUE INDEX idx_events_share_token ON events(share_token);
+
+-- ----------------------------------------------------------------------------
+-- Phase 3 verification.
+-- ----------------------------------------------------------------------------
+--
+-- 1. Index exists.
+--      SELECT name FROM sqlite_master
+--       WHERE type='index' AND name='idx_events_share_token';
+--      -- expect 1 row
+--
+-- 2. Index is UNIQUE.
+--      SELECT sql FROM sqlite_master WHERE name='idx_events_share_token';
+--      -- expect CREATE UNIQUE INDEX ...
+--
+-- ----------------------------------------------------------------------------
+-- Rollback for Phase 3:
+--   DROP INDEX IF EXISTS idx_events_share_token;
+--
+-- If creation fails due to a duplicate (astronomically unlikely with 128-bit
+-- tokens, but possible if Phase 2 verification C was skipped):
+--   SELECT share_token, COUNT(*) FROM events
+--     GROUP BY share_token HAVING COUNT(*) > 1;
+--   UPDATE events SET share_token = lower(hex(randomblob(16)))
+--    WHERE id IN (...);   -- IDs from the duplicate query above
+--   Then re-run this file.
+-- ----------------------------------------------------------------------------
