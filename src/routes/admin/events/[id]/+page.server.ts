@@ -63,6 +63,31 @@ export const load: PageServerLoad = async ({ platform, params }) => {
       .all<Rsvp>()
   ]);
 
+  const rsvps = rsvpsResult.results ?? [];
+  let rsvpInterests: { rsvp_id: number; activity_id: number; title: string }[] = [];
+  if (rsvps.length > 0) {
+    const interestsRes = await db
+      .prepare(
+        `SELECT ri.rsvp_id, ri.activity_id, a.title
+           FROM rsvp_activity_interests ri
+           JOIN activities a ON a.id = ri.activity_id
+          WHERE ri.rsvp_id IN (SELECT id FROM rsvps WHERE event_id = ?)`
+      )
+      .bind(id)
+      .all<{ rsvp_id: number; activity_id: number; title: string }>();
+    rsvpInterests = interestsRes.results ?? [];
+  }
+  const interestsByRsvp = new Map<number, string[]>();
+  for (const r of rsvpInterests) {
+    const arr = interestsByRsvp.get(r.rsvp_id) ?? [];
+    arr.push(r.title);
+    interestsByRsvp.set(r.rsvp_id, arr);
+  }
+  const rsvpsWithInterests = rsvps.map((r) => ({
+    ...r,
+    interests: interestsByRsvp.get(r.id) ?? []
+  }));
+
   const bookings = bookingSummary.results ?? [];
   const uniqueArtists = new Set(bookings.map((b) => b.artist_name)).size;
   const totalRate = bookings.reduce((sum, b) => sum + (b.rate ?? 0), 0);
@@ -89,7 +114,7 @@ export const load: PageServerLoad = async ({ platform, params }) => {
       spendByUs: partnerSpendByUs,
       spendByClient: partnerSpendByClient
     },
-    rsvps: rsvpsResult.results ?? []
+    rsvps: rsvpsWithInterests
   };
 };
 
