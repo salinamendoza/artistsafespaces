@@ -47,6 +47,7 @@
         </div>
       </div>
       <div class="flex gap-2">
+        <a href={`/admin/events/${event.id}/hub`} class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-700 hover:border-gray-400 hover:text-brand-black transition-colors">Open hub</a>
         <a href={`/admin/events/${event.id}/edit`} class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-700 hover:border-gray-400 hover:text-brand-black transition-colors">Edit</a>
         <form method="POST" action="?/delete" use:enhance={enhanceNoReset}>
           <button type="submit" class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-500 hover:text-red-400 hover:border-red-400/30 transition-colors">Delete</button>
