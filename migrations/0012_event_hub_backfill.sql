@@ -12,12 +12,23 @@
 -- treats NULL share_expires_at as expired.
 --
 -- D1's HTTP console rejects SQL transactions outright (the runtime requires
--- JS-side transaction APIs: DO storage or wrangler db.batch). The two UPDATEs
--- below are NOT atomic with respect to each other in the console. Safety comes
--- entirely from the idempotent WHERE ... IS NULL guards: if the second UPDATE
--- errors after the first succeeds, re-running this file fills in the missed
--- rows with no double-write risk.
--- Confirmed empirically against staging D1 on 2026-05-13.
+-- JS-side transaction APIs: DO storage or wrangler db.batch). However, an
+-- empirical test on 2026-05-13 found that when both UPDATEs are submitted as
+-- a single multi-statement request, D1 rolls the first UPDATE back if the
+-- second errors at parse time — a deliberately-broken second UPDATE
+-- referencing a non-existent column left missing_token = N (no rows updated),
+-- not 0 (first UPDATE persisted).
+--
+-- This appears to be parse-time atomicity: D1 prepares the whole batch before
+-- executing any of it, and a prepare failure aborts the batch. Runtime errors
+-- mid-execution (e.g. a constraint violation) were not tested and may behave
+-- differently. Statements submitted in separate requests have no shared
+-- transaction.
+--
+-- Either way, the idempotent WHERE ... IS NULL guards on both UPDATEs make
+-- this file safe to re-run: a partial backfill is recovered by re-applying,
+-- and a fully-applied file is a no-op. Treat the D1 atomicity as a bonus, not
+-- a guarantee.
 
 UPDATE events
    SET share_token = lower(hex(randomblob(16)))
