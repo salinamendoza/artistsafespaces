@@ -32,11 +32,16 @@
   }
 </script>
 
-<li class="flex items-center gap-3 px-4 py-2.5">
+<li class="flex items-center gap-3 px-4 py-2">
   {#if canEdit}
-    <div class="flex gap-1 shrink-0" role="group" aria-label="Task status">
+    <div class="flex items-center gap-0.5 shrink-0" role="group" aria-label="Task status">
       {#each TASK_STATUSES as s (s)}
-        <form method="POST" action={`/admin/events/${eventId}/hub?/toggleTaskStatus`} use:enhance={makeSubmit(s)} class="inline">
+        <form
+          method="POST"
+          action={`/admin/events/${eventId}/hub?/toggleTaskStatus`}
+          use:enhance={makeSubmit(s)}
+          class="contents"
+        >
           <input type="hidden" name="task_id" value={task.id} />
           <input type="hidden" name="status" value={s} />
           <button
@@ -44,17 +49,15 @@
             disabled={inflight || task.status === s}
             aria-pressed={task.status === s}
             aria-label={`Mark ${s}`}
-            class="inline-flex items-center justify-center w-5 h-5 rounded transition-colors
-              {task.status === s && s === 'open' ? 'border border-gray-400 bg-gray-100' :
-               task.status === s && s === 'blocked' ? 'border-2 border-amber-400 bg-amber-50' :
-               task.status === s && s === 'done' ? 'border border-green-300 bg-green-50' :
-               'border border-gray-200 bg-white hover:border-gray-400'}
+            class="inline-flex items-center justify-center w-4 h-4 rounded-sm transition-colors
+              {task.status === s && s === 'open' ? 'border border-gray-500' :
+               task.status === s && s === 'blocked' ? 'border border-amber-500' :
+               task.status === s && s === 'done' ? 'border border-green-600 text-green-700' :
+               'border border-gray-200 hover:border-gray-400'}
               disabled:cursor-default"
           >
-            {#if s === 'done'}
-              <svg viewBox="0 0 16 16" class="w-3 h-3 {task.status === s ? 'text-green-700' : 'text-gray-300'}" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 8 7 12 13 4" /></svg>
-            {:else if s === 'blocked'}
-              <span class="w-1.5 h-1.5 rounded-sm {task.status === s ? 'bg-amber-500' : 'bg-amber-300'}"></span>
+            {#if s === 'done' && task.status === s}
+              <svg viewBox="0 0 16 16" class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 8 7 12 13 4" /></svg>
             {/if}
           </button>
         </form>
@@ -65,7 +68,7 @@
   {/if}
 
   <div class="min-w-0 flex-1 flex items-baseline gap-2 flex-wrap">
-    <span class="font-medium text-sm" class:line-through={task.status === 'done'} class:text-gray-400={task.status === 'done'}>{task.title}</span>
+    <span class="text-sm" class:font-medium={task.status !== 'done'} class:line-through={task.status === 'done'} class:text-gray-400={task.status === 'done'}>{task.title}</span>
     {#if task.notes}<span class="text-sm text-gray-500">{task.notes}</span>{/if}
   </div>
 
