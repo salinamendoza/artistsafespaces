@@ -23,7 +23,12 @@ export const load: PageServerLoad = async ({ platform, params, url, setHeaders }
   }
 
   setHeaders({
-    'cache-control': 'public, max-age=0, s-maxage=60, stale-while-revalidate=300'
+    // No edge cache: partners can write (add zones/activities/tasks, toggle
+    // task status). An s-maxage cache would serve stale data after a partner's
+    // write, making toggles appear to revert. The trade-off is more D1 hits
+    // on press days, but correctness wins. Can reintroduce a short cache once
+    // we have a way to invalidate it on partner write.
+    'cache-control': 'no-store'
   });
 
   const id = parseInt(params.id);

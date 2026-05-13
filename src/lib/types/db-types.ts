@@ -27,6 +27,17 @@ export interface Event {
   invoice_email: string | null;
   share_token: string | null;
   share_expires_at: string | null;
+  rsvp_token: string | null;
+  created_at: string;
+}
+
+export interface Rsvp {
+  id: number;
+  event_id: number;
+  name: string;
+  email: string;
+  ip_address: string | null;
+  user_agent: string | null;
   created_at: string;
 }
 

@@ -1,6 +1,6 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
-import type { Event, EventPartner } from '$lib/types/db-types';
+import type { Event, EventPartner, Rsvp } from '$lib/types/db-types';
 
 interface BriefRow {
   id: number;
@@ -27,7 +27,7 @@ export const load: PageServerLoad = async ({ platform, params }) => {
   const event = await db.prepare('SELECT * FROM events WHERE id = ?').bind(id).first<Event>();
   if (!event) throw error(404, 'Event not found');
 
-  const [briefs, bookingSummary, partnersResult] = await Promise.all([
+  const [briefs, bookingSummary, partnersResult, rsvpsResult] = await Promise.all([
     db
       .prepare(`
         SELECT br.id, br.title, br.status, br.created_at,
@@ -56,7 +56,11 @@ export const load: PageServerLoad = async ({ platform, params }) => {
     db
       .prepare(`SELECT * FROM event_partners WHERE event_id = ? ORDER BY created_at ASC`)
       .bind(id)
-      .all<EventPartner>()
+      .all<EventPartner>(),
+    db
+      .prepare(`SELECT * FROM rsvps WHERE event_id = ? ORDER BY created_at DESC`)
+      .bind(id)
+      .all<Rsvp>()
   ]);
 
   const bookings = bookingSummary.results ?? [];
@@ -84,7 +88,8 @@ export const load: PageServerLoad = async ({ platform, params }) => {
       totalSpend: partnerSpendByUs + partnerSpendByClient,
       spendByUs: partnerSpendByUs,
       spendByClient: partnerSpendByClient
-    }
+    },
+    rsvps: rsvpsResult.results ?? []
   };
 };
 
@@ -105,6 +110,14 @@ export const actions: Actions = {
 
     await db.prepare('DELETE FROM events WHERE id = ?').bind(id).run();
     throw redirect(303, '/admin/events');
+  },
+  clearRsvps: async ({ platform, params }) => {
+    const db = platform?.env?.DB;
+    if (!db) return fail(500, { error: 'Database unavailable' });
+
+    const id = parseInt(params.id);
+    await db.prepare('DELETE FROM rsvps WHERE event_id = ?').bind(id).run();
+    throw redirect(303, `/admin/events/${id}`);
   },
   deletePartner: async ({ request, platform, params }) => {
     const db = platform?.env?.DB;

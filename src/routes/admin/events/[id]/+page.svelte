@@ -8,7 +8,25 @@
   export let data: PageData;
   export let form: ActionData;
 
-  $: ({ event, briefs, eventStats, partners, partnerStats } = data);
+  $: ({ event, briefs, eventStats, partners, partnerStats, rsvps } = data);
+
+  let rsvpLinkOrigin = '';
+  if (typeof window !== 'undefined') rsvpLinkOrigin = window.location.origin;
+  $: rsvpLink = event.rsvp_token && rsvpLinkOrigin ? `${rsvpLinkOrigin}/r/${event.rsvp_token}` : '';
+
+  let rsvpCopyState: 'idle' | 'copied' = 'idle';
+  async function copyRsvpLink() {
+    if (!rsvpLink) return;
+    await navigator.clipboard.writeText(rsvpLink);
+    rsvpCopyState = 'copied';
+    setTimeout(() => (rsvpCopyState = 'idle'), 1500);
+  }
+
+  function clearRsvpsConfirm(evt: SubmitEvent) {
+    if (!confirm(`Delete all ${rsvps.length} RSVPs for this event? This cannot be undone.`)) {
+      evt.preventDefault();
+    }
+  }
 
   function formatDate(iso: string | null): string {
     return fmtDate(iso, { month: 'short', day: 'numeric', year: 'numeric' }) || '—';
@@ -214,6 +232,48 @@
               </div>
             </a>
           {/each}
+        </div>
+      {/if}
+    </div>
+
+    <!-- RSVPs -->
+    <div>
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-display text-xl font-bold text-brand-black">RSVPs</h2>
+        <p class="font-mono text-xs text-gray-500">{rsvps.length} {rsvps.length === 1 ? 'person' : 'people'}</p>
+      </div>
+
+      {#if rsvpLink}
+        <div class="border border-gray-200 rounded-lg p-4 mb-3 flex items-center gap-2 flex-wrap">
+          <code class="flex-1 min-w-0 text-xs font-mono text-gray-700 break-all bg-gray-50 px-3 py-2 rounded border border-gray-200">{rsvpLink}</code>
+          <button
+            type="button"
+            on:click={copyRsvpLink}
+            class="px-3 py-2 bg-brand-yellow text-brand-black font-mono text-xs rounded hover:opacity-90 transition-opacity"
+          >{rsvpCopyState === 'copied' ? 'Copied' : 'Copy link'}</button>
+        </div>
+      {/if}
+
+      {#if rsvps.length === 0}
+        <p class="font-mono text-xs text-gray-400 py-6 text-center border border-gray-200 rounded-lg">No RSVPs yet.</p>
+      {:else}
+        <ul class="border border-gray-200 rounded-lg divide-y divide-gray-100">
+          {#each rsvps as r}
+            <li class="px-4 py-3 flex items-center justify-between gap-4">
+              <div class="min-w-0">
+                <p class="text-sm font-medium">{r.name}</p>
+                <p class="font-mono text-xs text-gray-500">{r.email}</p>
+              </div>
+              <p class="font-mono text-[10px] text-gray-400 whitespace-nowrap">{formatDate(r.created_at)}</p>
+            </li>
+          {/each}
+        </ul>
+
+        <div class="mt-4">
+          <form method="POST" action="?/clearRsvps" use:enhance={enhanceNoReset} on:submit={clearRsvpsConfirm}>
+            <button type="submit" class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-500 hover:text-red-400 hover:border-red-400/30 transition-colors">Clear all RSVPs</button>
+            <p class="font-mono text-[10px] text-gray-400 mt-2">Per our data ethics: RSVPs are deleted after the event concludes. No CRM hand-off.</p>
+          </form>
         </div>
       {/if}
     </div>
