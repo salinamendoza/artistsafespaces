@@ -16,6 +16,8 @@
   $: activityById = new Map<number, Activity>(activities.map((a) => [a.id, a]));
   $: openTaskCount = tasks.filter((t) => t.status !== 'done').length;
 
+  const TASK_STATUSES: TaskStatus[] = ['open', 'blocked', 'done'];
+
   let partnerLinkOrigin = '';
   if (typeof window !== 'undefined') partnerLinkOrigin = window.location.origin;
   $: partnerLink =
@@ -224,8 +226,8 @@
             <li class="px-4 py-3 flex items-center justify-between gap-4">
               <div class="min-w-0 flex items-center gap-3 flex-1">
                 <div class="flex gap-1" role="group" aria-label="Task status">
-                  {#each ['open', 'blocked', 'done'] as s (s)}
-                    <form method="POST" action="?/toggleTaskStatus" use:enhance={toggleSubmit(t, s as TaskStatus)} class="inline">
+                  {#each TASK_STATUSES as s (s)}
+                    <form method="POST" action="?/toggleTaskStatus" use:enhance={toggleSubmit(t, s)} class="inline">
                       <input type="hidden" name="task_id" value={t.id} />
                       <input type="hidden" name="status" value={s} />
                       <button
