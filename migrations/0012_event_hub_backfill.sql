@@ -12,23 +12,25 @@
 -- treats NULL share_expires_at as expired.
 --
 -- D1's HTTP console rejects SQL transactions outright (the runtime requires
--- JS-side transaction APIs: DO storage or wrangler db.batch). However, an
--- empirical test on 2026-05-13 found that when both UPDATEs are submitted as
--- a single multi-statement request, D1 rolls the first UPDATE back if the
--- second errors at parse time — a deliberately-broken second UPDATE
--- referencing a non-existent column left missing_token = N (no rows updated),
--- not 0 (first UPDATE persisted).
+-- JS-side transaction APIs: DO storage or wrangler db.batch). However,
+-- empirical tests on 2026-05-13 found that when statements are submitted as
+-- a single multi-statement request, D1 rolls back prior statements if any
+-- later statement fails — for both parse-time errors (referencing a
+-- nonexistent column rolled back a successful prior UPDATE: missing_token
+-- stayed at 3, not 0) and runtime errors (a UNIQUE-constraint collision on
+-- a second INSERT rolled back the first INSERT: COUNT(*) stayed at 0, not
+-- 1). D1's error message in the runtime case does NOT identify which
+-- statement failed, only that a constraint was violated.
 --
--- This appears to be parse-time atomicity: D1 prepares the whole batch before
--- executing any of it, and a prepare failure aborts the batch. Runtime errors
--- mid-execution (e.g. a constraint violation) were not tested and may behave
--- differently. Statements submitted in separate requests have no shared
--- transaction.
+-- Caveats: this behavior is not documented by Cloudflare as a guarantee. It
+-- may not hold for statements submitted in separate HTTP requests, may
+-- differ between the dashboard console and wrangler d1 execute, and may
+-- change without notice. Treat D1 multi-statement atomicity as observed but
+-- not contracted.
 --
--- Either way, the idempotent WHERE ... IS NULL guards on both UPDATEs make
--- this file safe to re-run: a partial backfill is recovered by re-applying,
--- and a fully-applied file is a no-op. Treat the D1 atomicity as a bonus, not
--- a guarantee.
+-- The idempotent WHERE ... IS NULL guards on both UPDATEs are the intentional
+-- safety mechanism for this file regardless: a partial backfill is recovered
+-- by re-applying, and a fully-applied file is a no-op.
 
 UPDATE events
    SET share_token = lower(hex(randomblob(16)))
