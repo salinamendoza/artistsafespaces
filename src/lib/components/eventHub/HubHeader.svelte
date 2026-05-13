@@ -1,7 +1,8 @@
 <script lang="ts">
   import type { Event } from '$lib/types/db-types';
+  import type { HubActor } from '$lib/types/db-types';
   export let event: Pick<Event, 'id' | 'name' | 'client_name' | 'event_date' | 'location' | 'status'>;
-  export let canEdit: boolean;
+  export let mode: HubActor;
   export let stats: {
     artistCount: number;
     totalCost: number;
@@ -26,7 +27,7 @@
   <div class="flex items-start justify-between gap-4">
     <div class="min-w-0">
       <p class="font-mono text-[10px] uppercase tracking-widest text-gray-400 mb-2">
-        artistsafespaces.org · {canEdit ? 'admin view' : 'partner view'}
+        artistsafespaces.org · {(mode === 'admin') ? 'admin view' : 'partner view'}
       </p>
       <h1 class="font-display text-3xl md:text-4xl font-bold leading-tight">{event.name}</h1>
       <div class="mt-2 flex items-center gap-3 flex-wrap font-mono text-xs text-gray-600">
@@ -41,7 +42,7 @@
            'bg-gray-50 border-gray-200 text-gray-600'}">{event.status}</span>
       </div>
     </div>
-    {#if !canEdit && shareExpiresAt}
+    {#if !(mode === 'admin') && shareExpiresAt}
       <p class="font-mono text-[10px] text-gray-500 whitespace-nowrap">link expires {fmtDate(shareExpiresAt)}</p>
     {/if}
   </div>

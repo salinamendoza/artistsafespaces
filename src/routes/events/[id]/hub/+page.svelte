@@ -5,6 +5,17 @@
   export let data: PageData;
 
   $: pageTitle = data.expired ? 'Link expired' : `${data.event.name} · partner view`;
+
+  function navUrlBuilder(eventId: number, token: string) {
+    return (suffix: string) => {
+      const sep = suffix.includes('?') ? '&' : '?';
+      return `/events/${eventId}/hub${suffix}${sep}token=${token}`;
+    };
+  }
+
+  function actionUrlBuilder(eventId: number, token: string) {
+    return (name: string) => `/events/${eventId}/hub?token=${token}&/${name}`;
+  }
 </script>
 
 <svelte:head>
@@ -31,7 +42,9 @@
       activities={data.activities}
       tasks={data.tasks}
       stats={data.stats}
-      canEdit={false}
+      mode="partner"
+      navUrl={navUrlBuilder(data.event.id, data.token)}
+      actionUrl={actionUrlBuilder(data.event.id, data.token)}
     />
   </div>
 {/if}

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Event, Zone, Activity, Task } from '$lib/types/db-types';
+  import type { Event, Zone, Activity, Task, HubActor } from '$lib/types/db-types';
   import { buildZoneColorMap } from './zoneColors';
   import HubHeader from './HubHeader.svelte';
   import RunOfShow from './RunOfShow.svelte';
@@ -10,7 +10,9 @@
   export let zones: Zone[];
   export let activities: Activity[];
   export let tasks: Task[];
-  export let canEdit: boolean;
+  export let mode: HubActor;
+  export let navUrl: (suffix: string) => string;
+  export let actionUrl: (name: string) => string;
   export let stats: {
     artistCount: number;
     totalCost: number;
@@ -25,14 +27,14 @@
 <div class="max-w-5xl mx-auto px-4 md:px-6 py-6 md:py-8 space-y-8">
   <HubHeader
     {event}
-    {canEdit}
+    {mode}
     stats={{ ...stats, openTaskCount }}
     shareExpiresAt={event.share_expires_at}
   />
 
-  <RunOfShow {activities} {zoneNameById} {zoneColorMap} />
+  <RunOfShow {activities} {zoneNameById} {zoneColorMap} {mode} {navUrl} />
 
-  <ZonesSection {zones} {tasks} {zoneColorMap} {canEdit} eventId={event.id} />
+  <ZonesSection {zones} {tasks} {zoneColorMap} {mode} {navUrl} {actionUrl} />
 
-  <OpenItems {tasks} {zoneNameById} {zoneColorMap} {canEdit} eventId={event.id} />
+  <OpenItems {tasks} {zoneNameById} {zoneColorMap} {mode} {navUrl} {actionUrl} />
 </div>

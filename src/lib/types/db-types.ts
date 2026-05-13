@@ -30,12 +30,15 @@ export interface Event {
   created_at: string;
 }
 
+export type HubActor = 'admin' | 'partner';
+
 export interface Zone {
   id: number;
   event_id: number;
   name: string;
   description: string | null;
   display_order: number;
+  created_by: HubActor;
   created_at: string;
 }
 
@@ -48,6 +51,7 @@ export interface Activity {
   end_time: string | null;
   notes: string | null;
   display_order: number;
+  created_by: HubActor;
   created_at: string;
 }
 
@@ -64,7 +68,9 @@ export interface Task {
   due_date: string | null;
   notes: string | null;
   display_order: number;
+  created_by: HubActor;
   created_at: string;
+  status_updated_at: string | null;
 }
 
 export interface ActivationType {
