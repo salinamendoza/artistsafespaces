@@ -19,8 +19,16 @@
 -- without a full table rebuild, which we are deliberately not doing on live
 -- data.
 
-BEGIN TRANSACTION;
+-- No BEGIN/COMMIT: D1's HTTP console rejects SQL transactions outright (the
+-- runtime requires JS-side transaction APIs). Statements run sequentially and
+-- independently. CREATE ... IF NOT EXISTS makes the table/index statements
+-- safely re-runnable; the ALTERs below are deliberately not.
 
+-- Re-running this file after a successful first run produces "duplicate column
+-- name" errors on the two ALTERs below. That is expected and intentional: the
+-- CREATE statements use IF NOT EXISTS and silently no-op, but ALTER ADD COLUMN
+-- does not have an IF NOT EXISTS form in SQLite, and we want a loud failure if
+-- someone tries to apply the schema twice.
 ALTER TABLE events ADD COLUMN share_token TEXT;
 ALTER TABLE events ADD COLUMN share_expires_at TEXT;
 
@@ -64,8 +72,6 @@ CREATE TABLE IF NOT EXISTS tasks (
 CREATE INDEX IF NOT EXISTS idx_tasks_event ON tasks(event_id, status, display_order);
 CREATE INDEX IF NOT EXISTS idx_tasks_zone ON tasks(zone_id);
 CREATE INDEX IF NOT EXISTS idx_tasks_activity ON tasks(activity_id);
-
-COMMIT;
 
 -- ----------------------------------------------------------------------------
 -- Phase 1 verification — run each query in the D1 console after the block

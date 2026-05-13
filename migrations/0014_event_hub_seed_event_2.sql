@@ -1,15 +1,14 @@
 -- Event hub — Phase 4: seed zones, activities, and tasks for event id=2
 -- (Art Therapy 2026) so the new hub page can be verified with real data.
 --
--- Idempotent via NOT EXISTS guards. Re-running this file is a no-op once the
--- seed rows exist. Activities and tasks look up zones by (event_id, name)
--- rather than by hard-coded id so the file is portable across environments
--- whose zones table got different auto-increment ids.
+-- No transaction wrapping (D1 console rejects BEGIN/COMMIT). Idempotency comes
+-- from the NOT EXISTS guards on every INSERT — re-running this file is a
+-- no-op once the seed rows exist. Activities and tasks look up zones by
+-- (event_id, name) rather than by hard-coded id so the file is portable
+-- across environments whose zones table got different auto-increment ids.
 --
 -- Salina will rewrite this content via the admin hub UI once the page is
 -- live; the seed exists only to give the page real shape during verification.
-
-BEGIN TRANSACTION;
 
 -- Zones.
 INSERT INTO zones (event_id, name, description, display_order)
@@ -103,8 +102,6 @@ SELECT 2, NULL,
        'Send partner hub link to IKEA contact', 'Sam', 'open', 0
 WHERE EXISTS (SELECT 1 FROM events WHERE id = 2)
   AND NOT EXISTS (SELECT 1 FROM tasks WHERE event_id = 2 AND title = 'Send partner hub link to IKEA contact');
-
-COMMIT;
 
 -- ----------------------------------------------------------------------------
 -- Phase 4 verification.

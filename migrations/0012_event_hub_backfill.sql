@@ -7,14 +7,17 @@
 -- row. Collision probability across thousands of rows is effectively zero, but
 -- we still verify uniqueness explicitly before adding the UNIQUE index in 0013.
 --
--- Both UPDATEs are idempotent: re-running this file only touches rows whose
--- columns are still NULL.
---
 -- Rows with event_date IS NULL get share_expires_at = NULL. Such an event
 -- can't have a working partner link until a date is set; the partner route
 -- treats NULL share_expires_at as expired.
-
-BEGIN TRANSACTION;
+--
+-- D1's HTTP console rejects SQL transactions outright (the runtime requires
+-- JS-side transaction APIs: DO storage or wrangler db.batch). The two UPDATEs
+-- below are NOT atomic with respect to each other in the console. Safety comes
+-- entirely from the idempotent WHERE ... IS NULL guards: if the second UPDATE
+-- errors after the first succeeds, re-running this file fills in the missed
+-- rows with no double-write risk.
+-- Confirmed empirically against staging D1 on 2026-05-13.
 
 UPDATE events
    SET share_token = lower(hex(randomblob(16)))
@@ -24,8 +27,6 @@ UPDATE events
    SET share_expires_at = date(event_date, '+30 days')
  WHERE share_expires_at IS NULL
    AND event_date IS NOT NULL;
-
-COMMIT;
 
 -- ----------------------------------------------------------------------------
 -- Phase 2 verification — ALL must hold before running 0013.
@@ -78,8 +79,9 @@ COMMIT;
 --
 -- ----------------------------------------------------------------------------
 -- Rollback for Phase 2:
---   The UPDATEs are idempotent. Preferred path on partial failure: re-run
---   this file — the WHERE ... IS NULL clauses skip already-backfilled rows.
+--   The recovery path is to re-run this file. The WHERE ... IS NULL clauses
+--   skip already-backfilled rows, so a partial failure is recovered by simply
+--   re-applying — there is no separate "preferred" vs "fallback" path.
 --   Nuclear option (clears all backfill, leaves schema in place):
 --     UPDATE events SET share_token = NULL, share_expires_at = NULL;
 -- ----------------------------------------------------------------------------
