@@ -43,13 +43,19 @@
     </div>
 
     {#if form?.success}
-      <div class="border border-gray-200 rounded-2xl p-6 space-y-2">
+      <div class="border border-gray-200 rounded-2xl p-6 space-y-3">
         <p class="font-display text-xl">You're on the list.</p>
         <p class="text-sm text-gray-600">
           {#if form.already}We already had {form.name} ({form.email}) down. Your interests are updated.{:else}Thanks, {form.name}. We'll see you there.{/if}
         </p>
+        <p class="text-xs text-gray-500 leading-relaxed">
+          Heads up: this RSVP lets us know you're coming. It doesn't reserve a headshot slot or guarantee one of the 100 limited-edition prints. Those are first-come, first-served at the event.
+        </p>
       </div>
     {:else}
+      <p class="text-xs text-gray-500 leading-relaxed border-l-0 pl-0">
+        This RSVP lets us know you're coming. It doesn't reserve a headshot slot or guarantee one of the 100 limited-edition prints. Those are first-come, first-served at the event.
+      </p>
       <form method="POST" use:enhance={enhanceNoReset} class="space-y-5">
         {#if form?.error}
           <p class="px-3 py-2 bg-red-50 border border-red-200 rounded text-red-700 font-mono text-xs">{form.error}</p>
