@@ -72,5 +72,14 @@
     </div>
   </div>
 
-  <EventHub {event} {zones} {activities} {tasks} {stats} canEdit={true} />
+  <EventHub
+    {event}
+    {zones}
+    {activities}
+    {tasks}
+    {stats}
+    mode="admin"
+    navUrl={(suffix) => `/admin/events/${event.id}/hub${suffix}`}
+    actionUrl={(name) => `/admin/events/${event.id}/hub?/${name}`}
+  />
 </div>

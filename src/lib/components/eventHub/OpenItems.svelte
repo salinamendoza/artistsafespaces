@@ -1,13 +1,14 @@
 <script lang="ts">
-  import type { Task } from '$lib/types/db-types';
+  import type { Task, HubActor } from '$lib/types/db-types';
   import type { ZoneColor } from './zoneColors';
   import TaskRow from './TaskRow.svelte';
 
   export let tasks: Task[];
   export let zoneNameById: Map<number, string>;
   export let zoneColorMap: Map<number, ZoneColor>;
-  export let canEdit: boolean;
-  export let eventId: number;
+  export let mode: HubActor;
+  export let navUrl: (suffix: string) => string;
+  export let actionUrl: (name: string) => string;
 
   $: openTasks = tasks
     .filter((t) => t.status !== 'done')
@@ -22,9 +23,7 @@
 <section class="space-y-3">
   <div class="flex items-center justify-between">
     <h2 class="font-display text-xl font-bold">Open items</h2>
-    {#if canEdit}
-      <a href={`/admin/events/${eventId}/hub/tasks/new`} class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-700 hover:border-gray-400 transition-colors">Add task</a>
-    {/if}
+    <a href={navUrl('/tasks/new')} class="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-700 hover:border-gray-400 transition-colors">Add task</a>
   </div>
 
   {#if openTasks.length === 0}
@@ -34,8 +33,9 @@
       {#each openTasks as t (t.id)}
         <TaskRow
           task={t}
-          {canEdit}
-          {eventId}
+          {mode}
+          {navUrl}
+          {actionUrl}
           showZone={true}
           zoneLabel={t.zone_id != null ? (zoneNameById.get(t.zone_id) ?? null) : null}
         />

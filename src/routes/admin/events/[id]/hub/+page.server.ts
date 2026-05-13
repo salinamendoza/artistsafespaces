@@ -104,7 +104,10 @@ export const actions: Actions = {
     }
 
     await db
-      .prepare('UPDATE tasks SET status = ? WHERE id = ? AND event_id = ?')
+      .prepare(
+        `UPDATE tasks SET status = ?, status_updated_at = datetime('now')
+         WHERE id = ? AND event_id = ?`
+      )
       .bind(status, taskId, eventId)
       .run();
 

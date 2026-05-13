@@ -1,6 +1,9 @@
-import { error } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
-import type { Event, Zone, Activity, Task } from '$lib/types/db-types';
+import { fail, redirect } from '@sveltejs/kit';
+import type { PageServerLoad, Actions } from './$types';
+import type { Zone, Activity, Task, TaskStatus } from '$lib/types/db-types';
+import { validatePartnerToken, requirePartnerToken } from '$lib/server/partnerHub';
+
+const TASK_STATUSES: TaskStatus[] = ['open', 'blocked', 'done'];
 
 interface BookingSummaryRow {
   artist_name: string;
@@ -13,39 +16,22 @@ interface PartnerRow {
   amount: number | null;
 }
 
-function todayISODate(): string {
-  return new Date().toISOString().slice(0, 10);
-}
-
 export const load: PageServerLoad = async ({ platform, params, url, setHeaders }) => {
   const db = platform?.env?.DB;
-  if (!db) throw error(500, 'Database unavailable');
+  if (!db) {
+    return { expired: true as const, eventName: null, token: null };
+  }
 
-  // Edge cache: short s-maxage with longer stale-while-revalidate so D1 hits
-  // stay rare during press-day traffic. Browser revalidates each visit so
-  // admin edits show up on the next refresh.
   setHeaders({
     'cache-control': 'public, max-age=0, s-maxage=60, stale-while-revalidate=300'
   });
 
   const id = parseInt(params.id);
-  const token = url.searchParams.get('token')?.trim() ?? '';
+  const token = url.searchParams.get('token')?.trim() ?? null;
+  const event = await validatePartnerToken(db, id, token);
 
-  if (!Number.isInteger(id) || !token) {
-    return { expired: true as const, eventName: null };
-  }
-
-  const event = await db.prepare('SELECT * FROM events WHERE id = ?').bind(id).first<Event>();
   if (!event) {
-    return { expired: true as const, eventName: null };
-  }
-
-  const today = todayISODate();
-  const tokenMatches = event.share_token != null && event.share_token === token;
-  const notExpired = event.share_expires_at != null && event.share_expires_at >= today;
-
-  if (!tokenMatches || !notExpired) {
-    return { expired: true as const, eventName: event.name };
+    return { expired: true as const, eventName: null, token };
   }
 
   const [zonesRes, activitiesRes, tasksRes, bookingSummary, partnersResult] = await Promise.all([
@@ -97,10 +83,43 @@ export const load: PageServerLoad = async ({ platform, params, url, setHeaders }
 
   return {
     expired: false as const,
+    token: token ?? '',
     event,
     zones: zonesRes.results ?? [],
     activities: activitiesRes.results ?? [],
     tasks: tasksRes.results ?? [],
     stats: { artistCount, totalCost, partnerSpend }
   };
+};
+
+export const actions: Actions = {
+  toggleTaskStatus: async ({ request, platform, params, url }) => {
+    const db = platform?.env?.DB;
+    if (!db) return fail(500, { error: 'Database unavailable' });
+
+    const eventId = parseInt(params.id);
+    const token = url.searchParams.get('token')?.trim() ?? null;
+    await requirePartnerToken(db, eventId, token);
+
+    const form = await request.formData();
+    const taskId = parseInt(form.get('task_id')?.toString() ?? '');
+    const status = form.get('status')?.toString() as TaskStatus | undefined;
+
+    if (!Number.isInteger(taskId) || taskId <= 0) {
+      return fail(400, { error: 'Invalid task id' });
+    }
+    if (!status || !TASK_STATUSES.includes(status)) {
+      return fail(400, { error: 'Invalid status' });
+    }
+
+    await db
+      .prepare(
+        `UPDATE tasks SET status = ?, status_updated_at = datetime('now')
+         WHERE id = ? AND event_id = ?`
+      )
+      .bind(status, taskId, eventId)
+      .run();
+
+    return { toggled: { task_id: taskId, status } };
+  }
 };
