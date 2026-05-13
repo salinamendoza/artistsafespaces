@@ -82,8 +82,8 @@ export const actions: Actions = {
 
     await db
       .prepare(
-        `INSERT INTO tasks (event_id, zone_id, activity_id, title, owner, status, due_date, notes, display_order)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        `INSERT INTO tasks (event_id, zone_id, activity_id, title, owner, status, due_date, notes, display_order, status_updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`
       )
       .bind(eventId, zoneId, activityId, title, owner, status, dueDate, notes, displayOrder)
       .run();
