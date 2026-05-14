@@ -31,7 +31,19 @@ export const load: PageServerLoad = async ({ platform, params }) => {
     .bind(event.id)
     .all<Pick<Activity, 'id' | 'title' | 'start_time' | 'end_time' | 'notes'>>();
 
-  return { event, activities: activitiesRes.results ?? [] };
+  // Derive event hours from activities. Earliest start_time → latest
+  // end_time (falling back to last start_time if end is null). Lets the
+  // RSVP page show "10am–3pm" without a separate event-level field.
+  const activities = activitiesRes.results ?? [];
+  let hoursStart: string | null = null;
+  let hoursEnd: string | null = null;
+  for (const a of activities) {
+    if (a.start_time && (!hoursStart || a.start_time < hoursStart)) hoursStart = a.start_time;
+    const tail = a.end_time ?? a.start_time;
+    if (tail && (!hoursEnd || tail > hoursEnd)) hoursEnd = tail;
+  }
+
+  return { event, activities, hoursStart, hoursEnd };
 };
 
 export const actions: Actions = {

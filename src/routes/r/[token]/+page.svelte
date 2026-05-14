@@ -9,6 +9,10 @@
 
   $: event = data.event;
   $: activities = data.activities;
+  $: hours =
+    data.hoursStart && data.hoursEnd
+      ? `${fmtTime(data.hoursStart)}–${fmtTime(data.hoursEnd)}`
+      : '';
 
   function fmt(iso: string | null): string {
     return fmtDate(iso, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) || '';
@@ -37,8 +41,8 @@
       <p class="font-mono text-[10px] uppercase tracking-widest text-gray-400">RSVP</p>
       <h1 class="font-display text-3xl font-bold leading-tight">{event.name}</h1>
       <div class="font-mono text-xs text-gray-600 space-y-0.5 pt-1">
-        {#if event.event_date}<p>{fmt(event.event_date)}</p>{/if}
-        {#if event.location}<p>{event.location}</p>{/if}
+        {#if event.event_date}<p>{fmt(event.event_date)}{hours ? ` · ${hours}` : ''}</p>{/if}
+        {#if event.location}<p class="whitespace-pre-line">{event.location}</p>{/if}
       </div>
     </div>
 
