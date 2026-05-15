@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Event, Zone, Activity, Task, HubActor } from '$lib/types/db-types';
+  import { tick } from 'svelte';
   import { buildZoneColorMap } from './zoneColors';
   import HubHeader from './HubHeader.svelte';
   import RunOfShow from './RunOfShow.svelte';
@@ -26,8 +27,13 @@
   // Drop stale selection if the active zone is removed/edited away.
   $: if (activeZoneId !== null && !zones.some((z) => z.id === activeZoneId)) activeZoneId = null;
 
-  const setActiveZone = (id: number | null) => {
+  const setActiveZone = async (id: number | null) => {
     activeZoneId = id;
+    if (typeof window === 'undefined' || id == null) return;
+    // Wait for Svelte to flush the layout change (other zones collapsing,
+    // RoS shrinking) before measuring/scrolling.
+    await tick();
+    document.getElementById(`zone-card-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 </script>
 
