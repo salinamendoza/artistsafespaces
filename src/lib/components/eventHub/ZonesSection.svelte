@@ -1,6 +1,8 @@
 <script lang="ts">
   import type { Zone, Task, HubActor } from '$lib/types/db-types';
   import type { ZoneColor } from './zoneColors';
+  import { slide } from 'svelte/transition';
+  import { cubicOut } from 'svelte/easing';
   import { zoneColorFor } from './zoneColors';
   import ZonePill from './ZonePill.svelte';
   import TaskRow from './TaskRow.svelte';
@@ -69,20 +71,22 @@
             </div>
           </button>
           {#if expanded}
-            {#if zoneTasks.length > 0}
-              <ul class="divide-y divide-gray-100">
-                {#each zoneTasks as t (t.id)}
-                  <TaskRow task={t} {mode} {navUrl} {actionUrl} />
-                {/each}
-              </ul>
-            {:else}
-              <p class="px-5 py-4 text-sm text-gray-400">No tasks in this zone.</p>
-            {/if}
-            <div class="px-5 py-2 border-t border-gray-100 bg-gray-50/50 flex items-center justify-between gap-3">
-              <a href={navUrl(`/tasks/new?zone=${z.id}`)} class="font-mono text-[10px] uppercase tracking-widest text-gray-500 hover:text-brand-black">+ add task</a>
-              {#if mode === 'admin'}
-                <a href={navUrl(`/zones/${z.id}/edit`)} class="font-mono text-[10px] uppercase tracking-widest text-gray-400 hover:text-brand-black">edit zone</a>
+            <div transition:slide={{ duration: 280, easing: cubicOut }}>
+              {#if zoneTasks.length > 0}
+                <ul class="divide-y divide-gray-100">
+                  {#each zoneTasks as t (t.id)}
+                    <TaskRow task={t} {mode} {navUrl} {actionUrl} />
+                  {/each}
+                </ul>
+              {:else}
+                <p class="px-5 py-4 text-sm text-gray-400">No tasks in this zone.</p>
               {/if}
+              <div class="px-5 py-2 border-t border-gray-100 bg-gray-50/50 flex items-center justify-between gap-3">
+                <a href={navUrl(`/tasks/new?zone=${z.id}`)} class="font-mono text-[10px] uppercase tracking-widest text-gray-500 hover:text-brand-black">+ add task</a>
+                {#if mode === 'admin'}
+                  <a href={navUrl(`/zones/${z.id}/edit`)} class="font-mono text-[10px] uppercase tracking-widest text-gray-400 hover:text-brand-black">edit zone</a>
+                {/if}
+              </div>
             </div>
           {/if}
         </div>
