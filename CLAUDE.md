@@ -205,7 +205,9 @@ Migrations 0016 (rsvps) + 0017 (rsvp_activity_interests junction).
 
 ## Mobile responsiveness
 
-Tailwind `md:` breakpoint (768px) is the divider. Below `md:`, multi-column tables should collapse to stacked card rows — events are run in the field on phones, and crammed table cells are unreadable. The run-of-show component (`src/lib/components/eventHub/RunOfShow.svelte`) is the reference pattern: header hidden below `md:`, time/title/zone stack vertically, zone pill and edit link wrap to their own line.
+Tailwind `lg:` breakpoint (1024px) is the divider for multi-column tables. Below `lg:`, they should collapse to stacked card rows — events are run in the field on phones and tablets, and three columns crammed into 768px is unreadable. The run-of-show component (`src/lib/components/eventHub/RunOfShow.svelte`) is the reference pattern: header hidden below `lg:`, time/title/zone stack vertically, zone pill and edit link wrap to their own line. **Don't use `md:` (768px) for table → card collapses** — content padding eats too much of the row at that width.
+
+`AdminHeader` follows the same rule: `flex-col` below `lg:`, `flex-row` at `lg:` and up. Nav links wrap. Breadcrumb labels truncate at 200px so a long event name doesn't push the layout.
 
 ## Journal
 
