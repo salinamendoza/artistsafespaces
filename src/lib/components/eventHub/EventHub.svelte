@@ -30,10 +30,14 @@
   const setActiveZone = async (id: number | null) => {
     activeZoneId = id;
     if (typeof window === 'undefined' || id == null) return;
-    // Wait for Svelte to flush the layout change (other zones collapsing,
-    // RoS shrinking) before measuring/scrolling.
+    // Wait for Svelte to render the layout change, then wait for the
+    // slide transition on the collapsing zones to finish before scrolling.
+    // Without the timeout, scrollIntoView measures positions mid-animation
+    // and the active card ends up partly behind the sticky site header.
     await tick();
-    document.getElementById(`zone-card-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(() => {
+      document.getElementById(`zone-card-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 300);
   };
 </script>
 
