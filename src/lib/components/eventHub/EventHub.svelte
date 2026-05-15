@@ -29,9 +29,17 @@
   const setActiveZone = (id: number | null) => {
     activeZoneId = id;
     if (typeof window === 'undefined' || id == null) return;
-    // Wait a tick so the DOM updates before we scroll.
     queueMicrotask(() => {
-      document.getElementById(`zone-card-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const el = document.getElementById(`zone-card-${id}`);
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const headerOffset = 96; // matches scroll-mt-24
+      const fullyAbove = rect.bottom < headerOffset;
+      const fullyBelow = rect.top > window.innerHeight;
+      const headerBehindStickyNav = rect.top < headerOffset;
+      if (fullyAbove || fullyBelow || headerBehindStickyNav) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     });
   };
 </script>

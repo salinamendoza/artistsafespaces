@@ -58,11 +58,14 @@
                 {#if z.description && expanded}<p class="text-sm text-gray-600">{z.description}</p>{/if}
               </div>
             </div>
-            <div class="flex items-center gap-3 shrink-0">
+            <div class="flex items-center gap-3 shrink-0 flex-wrap justify-end">
               <div class="flex items-baseline gap-1.5 whitespace-nowrap">
                 <span class="font-display text-2xl font-bold leading-none {oc === 0 ? 'text-gray-400' : 'text-brand-black'}">{oc}</span>
                 <span class="font-mono text-[10px] uppercase tracking-widest text-gray-500">task{oc === 1 ? '' : 's'} open</span>
               </div>
+              {#if activeZoneId != null && activeZoneId !== z.id}
+                <span class="font-mono text-[10px] uppercase tracking-widest text-gray-400 whitespace-nowrap">tap to focus</span>
+              {/if}
             </div>
           </button>
           {#if expanded}
