@@ -32,8 +32,8 @@
   }
 </script>
 
-<li class="flex items-center gap-3 px-4 py-2">
-  <div class="flex items-center gap-0.5 shrink-0" role="group" aria-label="Task status">
+<li class="flex items-start gap-3 px-4 py-3 lg:items-center lg:py-2">
+  <div class="flex items-center gap-0.5 shrink-0 mt-0.5 lg:mt-0" role="group" aria-label="Task status">
     {#each TASK_STATUSES as s (s)}
       <form
         method="POST"
@@ -63,19 +63,20 @@
     {/each}
   </div>
 
-  <div class="min-w-0 flex-1 flex items-baseline gap-2 flex-wrap">
-    <span class="text-sm" class:font-medium={task.status !== 'done'} class:line-through={task.status === 'done'} class:text-gray-400={task.status === 'done'}>{task.title}</span>
-    {#if task.notes}<span class="text-sm text-gray-500">{task.notes}</span>{/if}
-  </div>
-
-  <div class="flex items-center gap-3 shrink-0 whitespace-nowrap">
-    {#if task.created_by === 'partner'}
-      <span class="font-mono text-[9px] uppercase tracking-widest text-gray-400" title="Added by a partner">via partner</span>
-    {/if}
-    {#if showZone && zoneLabel}<span class="font-mono text-[10px] uppercase tracking-widest text-gray-500">{zoneLabel}</span>{/if}
-    {#if task.owner}<span class="font-mono text-xs text-gray-600">{task.owner}</span>{/if}
-    {#if mode === 'admin'}
-      <a href={navUrl(`/tasks/${task.id}/edit`)} class="font-mono text-[10px] uppercase tracking-widest text-gray-400 hover:text-brand-black">edit</a>
-    {/if}
+  <div class="min-w-0 flex-1 flex flex-col gap-1 lg:flex-row lg:items-center lg:gap-3 lg:flex-wrap">
+    <div class="min-w-0 flex-1 flex items-baseline gap-2 flex-wrap">
+      <span class="text-sm" class:font-medium={task.status !== 'done'} class:line-through={task.status === 'done'} class:text-gray-400={task.status === 'done'}>{task.title}</span>
+      {#if task.notes}<span class="text-sm text-gray-500">{task.notes}</span>{/if}
+    </div>
+    <div class="flex items-center gap-3 flex-wrap">
+      {#if task.created_by === 'partner'}
+        <span class="font-mono text-[9px] uppercase tracking-widest text-gray-400 whitespace-nowrap" title="Added by a partner">via partner</span>
+      {/if}
+      {#if showZone && zoneLabel}<span class="font-mono text-[10px] uppercase tracking-widest text-gray-500 whitespace-nowrap">{zoneLabel}</span>{/if}
+      {#if task.owner}<span class="font-mono text-xs text-gray-600 whitespace-nowrap">{task.owner}</span>{/if}
+      {#if mode === 'admin'}
+        <a href={navUrl(`/tasks/${task.id}/edit`)} class="font-mono text-[10px] uppercase tracking-widest text-gray-400 hover:text-brand-black whitespace-nowrap">edit</a>
+      {/if}
+    </div>
   </div>
 </li>
