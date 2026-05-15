@@ -47,29 +47,24 @@
     </div>
   {/if}
 
-  <!-- Admin-only: partner link controls -->
+  <!-- Admin-only: partner link controls (compact bar) -->
   <div class="max-w-5xl mx-auto px-4 md:px-6 pt-6">
-    <div class="border border-gray-200 rounded-2xl px-5 py-4 bg-white space-y-3">
-      <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500">Partner link</p>
-      {#if partnerLink}
-        <div class="flex items-center gap-2 flex-wrap">
-          <code class="flex-1 min-w-0 text-xs font-mono text-gray-700 break-all bg-gray-50 px-3 py-2 rounded border border-gray-200">{partnerLink}</code>
-          <button
-            type="button"
-            on:click={copyPartnerLink}
-            class="px-3 py-2 bg-brand-yellow text-brand-black font-mono text-xs rounded hover:opacity-90 transition-opacity"
-          >{copyState === 'copied' ? 'Copied' : 'Copy'}</button>
-          <form method="POST" action="?/rotateToken" use:enhance={enhanceNoReset} on:submit={rotateConfirm}>
-            <button type="submit" class="px-3 py-2 bg-gray-50 border border-gray-200 rounded font-mono text-xs text-gray-700 hover:border-gray-400 transition-colors">Rotate token</button>
-          </form>
-        </div>
-        {#if event.share_expires_at}
-          <p class="font-mono text-[10px] text-gray-500">expires {event.share_expires_at}</p>
-        {/if}
-      {:else}
-        <p class="text-sm text-gray-500">No share token yet. Run the 0012 backfill to generate one.</p>
-      {/if}
-    </div>
+    {#if partnerLink}
+      <div class="flex items-center gap-2 border border-gray-200 rounded-xl bg-white px-3 py-2">
+        <span class="font-mono text-[10px] uppercase tracking-widest text-gray-500 whitespace-nowrap" title={event.share_expires_at ? `expires ${event.share_expires_at}` : ''}>partner link</span>
+        <code class="flex-1 min-w-0 text-xs font-mono text-gray-700 truncate">{partnerLink}</code>
+        <button
+          type="button"
+          on:click={copyPartnerLink}
+          class="px-2.5 py-1 bg-brand-yellow text-brand-black font-mono text-xs rounded hover:opacity-90 transition-opacity whitespace-nowrap"
+        >{copyState === 'copied' ? 'Copied' : 'Copy'}</button>
+        <form method="POST" action="?/rotateToken" use:enhance={enhanceNoReset} on:submit={rotateConfirm}>
+          <button type="submit" class="font-mono text-xs text-gray-500 hover:text-brand-black transition-colors whitespace-nowrap px-1">Rotate</button>
+        </form>
+      </div>
+    {:else}
+      <p class="font-mono text-xs text-gray-500">No share token yet. Run the 0012 backfill to generate one.</p>
+    {/if}
   </div>
 
   <EventHub
