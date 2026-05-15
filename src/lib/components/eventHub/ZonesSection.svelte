@@ -45,7 +45,7 @@
         {@const zoneTasks = tasksByZone.get(z.id) ?? []}
         {@const oc = openCount(z.id)}
         {@const expanded = activeZoneId == null || activeZoneId === z.id}
-        <div id={`zone-card-${z.id}`} class="border rounded-2xl overflow-hidden bg-white scroll-mt-4 transition-colors {activeZoneId === z.id ? 'border-brand-black' : 'border-gray-200'}">
+        <div id={`zone-card-${z.id}`} class="border rounded-2xl overflow-hidden bg-white scroll-mt-24 transition-colors {activeZoneId === z.id ? 'border-brand-black' : 'border-gray-200'}">
           <button
             type="button"
             on:click={() => onSetActiveZone(activeZoneId === z.id ? null : z.id)}
