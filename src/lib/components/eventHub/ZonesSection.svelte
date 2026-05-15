@@ -11,6 +11,9 @@
   export let mode: HubActor;
   export let navUrl: (suffix: string) => string;
   export let actionUrl: (name: string) => string;
+  export let activeZoneId: number | null = null;
+
+  $: visibleZones = activeZoneId == null ? zones : zones.filter((z) => z.id === activeZoneId);
 
   $: tasksByZone = (() => {
     const m = new Map<number, Task[]>();
@@ -39,7 +42,7 @@
     <p class="text-sm text-gray-500">No zones yet.</p>
   {:else}
     <div class="space-y-4">
-      {#each zones as z (z.id)}
+      {#each visibleZones as z (z.id)}
         {@const zoneTasks = tasksByZone.get(z.id) ?? []}
         {@const oc = openCount(z.id)}
         <div class="border border-gray-200 rounded-2xl overflow-hidden bg-white">

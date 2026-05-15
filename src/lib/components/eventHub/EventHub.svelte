@@ -22,6 +22,11 @@
   $: zoneColorMap = buildZoneColorMap(zones);
   $: zoneNameById = new Map<number, string>(zones.map((z) => [z.id, z.name]));
   $: openTaskCount = tasks.filter((t) => t.status !== 'done').length;
+
+  let activeZoneId: number | null = null;
+  // Drop stale selection if the active zone is removed/edited away.
+  $: if (activeZoneId !== null && !zones.some((z) => z.id === activeZoneId)) activeZoneId = null;
+  const setActiveZone = (id: number | null) => { activeZoneId = id; };
 </script>
 
 <div class="max-w-5xl mx-auto px-4 md:px-6 py-6 md:py-8 space-y-8">
@@ -30,11 +35,16 @@
     {mode}
     stats={{ ...stats, openTaskCount }}
     shareExpiresAt={event.share_expires_at}
+    {zones}
+    {tasks}
+    {zoneColorMap}
+    {activeZoneId}
+    onSetActiveZone={setActiveZone}
   />
 
   <RunOfShow {activities} {zoneNameById} {zoneColorMap} {mode} {navUrl} />
 
-  <ZonesSection {zones} {tasks} {zoneColorMap} {mode} {navUrl} {actionUrl} />
+  <ZonesSection {zones} {tasks} {zoneColorMap} {mode} {navUrl} {actionUrl} {activeZoneId} />
 
   <OpenItems {tasks} {zoneNameById} {zoneColorMap} {mode} {navUrl} {actionUrl} />
 </div>
