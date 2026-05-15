@@ -21,7 +21,6 @@
 
   $: zoneColorMap = buildZoneColorMap(zones);
   $: zoneNameById = new Map<number, string>(zones.map((z) => [z.id, z.name]));
-  $: openTaskCount = tasks.filter((t) => t.status !== 'done').length;
 
   let activeZoneId: number | null = null;
   // Drop stale selection if the active zone is removed/edited away.
@@ -29,14 +28,10 @@
 
   const setActiveZone = (id: number | null) => {
     activeZoneId = id;
-    if (typeof window === 'undefined') return;
-    // Wait a tick so the DOM filters before we scroll.
+    if (typeof window === 'undefined' || id == null) return;
+    // Wait a tick so the DOM updates before we scroll.
     queueMicrotask(() => {
-      if (id == null) {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else {
-        document.getElementById('zones-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      document.getElementById(`zone-card-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   };
 </script>
@@ -45,20 +40,22 @@
   <HubHeader
     {event}
     {mode}
-    stats={{ ...stats, openTaskCount }}
+    {stats}
     shareExpiresAt={event.share_expires_at}
-    {zones}
-    {tasks}
-    {zoneColorMap}
-    {activeZoneId}
-    onSetActiveZone={setActiveZone}
   />
 
   <RunOfShow {activities} {zoneNameById} {zoneColorMap} {mode} {navUrl} {activeZoneId} />
 
-  <div id="zones-section" class="scroll-mt-4">
-    <ZonesSection {zones} {tasks} {zoneColorMap} {mode} {navUrl} {actionUrl} {activeZoneId} />
-  </div>
+  <ZonesSection
+    {zones}
+    {tasks}
+    {zoneColorMap}
+    {mode}
+    {navUrl}
+    {actionUrl}
+    {activeZoneId}
+    onSetActiveZone={setActiveZone}
+  />
 
   <OpenItems {tasks} {zoneNameById} {zoneColorMap} {mode} {navUrl} {actionUrl} />
 </div>
