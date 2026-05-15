@@ -50,7 +50,7 @@
             type="button"
             on:click={() => onSetActiveZone(activeZoneId === z.id ? null : z.id)}
             aria-expanded={expanded}
-            class="w-full text-left px-5 py-4 flex items-start justify-between gap-4 hover:bg-gray-50/50 transition-colors {expanded ? 'border-b border-gray-100' : ''}"
+            class="w-full text-left px-5 py-4 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between lg:gap-4 hover:bg-gray-50/50 transition-colors {expanded ? 'border-b border-gray-100' : ''}"
           >
             <div class="min-w-0 flex items-start gap-3 flex-wrap">
               <ZonePill label={z.name} color={zoneColorFor(zoneColorMap, z.id)} />
@@ -58,7 +58,7 @@
                 {#if z.description && expanded}<p class="text-sm text-gray-600">{z.description}</p>{/if}
               </div>
             </div>
-            <div class="flex items-center gap-3 shrink-0 flex-wrap justify-end">
+            <div class="flex items-center gap-3 flex-wrap lg:justify-end lg:shrink-0">
               <div class="flex items-baseline gap-1.5 whitespace-nowrap">
                 <span class="font-display text-2xl font-bold leading-none {oc === 0 ? 'text-gray-400' : 'text-brand-black'}">{oc}</span>
                 <span class="font-mono text-[10px] uppercase tracking-widest text-gray-500">task{oc === 1 ? '' : 's'} open</span>
