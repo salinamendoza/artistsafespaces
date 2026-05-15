@@ -26,7 +26,19 @@
   let activeZoneId: number | null = null;
   // Drop stale selection if the active zone is removed/edited away.
   $: if (activeZoneId !== null && !zones.some((z) => z.id === activeZoneId)) activeZoneId = null;
-  const setActiveZone = (id: number | null) => { activeZoneId = id; };
+
+  const setActiveZone = (id: number | null) => {
+    activeZoneId = id;
+    if (typeof window === 'undefined') return;
+    // Wait a tick so the DOM filters before we scroll.
+    queueMicrotask(() => {
+      if (id == null) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        document.getElementById('zones-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  };
 </script>
 
 <div class="max-w-5xl mx-auto px-4 md:px-6 py-6 md:py-8 space-y-8">
@@ -42,9 +54,11 @@
     onSetActiveZone={setActiveZone}
   />
 
-  <RunOfShow {activities} {zoneNameById} {zoneColorMap} {mode} {navUrl} />
+  <RunOfShow {activities} {zoneNameById} {zoneColorMap} {mode} {navUrl} {activeZoneId} />
 
-  <ZonesSection {zones} {tasks} {zoneColorMap} {mode} {navUrl} {actionUrl} {activeZoneId} />
+  <div id="zones-section" class="scroll-mt-4">
+    <ZonesSection {zones} {tasks} {zoneColorMap} {mode} {navUrl} {actionUrl} {activeZoneId} />
+  </div>
 
   <OpenItems {tasks} {zoneNameById} {zoneColorMap} {mode} {navUrl} {actionUrl} />
 </div>

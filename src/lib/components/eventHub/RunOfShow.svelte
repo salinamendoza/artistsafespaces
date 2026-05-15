@@ -9,6 +9,9 @@
   export let zoneColorMap: Map<number, ZoneColor>;
   export let mode: HubActor;
   export let navUrl: (suffix: string) => string;
+  export let activeZoneId: number | null = null;
+
+  $: visibleActivities = activeZoneId == null ? activities : activities.filter((a) => a.zone_id === activeZoneId);
 
   function formatTime(iso: string | null): string {
     if (!iso) return '';
@@ -29,6 +32,8 @@
   </div>
   {#if activities.length === 0}
     <p class="text-sm text-gray-500">No activities yet.</p>
+  {:else if visibleActivities.length === 0}
+    <p class="text-sm text-gray-500">No activities in this zone.</p>
   {:else}
     <div class="border border-gray-200 rounded-2xl overflow-hidden bg-white">
       <div class="hidden lg:grid grid-cols-[110px_1fr_auto] gap-4 px-5 py-3 border-b border-gray-200 bg-gray-50 font-mono text-[10px] uppercase tracking-widest text-gray-500">
@@ -36,7 +41,7 @@
         <span>What</span>
         <span class="text-right">Where</span>
       </div>
-      {#each activities as a}
+      {#each visibleActivities as a}
         <div class="block lg:grid lg:grid-cols-[110px_1fr_auto] gap-4 px-5 py-4 lg:py-3 border-b border-gray-100 last:border-b-0 lg:items-start">
           <div class="font-mono text-xs text-gray-700 flex lg:block items-center gap-2 mb-2 lg:mb-0">
             <span>{formatTime(a.start_time)}</span>
