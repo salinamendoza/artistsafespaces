@@ -31,22 +31,27 @@
     <p class="text-sm text-gray-500">No activities yet.</p>
   {:else}
     <div class="border border-gray-200 rounded-2xl overflow-hidden bg-white">
-      <div class="grid grid-cols-[110px_1fr_auto] gap-4 px-5 py-3 border-b border-gray-200 bg-gray-50 font-mono text-[10px] uppercase tracking-widest text-gray-500">
+      <div class="hidden lg:grid grid-cols-[110px_1fr_auto] gap-4 px-5 py-3 border-b border-gray-200 bg-gray-50 font-mono text-[10px] uppercase tracking-widest text-gray-500">
         <span>Time</span>
         <span>What</span>
         <span class="text-right">Where</span>
       </div>
       {#each activities as a}
-        <div class="grid grid-cols-[110px_1fr_auto] gap-4 px-5 py-3 border-b border-gray-100 last:border-b-0 items-start">
-          <div class="font-mono text-xs text-gray-700">
-            <div>{formatTime(a.start_time)}</div>
-            {#if a.end_time}<div class="text-gray-400">– {formatTime(a.end_time)}</div>{/if}
+        <div class="block lg:grid lg:grid-cols-[110px_1fr_auto] gap-4 px-5 py-4 lg:py-3 border-b border-gray-100 last:border-b-0 lg:items-start">
+          <div class="font-mono text-xs text-gray-700 flex lg:block items-center gap-2 mb-2 lg:mb-0">
+            <span>{formatTime(a.start_time)}</span>
+            {#if a.end_time}<span class="text-gray-400 lg:block">– {formatTime(a.end_time)}</span>{/if}
           </div>
           <div class="min-w-0">
             <p class="font-medium text-sm">{a.title}</p>
             {#if a.notes}<p class="text-sm text-gray-500 mt-0.5">{a.notes}</p>{/if}
+            {#if a.zone_id != null && zoneNameById.has(a.zone_id)}
+              <div class="lg:hidden mt-2">
+                <ZonePill label={zoneNameById.get(a.zone_id) ?? ''} color={zoneColorFor(zoneColorMap, a.zone_id)} size="sm" />
+              </div>
+            {/if}
           </div>
-          <div class="pt-0.5 flex items-center gap-2 justify-end">
+          <div class="hidden lg:flex pt-0.5 items-center gap-2 justify-end">
             {#if a.zone_id != null && zoneNameById.has(a.zone_id)}
               <ZonePill label={zoneNameById.get(a.zone_id) ?? ''} color={zoneColorFor(zoneColorMap, a.zone_id)} size="sm" />
             {/if}
@@ -54,6 +59,11 @@
               <a href={navUrl(`/activities/${a.id}/edit`)} class="font-mono text-[10px] uppercase tracking-widest text-gray-400 hover:text-brand-black">edit</a>
             {/if}
           </div>
+          {#if mode === 'admin'}
+            <div class="lg:hidden mt-2">
+              <a href={navUrl(`/activities/${a.id}/edit`)} class="font-mono text-[10px] uppercase tracking-widest text-gray-400 hover:text-brand-black">edit</a>
+            </div>
+          {/if}
         </div>
       {/each}
     </div>

@@ -177,3 +177,38 @@ Conventions baked in for press-launch reliability:
 ### CTA destination
 
 Case study pages are sales assets. The bottom CTA points to `/partners/apply`, not `/contact`.
+
+## D1 migrations — gotchas worth not re-learning
+
+- **No `BEGIN`/`COMMIT`.** D1 rejects SQL transaction statements. Multi-statement batches sent in a single `db.batch(...)` call are already atomic at parse time, so wrapping them in a transaction is both unnecessary and an error. Migrations should just be flat statements.
+- **`CREATE TABLE IF NOT EXISTS` is safely re-runnable, `ALTER TABLE ADD COLUMN` is not.** When a migration mixes both, expect a "duplicate column name" error on re-runs of the ALTERs. That's fine — Salina runs migrations once in the D1 console and won't re-run them.
+- Migrations run **manually in the D1 console** (raw SQL only — no `npx wrangler ...` inside that console). When you add a migration, put the literal SQL Salina needs to paste in the commit body, not a wrapper command.
+
+## Event hub (zones / activities / tasks)
+
+Schema in migrations 0011–0015. Tables: `zones`, `activities`, `tasks`, plus partner-write columns on tasks (`created_by_label`, `status_updated_at`, `status_updated_by_label`). Each event gets a per-event `share_token` for the public partner URL.
+
+- **Public partner hub** at `/events/[id]/hub` — no auth, signed by `share_token`. Partners can create zones/activities/tasks and toggle any task status.
+- **Admin hub** at `/admin/events/[id]/hub` — same UI tree, with edit + delete affordances.
+- **No edge cache on the partner hub.** `s-maxage` caused toggle state to revert after partner writes. Don't add it back.
+- Activities have `start_time` (required) and `end_time` (nullable). Event-level hours are *derived* (`MIN(start_time)` → `MAX(end_time)`) — don't add event-level start/end columns.
+- Shared UI components live in `src/lib/components/eventHub/`. Run-of-show, zone pills, task rows. Touch them carefully — both admin and partner views render the same components.
+
+## RSVPs
+
+Migrations 0016 (rsvps) + 0017 (rsvp_activity_interests junction).
+
+- **Public form** at `/r/[token]` — name, email, optional activity interest checkboxes pulled from the event's activities. Honeypot field (`name="website"`, off-screen). 200 RSVPs/hr per CF-Connecting-IP, matching `/g/[token]` (chosen for shared venue WiFi and carrier-NAT).
+- **UNIQUE(event_id, email)** — re-submitting updates interests instead of failing.
+- **Data ethics still applies.** RSVP data is collected for the event and deleted after. No email export, no "warm leads" tooling, no confirmation emails without explicit Salina sign-off.
+- Disclaimer copy on the form + confirmation: "This RSVP lets us know you're coming. It doesn't reserve a headshot slot or guarantee one of the 100 limited-edition prints." Don't drop it — sets expectations correctly.
+
+## Mobile responsiveness
+
+Tailwind `lg:` breakpoint (1024px) is the divider for multi-column tables. Below `lg:`, they should collapse to stacked card rows — events are run in the field on phones and tablets, and three columns crammed into 768px is unreadable. The run-of-show component (`src/lib/components/eventHub/RunOfShow.svelte`) is the reference pattern: header hidden below `lg:`, time/title/zone stack vertically, zone pill and edit link wrap to their own line. **Don't use `md:` (768px) for table → card collapses** — content padding eats too much of the row at that width.
+
+`AdminHeader` follows the same rule: `flex-col` below `lg:`, `flex-row` at `lg:` and up. Nav links wrap. Breadcrumb labels truncate at 200px so a long event name doesn't push the layout.
+
+## Journal
+
+`JOURNAL.md` at the repo root is an append-only log of what shipped per session + lessons learned. Add an entry at the end of any session that produced something worth reflecting on (not every bug fix). Newest entries on top, grouped by session, not calendar date.
