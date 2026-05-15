@@ -1,6 +1,8 @@
 <script lang="ts">
-  import type { Event } from '$lib/types/db-types';
+  import type { Event, Zone, Task } from '$lib/types/db-types';
   import type { HubActor } from '$lib/types/db-types';
+  import type { ZoneColor } from './zoneColors';
+  import { zoneColorFor } from './zoneColors';
   export let event: Pick<Event, 'id' | 'name' | 'client_name' | 'event_date' | 'location' | 'status'>;
   export let mode: HubActor;
   export let stats: {
@@ -10,6 +12,20 @@
     openTaskCount: number;
   };
   export let shareExpiresAt: string | null = null;
+  export let zones: Zone[] = [];
+  export let tasks: Task[] = [];
+  export let zoneColorMap: Map<number, ZoneColor> = new Map();
+  export let activeZoneId: number | null = null;
+  export let onSetActiveZone: (id: number | null) => void = () => {};
+
+  $: openByZone = (() => {
+    const m = new Map<number, number>();
+    for (const t of tasks) {
+      if (t.zone_id == null || t.status === 'done') continue;
+      m.set(t.zone_id, (m.get(t.zone_id) ?? 0) + 1);
+    }
+    return m;
+  })();
 
   function fmtDate(iso: string | null): string {
     if (!iso) return '';
@@ -47,10 +63,37 @@
     {/if}
   </div>
 
-  <div class="border border-amber-200 bg-amber-50 rounded-xl px-4 py-3">
-    <p class="font-mono text-[10px] uppercase tracking-widest text-amber-700">tasks open</p>
-    <p class="font-display text-2xl font-bold mt-1 text-amber-900">{stats.openTaskCount}</p>
-  </div>
+  {#if zones.length > 0}
+    <div>
+      <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 mb-2">jump to zone</p>
+      <div class="flex gap-2 overflow-x-auto -mx-1 px-1 pb-1 snap-x">
+        {#if activeZoneId !== null}
+          <button
+            type="button"
+            on:click={() => onSetActiveZone(null)}
+            class="snap-start shrink-0 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 font-mono text-[11px] uppercase tracking-widest whitespace-nowrap bg-gray-900 border-gray-900 text-white hover:opacity-90 transition-opacity"
+          >
+            <span>All zones</span>
+            <span class="font-bold">· {stats.openTaskCount}</span>
+          </button>
+        {/if}
+        {#each zones as z (z.id)}
+          {@const color = zoneColorFor(zoneColorMap, z.id)}
+          {@const oc = openByZone.get(z.id) ?? 0}
+          {@const isActive = activeZoneId === z.id}
+          <button
+            type="button"
+            on:click={() => onSetActiveZone(isActive ? null : z.id)}
+            class="snap-start shrink-0 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 font-mono text-[11px] uppercase tracking-widest whitespace-nowrap hover:opacity-90 transition-opacity {isActive ? color.pillActive : color.pill}"
+            aria-pressed={isActive}
+          >
+            <span>{z.name}</span>
+            <span class="font-bold">· {oc}</span>
+          </button>
+        {/each}
+      </div>
+    </div>
+  {/if}
 
   {#if mode === 'admin'}
     <details class="border border-gray-200 rounded-xl group">

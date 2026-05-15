@@ -10,19 +10,21 @@ import type { Zone } from '$lib/types/db-types';
 
 export interface ZoneColor {
   pill: string;
+  pillActive: string;
   dot: string;
 }
 
 export const ZONE_PALETTE: ZoneColor[] = [
-  { pill: 'bg-green-50 border-green-200 text-green-700', dot: 'bg-green-400' },
-  { pill: 'bg-indigo-50 border-indigo-200 text-indigo-700', dot: 'bg-indigo-400' },
-  { pill: 'bg-rose-50 border-rose-200 text-rose-700', dot: 'bg-rose-400' },
-  { pill: 'bg-sky-50 border-sky-200 text-sky-700', dot: 'bg-sky-400' },
-  { pill: 'bg-stone-50 border-stone-200 text-stone-700', dot: 'bg-stone-400' }
+  { pill: 'bg-green-50 border-green-200 text-green-700',   pillActive: 'bg-green-200 border-green-500 text-green-900',   dot: 'bg-green-400' },
+  { pill: 'bg-indigo-50 border-indigo-200 text-indigo-700', pillActive: 'bg-indigo-200 border-indigo-500 text-indigo-900', dot: 'bg-indigo-400' },
+  { pill: 'bg-rose-50 border-rose-200 text-rose-700',      pillActive: 'bg-rose-200 border-rose-500 text-rose-900',      dot: 'bg-rose-400' },
+  { pill: 'bg-sky-50 border-sky-200 text-sky-700',         pillActive: 'bg-sky-200 border-sky-500 text-sky-900',         dot: 'bg-sky-400' },
+  { pill: 'bg-stone-50 border-stone-200 text-stone-700',   pillActive: 'bg-stone-200 border-stone-500 text-stone-900',   dot: 'bg-stone-400' }
 ];
 
 const NEUTRAL: ZoneColor = {
   pill: 'bg-gray-50 border-gray-200 text-gray-600',
+  pillActive: 'bg-gray-200 border-gray-500 text-gray-900',
   dot: 'bg-gray-300'
 };
 
