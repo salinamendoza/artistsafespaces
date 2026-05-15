@@ -12,8 +12,7 @@
   export let navUrl: (suffix: string) => string;
   export let actionUrl: (name: string) => string;
   export let activeZoneId: number | null = null;
-
-  $: visibleZones = activeZoneId == null ? zones : zones.filter((z) => z.id === activeZoneId);
+  export let onSetActiveZone: (id: number | null) => void = () => {};
 
   $: tasksByZone = (() => {
     const m = new Map<number, Task[]>();
@@ -42,15 +41,21 @@
     <p class="text-sm text-gray-500">No zones yet.</p>
   {:else}
     <div class="space-y-4">
-      {#each visibleZones as z (z.id)}
+      {#each zones as z (z.id)}
         {@const zoneTasks = tasksByZone.get(z.id) ?? []}
         {@const oc = openCount(z.id)}
-        <div class="border border-gray-200 rounded-2xl overflow-hidden bg-white">
-          <div class="px-5 py-4 flex items-start justify-between gap-4 border-b border-gray-100">
+        {@const expanded = activeZoneId == null || activeZoneId === z.id}
+        <div id={`zone-card-${z.id}`} class="border rounded-2xl overflow-hidden bg-white scroll-mt-4 transition-colors {activeZoneId === z.id ? 'border-brand-black' : 'border-gray-200'}">
+          <button
+            type="button"
+            on:click={() => onSetActiveZone(activeZoneId === z.id ? null : z.id)}
+            aria-expanded={expanded}
+            class="w-full text-left px-5 py-4 flex items-start justify-between gap-4 hover:bg-gray-50/50 transition-colors {expanded ? 'border-b border-gray-100' : ''}"
+          >
             <div class="min-w-0 flex items-start gap-3 flex-wrap">
               <ZonePill label={z.name} color={zoneColorFor(zoneColorMap, z.id)} />
               <div class="min-w-0">
-                {#if z.description}<p class="text-sm text-gray-600">{z.description}</p>{/if}
+                {#if z.description && expanded}<p class="text-sm text-gray-600">{z.description}</p>{/if}
               </div>
             </div>
             <div class="flex items-center gap-3 shrink-0">
@@ -58,23 +63,25 @@
                 <span class="font-display text-2xl font-bold leading-none {oc === 0 ? 'text-gray-400' : 'text-brand-black'}">{oc}</span>
                 <span class="font-mono text-[10px] uppercase tracking-widest text-gray-500">task{oc === 1 ? '' : 's'} open</span>
               </div>
+            </div>
+          </button>
+          {#if expanded}
+            {#if zoneTasks.length > 0}
+              <ul class="divide-y divide-gray-100">
+                {#each zoneTasks as t (t.id)}
+                  <TaskRow task={t} {mode} {navUrl} {actionUrl} />
+                {/each}
+              </ul>
+            {:else}
+              <p class="px-5 py-4 text-sm text-gray-400">No tasks in this zone.</p>
+            {/if}
+            <div class="px-5 py-2 border-t border-gray-100 bg-gray-50/50 flex items-center justify-between gap-3">
+              <a href={navUrl(`/tasks/new?zone=${z.id}`)} class="font-mono text-[10px] uppercase tracking-widest text-gray-500 hover:text-brand-black">+ add task</a>
               {#if mode === 'admin'}
-                <a href={navUrl(`/zones/${z.id}/edit`)} class="font-mono text-[10px] uppercase tracking-widest text-gray-400 hover:text-brand-black">edit</a>
+                <a href={navUrl(`/zones/${z.id}/edit`)} class="font-mono text-[10px] uppercase tracking-widest text-gray-400 hover:text-brand-black">edit zone</a>
               {/if}
             </div>
-          </div>
-          {#if zoneTasks.length > 0}
-            <ul class="divide-y divide-gray-100">
-              {#each zoneTasks as t (t.id)}
-                <TaskRow task={t} {mode} {navUrl} {actionUrl} />
-              {/each}
-            </ul>
-          {:else}
-            <p class="px-5 py-4 text-sm text-gray-400">No tasks in this zone.</p>
           {/if}
-          <div class="px-5 py-2 border-t border-gray-100 bg-gray-50/50">
-            <a href={navUrl(`/tasks/new?zone=${z.id}`)} class="font-mono text-[10px] uppercase tracking-widest text-gray-500 hover:text-brand-black">+ add task</a>
-          </div>
         </div>
       {/each}
     </div>
