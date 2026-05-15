@@ -47,22 +47,31 @@
     {/if}
   </div>
 
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-    <div class="border border-gray-200 rounded-xl px-4 py-3">
-      <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500">artists booked</p>
-      <p class="font-display text-2xl font-bold mt-1">{stats.artistCount}</p>
-    </div>
-    <div class="border border-gray-200 rounded-xl px-4 py-3">
-      <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500">total cost</p>
-      <p class="font-display text-2xl font-bold mt-1">{money(stats.totalCost)}</p>
-    </div>
-    <div class="border border-gray-200 rounded-xl px-4 py-3">
-      <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500">partner spend</p>
-      <p class="font-display text-2xl font-bold mt-1">{money(stats.partnerSpend)}</p>
-    </div>
-    <div class="border border-amber-200 bg-amber-50 rounded-xl px-4 py-3">
-      <p class="font-mono text-[10px] uppercase tracking-widest text-amber-700">tasks open</p>
-      <p class="font-display text-2xl font-bold mt-1 text-amber-900">{stats.openTaskCount}</p>
-    </div>
+  <div class="border border-amber-200 bg-amber-50 rounded-xl px-4 py-3">
+    <p class="font-mono text-[10px] uppercase tracking-widest text-amber-700">tasks open</p>
+    <p class="font-display text-2xl font-bold mt-1 text-amber-900">{stats.openTaskCount}</p>
   </div>
+
+  {#if mode === 'admin'}
+    <details class="border border-gray-200 rounded-xl group">
+      <summary class="px-4 py-3 cursor-pointer font-mono text-[10px] uppercase tracking-widest text-gray-500 hover:text-brand-black select-none flex items-center justify-between">
+        <span>view financials</span>
+        <span class="text-gray-400 group-open:rotate-180 transition-transform">▾</span>
+      </summary>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 pt-0">
+        <div class="border border-gray-200 rounded-xl px-4 py-3">
+          <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500">artists booked</p>
+          <p class="font-display text-2xl font-bold mt-1">{stats.artistCount}</p>
+        </div>
+        <div class="border border-gray-200 rounded-xl px-4 py-3">
+          <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500">total cost</p>
+          <p class="font-display text-2xl font-bold mt-1">{money(stats.totalCost)}</p>
+        </div>
+        <div class="border border-gray-200 rounded-xl px-4 py-3">
+          <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500">partner spend</p>
+          <p class="font-display text-2xl font-bold mt-1">{money(stats.partnerSpend)}</p>
+        </div>
+      </div>
+    </details>
+  {/if}
 </div>
